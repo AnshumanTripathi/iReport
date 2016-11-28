@@ -3,7 +3,6 @@ package com.ireport.model;
 /**
  * Created by AnshumanTripathi on 11/24/16.
  */
-
 public class Settings {
     private boolean isAllowEmailConfirmation;
     private boolean isAllowEmailNotification;

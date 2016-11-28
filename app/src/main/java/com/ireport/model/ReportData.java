@@ -10,10 +10,10 @@ import java.util.List;
  * Created by AnshumanTripathi on 11/24/16.
  */
 
-public class Report {
+public class ReportData {
     //Images
     private List<File> images;
-    //User Location
+    //UserInfo Location
     private Location location;
     private String description;
     //Area size
@@ -21,8 +21,8 @@ public class Report {
     //Severity Level
     private String severityLevel;
     private Date date;
-    //Reporting User
-    private User userReporting; //We can later change this to take only a specific user detail.
+
+    private String reporteeID;      // the userID who reported it
 
     public List<File> getImages() {
         return images;
@@ -72,11 +72,11 @@ public class Report {
         this.date = date;
     }
 
-    public User getUserReporting() {
-        return userReporting;
+    public String getReporteeID() {
+        return reporteeID;
     }
 
-    public void setUserReporting(User userReporting) {
-        this.userReporting = userReporting;
+    public void setReporteeID(String reporteeID) {
+        this.reporteeID = reporteeID;
     }
 }

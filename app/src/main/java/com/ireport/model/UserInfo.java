@@ -5,19 +5,18 @@ import com.ireport.repository.MongoRepository;
 /**
  * Created by AnshumanTripathi on 11/24/16.
  */
-
-public class User implements MongoRepository{
-    //Official and User have similar properties. This differentiates user from official
+public class UserInfo implements MongoRepository{
+    //Official and UserInfo have similar properties. This differentiates user from official
     private boolean isOfficial;
 
-    //User Details
+    //UserInfo Details
     private String screenName;
     private String email;
     private String firstName;
     private String lastName;
     private String homeAddress;
 
-    //User Settings
+    //UserInfo Settings
     private Settings settings;
 
     public boolean isOfficial() {
