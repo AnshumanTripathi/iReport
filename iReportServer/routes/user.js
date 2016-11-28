@@ -67,7 +67,6 @@ exports.updateSettings = function (req, res) {
                     if (err) {
                         console.log("Error in find: " + err);
                     } else {
-                        console.log(results);
                         res.send(results);
                         db.close();
                     }
