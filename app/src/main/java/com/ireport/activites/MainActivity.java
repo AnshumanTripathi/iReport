@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
+import com.amazonaws.http.HttpMethodName;
 import com.amazonaws.mobileconnectors.apigateway.ApiRequest;
 import com.amazonaws.util.StringUtils;
 import com.ireport.R;

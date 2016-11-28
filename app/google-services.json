@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "28541812777",
+    "project_id": "cmpe277project-150922"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28541812777:android:3600a7c2ff963661",
+        "android_client_info": {
+          "package_name": "com.ireport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28541812777-pu5ca0vu2j7nn03hf666dpbbpfno88b9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ireport",
+            "certificate_hash": "859CB04B57041DB32FE44EF8A20CD5AA66C0909A"
+          }
+        },
+        {
+          "client_id": "28541812777-kntq0i7nm0tpvt1goavuhp2cielt71le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmM4ZMVKXN3z-sXRxEiaLHSshvArLmdOY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
