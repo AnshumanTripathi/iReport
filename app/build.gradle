@@ -41,6 +41,7 @@ dependencies {
 
     //fb
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.firebaseui:firebase-ui:0.4.4'
 
     testCompile 'junit:junit:4.12'
 }

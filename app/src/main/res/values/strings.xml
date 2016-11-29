@@ -6,6 +6,7 @@
     <string name="email">Email</string>
     <string name="address">Address</string>
     <string name="submit">Submit</string>
+    <string name="facebook_application_id">1634052013566657</string>
     <string name="facebook_app_id">1634052013566657</string>
     <string name="fb_login_protocol_scheme">fb1634052013566657</string>
 </resources>
