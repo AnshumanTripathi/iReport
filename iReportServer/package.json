@@ -11,8 +11,11 @@
     "debug": "~2.2.0",
     "ejs": "~2.5.2",
     "express": "~4.14.0",
+    "gridfs": "~1.0.0",
+    "gridfs-stream": "~1.1.1",
+    "mongodb": "~2.2.1",
+    "mongoose": "^4.7.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0",
-    "mongodb":"~2.2.1"
+    "serve-favicon": "~2.3.0"
   }
 }

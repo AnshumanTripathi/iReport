@@ -1,48 +1,34 @@
 /**
  * Created by AnshumanTripathi on 11/28/16.
  */
+
 var client = require('mongodb').MongoClient;
-var ec2 = "ec2-35-164-176-121.us-west-2.compute.amazonaws.com";
+var mongoose = require('mongoose');
+var ec2 = require("./SharedConst").ec2;
+var User = require("./Schema");
+
+mongoose.connect("mongodb://" + ec2 + ":27017/iReport")
 
 exports.getAllUsers = function (req, res) {
-    client.connect("mongodb://" + ec2 + ":27017/iReport", function (err, db) {
+    console.log("Connected to MongoDB. Fetching Data....");
+    User.find({}, function (err, users) {
         if (err) {
-            console.log("Error Occured");
-        } else {
-            console.log("Connected to MongoDB. Fetching Data....");
-            var collection = db.collection("user");
-            collection.find().toArray(function (err, results) {
-                console.log("in find");
-                if (err) {
-                    console.log("Error in find: " + err);
-                } else {
-                    console.log(results);
-                    res.send(results);
-                    db.close();
-                }
-            });
+            console.log("Error occured: " + err);
         }
+        console.log(users);
+        res.send(users);
     });
 };
 
 exports.getUser = function (req, res) {
     var query = req.body.email;
     console.log("Email received: " + query);
-    client.connect("mongodb://" + ec2 + ":27017/iReport", function (err, db) {
-        if (err) {
-            console.log("Error Occured: " + err);
-        } else {
-            console.log("Connected to MongoDB. Fetching Data....");
-            var collection = db.collection("user");
-            collection.findOne({"email": "" + query}, function (err, results) {
-                if (err) {
-                    console.log("Error in find: " + err);
-                } else {
-                    console.log(results);
-                    res.send(results);
-                    db.close();
-                }
-            });
+    User.findOne({"email":query} , function(error,user){
+        if(error){
+            console.log("Error occured fetching user: "+error);
+        }else {
+            console.log(user);
+            res.send(user);
         }
     });
 };
@@ -50,27 +36,26 @@ exports.getUser = function (req, res) {
 exports.updateSettings = function (req, res) {
     var query = req.body.email;
     console.log("Email received: " + query);
-    client.connect("mongodb://" + ec2 + ":27017/iReport", function (err, db) {
+    User.findOne({"email":query},function (err,user) {
+        if(err){
+            console.log("Error Occured: "+err);
+        }else{
+            console.log("User found: "+JSON.stringify(user));
+            user.settings.email_confirm = req.body.email_confirm;
+            user.settings.email_notify = req.body.email_notify;
+            user.settings.anonymous = req.body.anonymous;
+            res.send("Settings Updated!");
+        }
+    });
+};
+
+exports.addUser = function (req, res) {
+    var newUser = new User(req.body.user);
+    newUser.save(function (err) {
         if (err) {
-            console.log("Error Occured: " + err);
+            console.log("Error occured in added: " + err);
         } else {
-            console.log("Connected to MongoDB. Fetching Data....");
-            var collection = db.collection("user");
-            collection.updateOne({"email": "" + query},
-                {
-                    $set: {
-                        "email_confirm": req.body.email_confirm,
-                        "email_notify": req.body.email_notify,
-                        "anonymous": req.body.anonymous
-                    }
-                }, function (err, results) {
-                    if (err) {
-                        console.log("Error in find: " + err);
-                    } else {
-                        res.send(results);
-                        db.close();
-                    }
-                });
+            res.send("New User Added!");
         }
     });
 };
