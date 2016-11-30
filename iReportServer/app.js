@@ -5,11 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require("http");
+var mongoose = require("mongoose");
 var index = require('./routes/index');
 var user = require('./routes/user');
 var report = require("./routes/report");
+var ec2 = require("./routes/SharedConst").ec2;
 var app = express();
 
+//Create Mongo Connection
+mongoose.connect("mongodb://" + ec2 + ":27017/iReport");
 // view engine setup
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -26,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 
 //Users API
-app.post('/getAllUsers',user.getAllUsers);
+app.get('/getAllUsers',user.getAllUsers);
 app.post('/getUser',user.getUser);
 app.post('/updateSettings',user.updateSettings);
 app.post('/addUser',user.addUser);
@@ -52,7 +56,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send('Wrong Invocation');
 });
 
 http.createServer(app).listen(app.get('port'), function(){

@@ -15,10 +15,11 @@ var user = new schema({
         "email_notify": Boolean,
         "anonymous": Boolean
     }
-},{
-    collection:"user"
+}, {
+    collection: "user"
 });
 
-var User = mongoose.model('User',user);
+var User = mongoose.model('User', user);
+
 
 module.exports = User;
