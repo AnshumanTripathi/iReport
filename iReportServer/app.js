@@ -24,11 +24,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.get('/getFile',report.getFile);
+
+//Users API
 app.post('/getAllUsers',user.getAllUsers);
 app.post('/getUser',user.getUser);
 app.post('/updateSettings',user.updateSettings);
 app.post('/addUser',user.addUser);
+
+//My Report API
+app.get('/getFile',report.getFile);
 app.post('/testGrid',report.uploadFile);
 
 

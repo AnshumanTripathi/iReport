@@ -2,7 +2,6 @@
  * Created by AnshumanTripathi on 11/28/16.
  */
 
-var client = require('mongodb').MongoClient;
 var mongoose = require('mongoose');
 var ec2 = require("./SharedConst").ec2;
 var User = require("./Schema");
