@@ -17,4 +17,4 @@
 *.bin
 *.lock
 *.jpg
-/writeto
+writeto/
