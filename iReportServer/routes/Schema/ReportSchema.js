@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var schema = mongoose.Schema;
 
 var report = new schema({
-    "pictures": [schema.objectId],
+    "pictures": {type: [schema.objectId]},
     "location": {
         lat: Number,
         lng: Number
