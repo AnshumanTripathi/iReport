@@ -9,4 +9,10 @@
     <string name="facebook_application_id">1634052013566657</string>
     <string name="facebook_app_id">1634052013566657</string>
     <string name="fb_login_protocol_scheme">fb1634052013566657</string>
+    <string name="title_activity_list_reports">ListReports</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
