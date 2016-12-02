@@ -10,6 +10,7 @@ var user = new schema({
     "last_name": {type: String, required: true},
     "home_address": {type: String},
     "screen_name": {type: String, required: true, unique: true},
+    "isOfficial": {type: Boolean},
     "settings": {
         "email_confirm": Boolean,
         "email_notify": Boolean,

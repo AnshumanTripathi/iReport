@@ -5,7 +5,7 @@ var fs = require("fs");
 var mongoose = require('mongoose');
 var Report = require("./Schema/ReportSchema");
 var grid = require("gridfs-stream");
-var ec2 = require("./SharedConst").ec2;
+var host = require("./SharedConst").host;
 var path = require('path');
 var filePath = path.join(__dirname, './bat.jpg');
 
@@ -13,7 +13,7 @@ grid.mongo = mongoose.mongo;
 
 exports.uploadFile = function (req, res) {
 
-    var conn = mongoose.createConnection(ec2, 'iReport');
+    var conn = mongoose.createConnection(host, 'iReport');
     conn.once('open', function (error) {
         if(error){
             throw error;
@@ -22,7 +22,7 @@ exports.uploadFile = function (req, res) {
             // var collection = db.collection("fileTest");
             var gridfs = grid(conn.db);
             var writestream = gridfs.createWriteStream({
-                filename: "batman.jpg",
+                filename: "batman.jpg"
             });
             fs.createReadStream(filePath).pipe(writestream);
             writestream.on("close", function (file) {
@@ -35,7 +35,7 @@ exports.uploadFile = function (req, res) {
 };
 
 exports.getFile = function (req, res) {
-    var conn = mongoose.createConnection(ec2, 'iReport');
+    var conn = mongoose.createConnection(host, 'iReport');
     conn.once('open', function () {
         console.log("Connected to MongoDB. Fetching Data....");
         var readFs = fs.createWriteStream(path.join(__dirname, "../writeto/bat.jpg"));

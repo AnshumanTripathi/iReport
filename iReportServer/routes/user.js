@@ -4,7 +4,7 @@
 
 var mongoose = require('mongoose');
 var User = require("./Schema/UserSchema");
-var ec2 = require("./SharedConst").ec2;
+var host = require("./SharedConst").host;
 
 mongoose.connection.on('open',function (ref) {
     console.log("Connected to Mongo Server");
