@@ -7,30 +7,21 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Profile"/>
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_notifcations"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Notifications"/>
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_newreport"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="New Report"/>
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_allreports"
             android:icon="@drawable/ic_menu_manage"
             android:title="My Reports"/>
+        <item
+            android:id="@+id/mSignOut"
+            android:icon="@drawable/report_icon"
+            android:title="Sign Out"/>
     </group>
-
-    <item android:title="Sign Out">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share"/>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send"/>
-        </menu>
-    </item>
 
 </menu>

@@ -9,6 +9,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -24,25 +25,25 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
     // ... other dependencies go here ...
 
-    compile 'com.amazonaws:aws-android-sdk-core:2.3.3'
-
     // add the Amazon API Gateway SDK
-    compile 'com.amazonaws:aws-android-sdk-apigateway-core:2.3.3'
 
     //for google play services
-    compile 'com.google.android.gms:play-services-auth:9.4.0'
 
     //for firebase
-    compile 'com.google.firebase:firebase-auth:9.4.0'
-    compile 'com.google.firebase:firebase-core:9.4.0'
 
     //fb
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.amazonaws:aws-android-sdk-core:2.3.3'
+    compile 'com.amazonaws:aws-android-sdk-apigateway-core:2.3.3'
+    compile 'com.google.android.gms:play-services-auth:9.8.0'
+    compile 'com.google.firebase:firebase-auth:9.8.0'
+    compile 'com.google.firebase:firebase-core:9.8.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.firebaseui:firebase-ui:0.4.4'
-
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.google.android.gms:play-services-ads:9.8.0'
     testCompile 'junit:junit:4.12'
 }
 

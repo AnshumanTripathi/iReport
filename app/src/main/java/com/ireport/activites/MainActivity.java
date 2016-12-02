@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(AUTH_TAG, mAuth.getCurrentUser().getEmail());
         } else {
             Log.d(AUTH_TAG, "Trying to sign in");
-            Intent intent = new Intent(this,ListReports.class);
+            Intent intent = new Intent(this,ListReportsActivity.class);
             startActivity(intent);
             /*Firebase code starts here
             startActivityForResult(AuthUI.getInstance()
