@@ -3,12 +3,14 @@ package com.ireport.controller.utils;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.ExecutorDelivery;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 
 import org.json.JSONException;
@@ -43,6 +45,7 @@ public class HttpUtils {
                             Log.d("Json object",json.toString());
 
                             String jsonData =  json.getString("data");
+                            UserInfo uiObj = parseUserInfoFromJson(jsonData);
 
 
                     } catch (Exception e) {
@@ -95,5 +98,50 @@ public class HttpUtils {
 
         queue.add(stringRequest);
     }
+
+    
+
+
+    public static UserInfo parseUserInfoFromJson(String userData) {
+        UserInfo uiObj = null;
+        try {
+
+             uiObj = new UserInfo();
+            Settings settingObj = new Settings();
+
+            JSONObject json = new JSONObject(userData);
+            String first_name = json.getString("first_name");
+            String email = json.getString("email");
+            String last_name = json.getString("last_name");
+            String home_address = json.getString("home_address");
+            String screen_name = json.getString("screen_name");
+
+            uiObj.setEmail(email);
+            uiObj.setFirstName(first_name);
+            uiObj.setLastName(last_name);
+            uiObj.setHomeAddress(home_address);
+            uiObj.setScreenName(screen_name);
+            //uiObj.setOfficial();
+
+            String settings = json.getString("settings");
+            JSONObject settingJson = new JSONObject(settings);
+            String email_confirm = json.getString("email_confirm");
+            String email_notify = json.getString("email_notify");
+            String anonymous = json.getString("anonymous");
+
+            settingObj.setAllowEmailConfirmation(Boolean.parseBoolean(email_confirm));
+            settingObj.setAllowEmailNotification(Boolean.parseBoolean(email_notify));
+            settingObj.setAnonymous(Boolean.parseBoolean(anonymous));
+            uiObj.setSettings(settingObj);
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return uiObj;
+    }
+
+
 }
 
