@@ -29,11 +29,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 
-//Users API
+//Official API
 app.get('/getAllUsers',user.getAllUsers);
 app.post('/getUser',user.getUser);
+
+//User API
 app.post('/updateSettings',user.updateSettings);
 app.post('/addUser',user.addUser);
+app.post('/updateUserInfo',user.updateUserInfo);
 
 //My Report API
 app.get('/getFile',report.getFile);
