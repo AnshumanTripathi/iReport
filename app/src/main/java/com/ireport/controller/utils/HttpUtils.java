@@ -3,6 +3,7 @@ package com.ireport.controller.utils;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.ExecutorDelivery;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,36 +31,26 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class HttpUtils {
 
     public static String sendHttpGetRequest(String url) {
+        Log.d("GET","Sending HTTP get Request through Volley");
+
         String retResponse = null;
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         //String url = "http://ec2-35-165-22-113.us-west-2.compute.amazonaws.com:3000/getAllUsers";
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            // Display the first 500 characters of the response string.
-                            JSONObject json = new JSONObject(response.toString());
-                            Log.d("Json object",json.toString());
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.GET,
+                url,
+                new VolleyGetResponse(),
+                new VolleyErrorResponse()
+        );
 
-                            String jsonData =  json.getString("data");
-                            UserInfo uiObj = parseUserInfoFromJson(jsonData);
-
-
-                    } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //did not work
-                Log.d("ERROR","Response did not work!!");
-            }
-        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        );
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
@@ -69,39 +61,84 @@ public class HttpUtils {
     public static void testHTTPPOST_Volley() {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://ec2-35-165-22-113.us-west-2.compute.amazonaws.com:3000/getUser";
+        String url = "http://192.168.19.1:3000/addUser";
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("Response: ", response.toString());
-                try {
-                    JSONObject json = new JSONObject(response.toString());
-                    Log.d("Json object",json.toString());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Error","");
-            }
-        }){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new VolleyPostResponse(),
+                new VolleyErrorResponse()
+        )
+
+        {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+
+                String userinfo = "";
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("email","anshuman.tripathi305@gmail.com");
-                return params;
+                params.put("email","abc");
+                params.put("first_name", "wer");
+                params.put("last_name" , "jfij");
+                params.put("home_address", "");
+                params.put("screen_name", "");
+                JSONObject jo = new JSONObject(params);
+
+                userinfo = jo.toString();
+
+                userinfo += ",  \"settings\" : {\n" +
+                        "    \"email_confirm\" : true,\n" +
+                        "    \"email_notify\" : true,\n" +
+                        "    \"anonymous\" : false\n" +
+                        "  }\n";
+
+                Map<String,String> retParams = new HashMap<>();
+                retParams.put("user",userinfo);
+
+
+                Log.d("PARAMS", retParams.toString());
+
+                return retParams;
             }
         };
 
         queue.add(stringRequest);
     }
 
-    
+
+    public void getUserByEmail(String email) {
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("email",email);
+    }
 
 
+    public static void updateSettings(Settings settingObj, String email){
+            Map<String,String> params = new HashMap<String, String>();
+            params.put("email",email);
+            params.put("email_confirm",String.valueOf(settingObj.isAllowEmailConfirmation()));
+            params.put("email_notify",String.valueOf(settingObj.isAllowEmailNotification()));
+            params.put("Anonymous",String.valueOf(settingObj.isAnonymous()));
+    }
+
+    public static void updatePersonalInfo(UserInfo uiObj) {
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("email",uiObj.getEmail());
+        params.put("first_name", uiObj.getFirstName());
+        params.put("last_name" , uiObj.getLastName());
+        params.put("home_address", uiObj.getHomeAddress());
+        params.put("screen_name", uiObj.getScreenName());
+        JSONObject jo = new JSONObject(params);
+        jo.toString();
+    }
+
+    //it will parse the json object and return the list of user info objects
+    public static ArrayList<UserInfo> parseListOfUsersFromJson(String userData) {
+        ArrayList<UserInfo> uiList = new ArrayList<>();
+
+        return uiList;
+    }
+
+
+    //parse the json and return info for one user
     public static UserInfo parseUserInfoFromJson(String userData) {
         UserInfo uiObj = null;
         try {
