@@ -13,7 +13,7 @@ var host = require("./routes/SharedConst").host;
 var app = express();
 
 //Create Mongo Connection
-mongoose.connect("mongodb://127.0.0.1/" + ":27017/iReport");
+mongoose.connect("mongodb://" + host + ":27017/iReport");
 // view engine setup
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
