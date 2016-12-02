@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
+import com.ireport.controller.utils.HttpUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
+        String url = "http://ec2-35-165-22-113.us-west-2.compute.amazonaws.com:3000/getAllUsers";
+        HttpUtils.sendHttpGetRequest(url);
+
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             Log.d(AUTH_TAG, mAuth.getCurrentUser().getEmail());
@@ -41,18 +45,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(AUTH_TAG, "Trying to sign in");
             Intent intent = new Intent(this,ListReports.class);
             startActivity(intent);
-            /*Firebase code starts here
-            startActivityForResult(AuthUI.getInstance()
+            //Firebase code starts here
+            /*startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setProviders(
                             AuthUI.FACEBOOK_PROVIDER,
-                            AuthUI.GOOGLE_PROVIDER,
-                            AuthUI.EMAIL_PROVIDER
-                    )
+                            AuthUI.GOOGLE_PROVIDER)
                     .build(), RC_SIGN_IN
 
-            );
-            */
+            );*/
+
         }
 
         findViewById(R.id.sign_out_button).setOnClickListener(this);
