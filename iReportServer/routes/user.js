@@ -78,12 +78,13 @@ exports.updateSettings = function (req, res) {
 
 exports.addUser = function (req, res) {
     var newUser = new User(req.body.user);
+    console.log(newUser);
     newUser.save(function (err) {
         if (err) {
             console.log("Error occured in added: " + err);
             res.send({
                 statusCode: 400,
-                data: error
+                data: err
             });
         } else {
             res.send({

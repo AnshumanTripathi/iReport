@@ -39,6 +39,11 @@ app.post('/addUser',user.addUser);
 app.get('/getFile',report.getFile);
 app.post('/testGrid',report.uploadFile);
 
+app.post('/testPic',function (req,res) {
+    console.log(req.body);
+    res.send("Data received");
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
