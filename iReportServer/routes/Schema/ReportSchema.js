@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var schema = mongoose.Schema;
 
 var report = new schema({
-    "pictures": {type: String, required: false},
+    "pictures": {type: String, required: true},
     "location": {
         lat: Number,
         lng: Number
