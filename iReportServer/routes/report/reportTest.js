@@ -3,9 +3,9 @@
  */
 var fs = require("fs");
 var mongoose = require('mongoose');
-var Report = require("./Schema/ReportSchema");
+
 var grid = require("gridfs-stream");
-var host = require("./SharedConst").host;
+var host = require("../SharedConst").host;
 var path = require('path');
 var filePath = path.join(__dirname, './bat.jpg');
 

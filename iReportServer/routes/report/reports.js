@@ -1,8 +1,8 @@
 /**
  * Created by AnshumanTripathi on 12/2/16.
  */
-var Report = require('./Schema/ReportSchema');
-var User = require('./Schema/UserSchema');
+var Report = require('../schema/ReportSchema');
+var User = require('../schema/UserSchema');
 
 exports.addReport = function (req, res) {
     var report = new Report(req.body);
@@ -48,8 +48,8 @@ exports.addReport = function (req, res) {
                         }
                     });
                     user.save(function (err) {
-                        if(err){
-                            console.log("Error occured: "+err);
+                        if (err) {
+                            console.log("Error occured: " + err);
                             res.send({
                                 statusCode: 500,
                                 data: err
@@ -62,6 +62,64 @@ exports.addReport = function (req, res) {
             res.send({
                 statusCode: 200,
                 data: "Report Added"
+            });
+        }
+    });
+};
+
+exports.getAllreports = function (req, res) {
+    Report.find({}, function (err, report) {
+        if (err) {
+            console.log("Error occured in fetching all reports: " + err);
+            res.send({
+                statusCode: 500,
+                data: err
+            });
+        }
+        if (report.length < 1) {
+            console.log("No reports found!");
+            res.send({
+                statusCode: 400,
+                data: "No reports in Database"
+            });
+        } else {
+            console.log(report);
+            res.send({
+                statusCode: 200,
+                data: report
+            });
+        }
+    });
+};
+
+
+exports.getReport = function (req, res) {
+    var query;
+    console.log(req.body);
+    if(req.body.hasOwnProperty("status".toLowerCase())){
+        query= {status: req.body.status};
+    }else if(req.body.hasOwnProperty("email".toLowerCase())){
+        query = {user_email: req.body.email}
+    }
+    console.log(query);
+    Report.find(query, function (err, report) {
+        if (err) {
+            console.log("Error occured in fetching reports: " + err);
+            res.send({
+                statusCode: 500,
+                data: err
+            });
+        } else if (report.length < 1) {
+            console.log("No reports found!");
+            res.send({
+                statusCode: 400,
+                data: "No reports in Database"
+            });
+        } else {
+            console.log(report);
+            res.send({
+                statusCode: 200,
+                data: report
             });
         }
     });

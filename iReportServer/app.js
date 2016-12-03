@@ -7,9 +7,9 @@ var bodyParser = require('body-parser');
 var http = require("http");
 var mongoose = require("mongoose");
 var index = require('./routes/index');
-var user = require('./routes/user');
-var reportTest = require("./routes/reportTest");
-var report = require('./routes/reports');
+var user = require('./routes/user/user');
+var reportTest = require("./routes/report/reportTest");
+var report = require('./routes/report/reports');
 var host = require("./routes/SharedConst").host;
 var app = express();
 
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 
-//Official API
+//official API
 app.get('/getAllUsers',user.getAllUsers);
 app.post('/getUser',user.getUser);
 
@@ -40,8 +40,9 @@ app.post('/addUser',user.addUser);
 app.post('/updateUserInfo',user.updateUserInfo);
 
 //My Report API
+app.get('/getAllReports',report.getAllreports);
 app.post('/addReport',report.addReport);
-
+app.post('/getReport',report.getReport);
 
 //TestAPIs
 app.post('/testPic',function (req,res) {
