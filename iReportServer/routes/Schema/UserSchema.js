@@ -12,9 +12,9 @@ var user = new schema({
     "screen_name": {type: String},
     "isOfficial": {type: Boolean, required: true},
     "settings": {
-        "email_confirm": {type: Boolean},
-        "email_notify": {type: Boolean},
-        "anonymous": {type: Boolean}
+        "email_confirm": {type: Boolean, default: true},
+        "email_notify": {type: Boolean, default: true},
+        "anonymous": {type: Boolean, default: false}
     }
 }, {
     collection: "user"
