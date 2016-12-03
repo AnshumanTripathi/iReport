@@ -99,11 +99,19 @@ exports.addUser = function (req, res) {
     console.log(newUser);
     newUser.save(function (err) {
         if (err) {
-            console.log("Error occured in added: " + err);
-            res.send({
-                statusCode: 400,
-                data: err
-            });
+            if (err.code === 11000) {
+                console.log("Duplicate Property email!!");
+                res.send({
+                    statusCode: 500,
+                    data: "Duplicate Property 'email' "
+                });
+            } else {
+                console.log("Error occured in added: " + err);
+                res.send({
+                    statusCode: 400,
+                    data: err
+                });
+            }
         } else {
             res.send({
                 statusCode: 200,
@@ -135,11 +143,12 @@ exports.updateUserInfo = function (req, res) {
                 user.first_name = updatedUserInfo.first_name;
                 user.last_name = updatedUserInfo.last_name;
                 user.screen_name = updatedUserInfo.screen_name;
+                user.home_address = updatedUserInfo.home_address;
                 user.save(function (err) {
                     if (err) {
                         console.log("Error Occured in Updating user settings: " + err);
                         res.send({
-                            statusCode: 400,
+                            statusCode: 500,
                             data: err
                         });
                     }
