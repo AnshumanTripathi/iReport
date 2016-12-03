@@ -44,4 +44,10 @@ public class Settings {
     public void setAnonymous(boolean anonymous) {
         isAnonymous = anonymous;
     }
+
+    public String toString() {
+        return "{email: " + Boolean.toString(this.isAllowEmailConfirmation()) +
+            ", notifications: " + Boolean.toString(this.isAllowEmailNotification()) +
+                ", anonymous: " + Boolean.toString(this.isAnonymous()) + "}";
+    }
 }

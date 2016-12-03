@@ -29,7 +29,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by Somya on 11/30/2016.
  */
 public class HttpUtils {
-
+    private static String TAG = "HttpUtils";
     //Get : Getallusers
     public static String sendHttpGetRequest() {
         Log.d("GET","Sending HTTP get Request through Volley");
@@ -37,7 +37,7 @@ public class HttpUtils {
         String retResponse = null;
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.19.1:3000/getAllUsers";
+        String url = "http://192.168.0.108:3000/getAllUsers";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(
@@ -106,7 +106,7 @@ public class HttpUtils {
     public static void testHTTPPOST_Volley() {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.19.1:3000/getUser";
+        String url = "http://192.168.0.108:3000/getUser";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -119,30 +119,7 @@ public class HttpUtils {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
-                /*String userinfo = "";
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("email","abc");
-                params.put("first_name", "wer");
-                params.put("last_name" , "jfij");
-                params.put("home_address", "");
-                params.put("screen_name", "");
-                JSONObject jo = new JSONObject(params);
 
-                userinfo = jo.toString();
-
-                userinfo += ",  \"settings\" : {\n" +
-                        "    \"email_confirm\" : true,\n" +
-                        "    \"email_notify\" : true,\n" +
-                        "    \"anonymous\" : false\n" +
-                        "  }\n";
-
-                Map<String,String> retParams = new HashMap<>();
-                retParams.put("user",userinfo);
-
-
-                Log.d("PARAMS", retParams.toString());
-
-                return retParams;*/
 
                 return getUserByEmail("sanjay_dutt@email.com");
             }
@@ -160,26 +137,25 @@ public class HttpUtils {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+
     //POST: updateSettings
-    public static void volley_updateSettings() {
+    public static void volley_updateSettings(final Settings settings, final String email) {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.19.1:3000/updateSettings";
+        String url = "http://192.168.0.108:3000/updateSettings";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 url,
                 new VolleyPostResponse(),
                 new VolleyErrorResponse()
-        )
-
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return updateSettings(new Settings(false,false,false), "sanjay_dutt@email.com");
+                return updateSettings(settings, email);
             }
         };
-
+        Log.d(TAG, "Ready to post on " + url );
         queue.add(stringRequest);
     }
 
@@ -199,7 +175,7 @@ public class HttpUtils {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         Log.d("UPDATE", "Updating user inforamtion");
-        String url = "http://192.168.19.1:3000/updateUserInfo";
+        String url = "http://192.168.0.108:3000/updateUserInfo";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -237,7 +213,7 @@ public class HttpUtils {
     public static void volley_addUser() {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.19.1:3000/addUser";
+        String url = "http://192.168.0.108:3000/addUser";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,

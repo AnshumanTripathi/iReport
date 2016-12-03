@@ -12,43 +12,63 @@ import android.widget.CompoundButton;
 import android.widget.Toolbar;
 
 import com.ireport.R;
+import com.ireport.controller.utils.HttpUtils;
+import com.ireport.model.Settings;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     public SwitchPreference emailPref, notificationsPref, anonPref;
     private static String TAG = "Settings";
-
-    private static  Preference.OnPreferenceChangeListener onPreferenceChangeListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            Log.d(TAG, "preference: " + preference.toString() + " changed to : " + value.toString());
-            return true;
-        }
-
-    };
+    private static String anonStr = "notifications_report_anonymously";
+    private static String emailStr = "notifications_email_confirmation";
+    private static String notificationStr = "notifications_status_change";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActionBar();
+        //setupActionBar();
         addPreferencesFromResource(R.xml.pref_notification);
 
-        emailPref = (SwitchPreference) findPreference("notifications_email_confirmation");
-        notificationsPref = (SwitchPreference) findPreference("notifications_status_change");
-        anonPref = (SwitchPreference) findPreference("notifications_report_anonymously");
-
-        emailPref.setOnPreferenceChangeListener(onPreferenceChangeListener);
-        notificationsPref.setOnPreferenceChangeListener(onPreferenceChangeListener);
-        anonPref.setOnPreferenceChangeListener(onPreferenceChangeListener);
-
+        emailPref = (SwitchPreference) findPreference(emailStr);
+        notificationsPref = (SwitchPreference) findPreference(notificationStr);
+        anonPref = (SwitchPreference) findPreference(anonStr);
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.d(TAG, "On shared preference changed");
+        if (key.equals(emailStr) || key.equals(notificationStr) || key.equals(anonStr)) {
+            Preference pref = findPreference(key);
+            Log.d(TAG, key + " " + Boolean.toString(sharedPreferences.getBoolean(key, false)));
+            Settings settings = new Settings(
+                sharedPreferences.getBoolean(emailStr, false),
+                sharedPreferences.getBoolean(notificationStr, false),
+                sharedPreferences.getBoolean(anonStr, false)
+            );
+            Log.d(TAG, settings.toString());
+            HttpUtils.volley_updateSettings(settings, "sandhyafeb1990@gmail.com");
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPreferenceScreen()
+                .getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getPreferenceScreen()
+                .getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
+
     private void setupActionBar() {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         if (actionBar != null) {
@@ -56,10 +76,6 @@ public class SettingsActivity extends PreferenceActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+     */
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 }
