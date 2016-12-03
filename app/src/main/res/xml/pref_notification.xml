@@ -5,7 +5,15 @@
     <SwitchPreference
         android:defaultValue="true"
         android:key="notifications_new_message"
-        android:title="Email Notifications"/>
+        android:title="Send Email Confirmation"/>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notifications_new_message"
+        android:title="Receive Notifications upon Status Change"/>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notifications_new_message"
+        android:title="Report anonymously"/>
 
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
