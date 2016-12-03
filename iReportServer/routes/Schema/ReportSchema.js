@@ -14,7 +14,7 @@ var report = new schema({
     "size": {type: String, required: true},
     "severity_level": {type: String, required: true},
     "timestamp": {type: Date},
-    "user_email": {type: String},
+    "user_email": {type: String, required: true},
     "user_screen_name": {type: String},
     "status": {type: String, required: true},
     "isAnonymous": {type: Boolean}
