@@ -30,13 +30,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class HttpUtils {
 
-    public static String sendHttpGetRequest(String url) {
+    //Get : Getallusers
+    public static String sendHttpGetRequest() {
         Log.d("GET","Sending HTTP get Request through Volley");
 
         String retResponse = null;
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        //String url = "http://ec2-35-165-22-113.us-west-2.compute.amazonaws.com:3000/getAllUsers";
+        String url = "http://192.168.19.1:3000/getAllUsers";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(
@@ -58,92 +59,12 @@ public class HttpUtils {
         return "";
     }
 
-    public static void testHTTPPOST_Volley() {
-
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.19.1:3000/addUser";
-
-        StringRequest stringRequest = new StringRequest(
-                Request.Method.POST,
-                url,
-                new VolleyPostResponse(),
-                new VolleyErrorResponse()
-        )
-
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                String userinfo = "";
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("email","abc");
-                params.put("first_name", "wer");
-                params.put("last_name" , "jfij");
-                params.put("home_address", "");
-                params.put("screen_name", "");
-                JSONObject jo = new JSONObject(params);
-
-                userinfo = jo.toString();
-
-                userinfo += ",  \"settings\" : {\n" +
-                        "    \"email_confirm\" : true,\n" +
-                        "    \"email_notify\" : true,\n" +
-                        "    \"anonymous\" : false\n" +
-                        "  }\n";
-
-                Map<String,String> retParams = new HashMap<>();
-                retParams.put("user",userinfo);
-
-
-                Log.d("PARAMS", retParams.toString());
-
-                return retParams;
-            }
-        };
-
-        queue.add(stringRequest);
-    }
-
-
-    public void getUserByEmail(String email) {
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("email",email);
-    }
-
-
-    public static void updateSettings(Settings settingObj, String email){
-            Map<String,String> params = new HashMap<String, String>();
-            params.put("email",email);
-            params.put("email_confirm",String.valueOf(settingObj.isAllowEmailConfirmation()));
-            params.put("email_notify",String.valueOf(settingObj.isAllowEmailNotification()));
-            params.put("Anonymous",String.valueOf(settingObj.isAnonymous()));
-    }
-
-    public static void updatePersonalInfo(UserInfo uiObj) {
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("email",uiObj.getEmail());
-        params.put("first_name", uiObj.getFirstName());
-        params.put("last_name" , uiObj.getLastName());
-        params.put("home_address", uiObj.getHomeAddress());
-        params.put("screen_name", uiObj.getScreenName());
-        JSONObject jo = new JSONObject(params);
-        jo.toString();
-    }
-
-    //it will parse the json object and return the list of user info objects
-    public static ArrayList<UserInfo> parseListOfUsersFromJson(String userData) {
-        ArrayList<UserInfo> uiList = new ArrayList<>();
-
-        return uiList;
-    }
-
-
     //parse the json and return info for one user
     public static UserInfo parseUserInfoFromJson(String userData) {
         UserInfo uiObj = null;
         try {
 
-             uiObj = new UserInfo();
+            uiObj = new UserInfo();
             Settings settingObj = new Settings();
 
             JSONObject json = new JSONObject(userData);
@@ -179,6 +100,167 @@ public class HttpUtils {
         return uiObj;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
 
+    //POST: getUser
+    public static void testHTTPPOST_Volley() {
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = "http://192.168.19.1:3000/getUser";
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new VolleyPostResponse(),
+                new VolleyErrorResponse()
+        )
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                /*String userinfo = "";
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("email","abc");
+                params.put("first_name", "wer");
+                params.put("last_name" , "jfij");
+                params.put("home_address", "");
+                params.put("screen_name", "");
+                JSONObject jo = new JSONObject(params);
+
+                userinfo = jo.toString();
+
+                userinfo += ",  \"settings\" : {\n" +
+                        "    \"email_confirm\" : true,\n" +
+                        "    \"email_notify\" : true,\n" +
+                        "    \"anonymous\" : false\n" +
+                        "  }\n";
+
+                Map<String,String> retParams = new HashMap<>();
+                retParams.put("user",userinfo);
+
+
+                Log.d("PARAMS", retParams.toString());
+
+                return retParams;*/
+
+                return getUserByEmail("sanjay_dutt@email.com");
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+
+    public static Map<String, String> getUserByEmail(String email) {
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("email",email);
+        return params;
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //POST: updateSettings
+    public static void volley_updateSettings() {
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = "http://192.168.19.1:3000/updateSettings";
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new VolleyPostResponse(),
+                new VolleyErrorResponse()
+        )
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return updateSettings(new Settings(false,false,false), "sanjay_dutt@email.com");
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    public static Map<String, String> updateSettings(Settings settingObj, String email){
+            Map<String,String> params = new HashMap<String, String>();
+            params.put("email",email);
+            params.put("email_confirm",String.valueOf(settingObj.isAllowEmailConfirmation()));
+            params.put("email_notify",String.valueOf(settingObj.isAllowEmailNotification()));
+            params.put("Anonymous",String.valueOf(settingObj.isAnonymous()));
+            return params;
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //POST: updateUserInfo
+    public static void volley_updateUserInfo() {
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        Log.d("UPDATE", "Updating user inforamtion");
+        String url = "http://192.168.19.1:3000/updateUserInfo";
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new VolleyPostResponse(),
+                new VolleyErrorResponse()
+        )
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return updatePersonalInfo(new UserInfo("123","sanjay_dutt@email.com","fn","ln","ha"));
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    public static Map<String, String> updatePersonalInfo(UserInfo uiObj) {
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("email",uiObj.getEmail());
+        params.put("first_name", uiObj.getFirstName());
+        params.put("last_name" , uiObj.getLastName());
+        params.put("home_address", uiObj.getHomeAddress());
+        params.put("screen_name", uiObj.getScreenName());
+        Log.d("UPDATE_PARAMS",params.toString());
+        return params;
+    }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+    //POST: addUser
+    public static void volley_addUser() {
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = "http://192.168.19.1:3000/addUser";
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new VolleyPostResponse(),
+                new VolleyErrorResponse()
+        )
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return addUser("sanjay_dutt@email.com",false);
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    public static Map<String, String> addUser(String email, boolean isOfficial) {
+        Map<String,String> params = new HashMap<>();
+        params.put("email",email);
+        params.put("isOfficial", String.valueOf(isOfficial));
+        return params;
+    }
 }
 
