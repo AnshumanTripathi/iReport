@@ -5,11 +5,16 @@ import com.ireport.R;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class CreateReportActivity extends AppCompatActivity {
 
+    private String TAG = "CreateReportActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,5 +43,23 @@ public class CreateReportActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onRadioButtonClicked(View view) {
+        RadioGroup radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
+        RadioGroup radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
+
+        boolean checked = ((RadioButton) view).isChecked();
+        String litterSize = "", litterSeverity="";
+        // Check which radio button was clicked
+        if (-1 != radioGroupSize.getCheckedRadioButtonId()) {
+            litterSize = ((RadioButton) findViewById(radioGroupSize.getCheckedRadioButtonId())).getText().toString();
+        }
+        if (-1 != radioGroupSeverity.getCheckedRadioButtonId()) {
+            litterSeverity = ((RadioButton) findViewById(radioGroupSeverity.getCheckedRadioButtonId())).getText().toString();
+        }
+        Log.v(TAG, "Size is: " + litterSize);
+        Log.v(TAG, "Severity is: " + litterSeverity);
+
     }
 }
