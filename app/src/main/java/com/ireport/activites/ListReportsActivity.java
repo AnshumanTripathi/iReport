@@ -87,7 +87,8 @@ public class ListReportsActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_notifcations) {
-
+            Intent intent = new Intent(this, ViewNotificationsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
             startActivity(intent);

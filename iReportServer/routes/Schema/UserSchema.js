@@ -11,10 +11,11 @@ var user = new schema({
     "home_address": {type: String},
     "screen_name": {type: String},
     "isOfficial": {type: Boolean, required: true},
+    "reports": {type: [schema.ObjectId], default: []},
     "settings": {
-        "email_confirm": {type: Boolean},
-        "email_notify": {type: Boolean},
-        "anonymous": {type: Boolean}
+        "email_confirm": {type: Boolean, default: true},
+        "email_notify": {type: Boolean, default: true},
+        "anonymous": {type: Boolean, default: false}
     }
 }, {
     collection: "user"

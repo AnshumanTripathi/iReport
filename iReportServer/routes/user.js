@@ -4,14 +4,12 @@
 
 var mongoose = require('mongoose');
 var User = require("./Schema/UserSchema");
-var host = require("./SharedConst").host;
 
 mongoose.connection.on('open', function (ref) {
     console.log("Connected to Mongo Server");
 });
 mongoose.connection.on('error', function (err) {
-    console.log("Error Occured: " + err);
-    console.log("Retrying.... ")
+    console.log("Error Occured Connecting to Mongo Server: " + err);
 });
 
 exports.getAllUsers = function (req, res) {
@@ -95,7 +93,7 @@ exports.updateSettings = function (req, res) {
 };
 
 exports.addUser = function (req, res) {
-    var newUser = new User(req.body.user);
+    var newUser = new User(req.body);
     console.log(newUser);
     newUser.save(function (err) {
         if (err) {
@@ -122,45 +120,44 @@ exports.addUser = function (req, res) {
 };
 
 exports.updateUserInfo = function (req, res) {
-    var updatedUserInfo = req.body.user;
+    var updatedUserInfo = req.body;
     console.log(updatedUserInfo);
     User.findOne({"email": updatedUserInfo.email}, function (err, user) {
-            if (err) {
-                console.log("Error in updating user: " + err);
-                res.send({
-                    statusCode: 400,
-                    data: err
-                });
-            } else if (user === null) {
-                console.log("No user found with this email");
-                res.send({
-                    statusCode: 400,
-                    data: "No user found with the given email"
-                });
-            }
-            else {
-                console.log(user);
-                user.first_name = updatedUserInfo.first_name;
-                user.last_name = updatedUserInfo.last_name;
-                user.screen_name = updatedUserInfo.screen_name;
-                user.home_address = updatedUserInfo.home_address;
-                user.save(function (err) {
-                    if (err) {
-                        console.log("Error Occured in Updating user settings: " + err);
-                        res.send({
-                            statusCode: 500,
-                            data: err
-                        });
-                    }
-                    else {
-                        console.log("Settings Updated");
-                        res.send({
-                            statusCode: 200,
-                            data: "User info Updated"
-                        });
-                    }
-                });
-            }
+        if (err) {
+            console.log("Error in updating user: " + err);
+            res.send({
+                statusCode: 400,
+                data: err
+            });
+        } else if (user === null) {
+            console.log("No user found with this email");
+            res.send({
+                statusCode: 400,
+                data: "No user found with the given email"
+            });
         }
-    );
-}
+        else {
+            console.log(user);
+            user.first_name = updatedUserInfo.first_name;
+            user.last_name = updatedUserInfo.last_name;
+            user.screen_name = updatedUserInfo.screen_name;
+            user.home_address = updatedUserInfo.home_address;
+            user.save(function (err) {
+                if (err) {
+                    console.log("Error Occured in Updating user settings: " + err);
+                    res.send({
+                        statusCode: 500,
+                        data: err
+                    });
+                }
+                else {
+                    console.log("Settings Updated");
+                    res.send({
+                        statusCode: 200,
+                        data: "User info Updated"
+                    });
+                }
+            });
+        }
+    });
+};

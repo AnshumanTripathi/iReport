@@ -8,7 +8,8 @@ var http = require("http");
 var mongoose = require("mongoose");
 var index = require('./routes/index');
 var user = require('./routes/user');
-var report = require("./routes/report");
+var reportTest = require("./routes/reportTest");
+var report = require('./routes/reports');
 var host = require("./routes/SharedConst").host;
 var app = express();
 
@@ -39,15 +40,18 @@ app.post('/addUser',user.addUser);
 app.post('/updateUserInfo',user.updateUserInfo);
 
 //My Report API
-app.get('/getFile',report.getFile);
-app.post('/testGrid',report.uploadFile);
+app.post('/addReport',report.addReport);
 
+
+//TestAPIs
 app.post('/testPic',function (req,res) {
     console.log(req.body);
     var img = req.body.images;
     res.write(img);
     res.end();
 });
+app.get('/getFile',reportTest.getFile);
+app.post('/testGrid',reportTest.uploadFile);
 
 
 // catch 404 and forward to error handler
