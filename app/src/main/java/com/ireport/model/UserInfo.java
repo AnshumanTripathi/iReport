@@ -20,7 +20,6 @@ public class UserInfo implements MongoRepository{
     private Settings settings;
 
     public UserInfo() {
-
     }
 
     public UserInfo(String screenName,
@@ -99,5 +98,9 @@ public class UserInfo implements MongoRepository{
     @Override
     public void getAll() {
 
+    }
+
+    public void resetInfo() {
+        //TODO:
     }
 }

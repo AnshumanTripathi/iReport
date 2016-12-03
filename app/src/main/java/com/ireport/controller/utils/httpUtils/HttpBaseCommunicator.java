@@ -1,4 +1,4 @@
-package com.ireport.controller.utils;
+package com.ireport.controller.utils.httpUtils;
 
 import android.location.Location;
 import android.util.Log;
@@ -13,6 +13,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ireport.R;
+import com.ireport.controller.IReportException;
+import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.VolleyErrorResponse;
+import com.ireport.controller.utils.VolleyGetResponse;
+import com.ireport.controller.utils.VolleyPostResponse;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
 import com.ireport.model.Settings;
@@ -29,37 +34,74 @@ import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-/**
- * Created by Somya on 11/30/2016.
+/*
+    Generic class to interact with server for a particular method
  */
-public class HttpUtils {
+public class HttpBaseCommunicator implements Response.Listener <String>, Response.ErrorListener {
     private static String TAG = "HttpUtils";
-    //Get : Getallusers
-    public static String sendHttpGetRequest() {
+
+    protected String getRequestURL() throws IReportException{
+        throw new IReportException("getRequestURL method should be implemented");
+    }
+
+    protected void handleResponse(String response) throws IReportException {
+        throw new IReportException("handleResponse method should be implemented");
+    }
+
+    protected Map<String, String> getParams() throws IReportException {
+        throw new IReportException("getParams method should be implemented");
+    }
+
+
+    protected void handleErrorResponse(VolleyError error) {
+        // subclasses should override this function if they want to handle error in some specific
+        // manner
+    }
+
+    @Override
+    public void onResponse(String response) {
+        try {
+            this.handleResponse(response);
+        } catch (IReportException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        error.printStackTrace();
+        this.handleErrorResponse(error);
+    }
+
+    public String sendHttpGetRequest() {
         Log.d("GET","Sending HTTP get Request through Volley");
 
-        String retResponse = null;
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getAllUsers";
-        Log.d("URL",url);
+        try {
+            String retResponse = null;
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = this.getRequestURL();
+            Log.d("URL", url);
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(
-                Request.Method.GET,
-                url,
-                new VolleyGetResponse(),
-                new VolleyErrorResponse()
-        );
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(
+                    Request.Method.GET,
+                    url,
+                    this,
+                    this
+            );
 
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        );
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+            );
 
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+        }catch (IReportException e) {
+            e.printStackTrace();
+        }
 
         return "";
     }
@@ -108,7 +150,7 @@ public class HttpUtils {
     ////////////////////////////////////////////////////////////////////////////////
 
     //POST: getUser
-    public static void testHTTPPOST_Volley() {
+    public void testHTTPPOST_Volley() {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getUser";
@@ -123,10 +165,8 @@ public class HttpUtils {
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-
-
-
-                return getUserByEmail("sanjay_dutt@email.com");
+                return this.getParams();
+//                return getUserByEmail("sanjay_dutt@email.com");
             }
         };
 
@@ -144,7 +184,7 @@ public class HttpUtils {
 
 
     //POST: updateSettings
-    public static void volley_updateSettings(final Settings settings, final String email) {
+/*    public static void volley_updateSettings(final Settings settings, final String email) {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/updateSettings";
@@ -291,6 +331,6 @@ public class HttpUtils {
         Log.d("REPORT", params.toString());
 
         return params;
-    }
+    }*/
 }
 

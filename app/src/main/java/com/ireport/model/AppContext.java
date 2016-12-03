@@ -5,5 +5,10 @@ package com.ireport.model;
  */
 // Global app context to store the global app session data
 public class AppContext {
-    public UserInfo currentLoggedInUser;
+    public static UserInfo currentLoggedInUser;
+
+    public void reset() {
+        currentLoggedInUser.resetInfo();
+    }
+
 }

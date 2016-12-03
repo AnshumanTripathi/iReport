@@ -12,7 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.Toolbar;
 
 import com.ireport.R;
-import com.ireport.controller.utils.HttpUtils;
 import com.ireport.model.Settings;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
@@ -46,7 +45,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 sharedPreferences.getBoolean(anonStr, false)
             );
             Log.d(TAG, settings.toString());
-            HttpUtils.volley_updateSettings(settings, "sandhyafeb1990@gmail.com");
+//            HttpUtils.volley_updateSettings(settings, "sandhyafeb1990@gmail.com");
         }
     }
 

@@ -8,7 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
-import com.ireport.controller.utils.HttpUtils;
+import com.ireport.controller.utils.httpUtils.GetAllUsersHandler;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+    ICallbackActivity {
     private static int RC_SIGN_IN = 0;
     private static String TAG = "MAIN_ACTIVITY";
     private GoogleApiClient mGoogleApiClient;
@@ -25,6 +26,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private String AUTH_TAG = "AUTH";
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
+        // sample code.
+        if (responseObj instanceof String) {
+            System.out.println("Got reponse from handler in asycn manner:" + responseObj);
+            System.out.println("Got reponse from handler in asycn manner with id:" + identifier);
+            // now we can update the UI here when response has been retrieved
+            // note that this function is still called in Volley thread most probably.
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //String url = "http://ec2-35-165-22-113.us-west-2.compute.amazonaws.com:3000/getAllUsers";
-        HttpUtils.sendHttpGetRequest();
+//        HttpUtils.sendHttpGetRequest();
+
+        GetAllUsersHandler hh = new GetAllUsersHandler(this, "getAllUserCall");
+        hh.getAllUsersData();
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {

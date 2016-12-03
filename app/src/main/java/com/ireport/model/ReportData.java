@@ -13,14 +13,16 @@ import java.util.List;
 public class ReportData {
     //Images
     private String images;
+
     //UserInfo Location
     private LocationDetails location;
     private String description;
+
     //Area size
     private String size;
+
     //Severity Level
     private String severityLevel;
-    private Date date;
 
     private String reporteeID;      // the userID who reported it
 
@@ -83,14 +85,6 @@ public class ReportData {
 
     public void setSeverityLevel(String severityLevel) {
         this.severityLevel = severityLevel;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getReporteeID() {

@@ -6,4 +6,8 @@ package com.ireport.controller;
 
 public class IReportException extends Exception {
 
+    public String errorMsg;
+    public IReportException(String msg) {
+        this.errorMsg = msg;
+    }
 }
