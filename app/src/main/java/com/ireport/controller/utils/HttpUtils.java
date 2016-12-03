@@ -1,5 +1,6 @@
 package com.ireport.controller.utils;
 
+import android.location.Location;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -11,6 +12,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ireport.R;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
 import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 
@@ -37,7 +41,8 @@ public class HttpUtils {
         String retResponse = null;
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.0.108:3000/getAllUsers";
+        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getAllUsers";
+        Log.d("URL",url);
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(
@@ -106,7 +111,7 @@ public class HttpUtils {
     public static void testHTTPPOST_Volley() {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.0.108:3000/getUser";
+        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getUser";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -142,7 +147,7 @@ public class HttpUtils {
     public static void volley_updateSettings(final Settings settings, final String email) {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.0.108:3000/updateSettings";
+        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/updateSettings";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -175,7 +180,7 @@ public class HttpUtils {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         Log.d("UPDATE", "Updating user inforamtion");
-        String url = "http://192.168.0.108:3000/updateUserInfo";
+        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/updateUserInfo";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -213,7 +218,7 @@ public class HttpUtils {
     public static void volley_addUser() {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.0.108:3000/addUser";
+        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/addUser";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
@@ -236,6 +241,55 @@ public class HttpUtils {
         Map<String,String> params = new HashMap<>();
         params.put("email",email);
         params.put("isOfficial", String.valueOf(isOfficial));
+        return params;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    //Report API : POST
+    public static void addReport() {
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/addReport";
+
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new VolleyPostResponse(),
+                new VolleyErrorResponse()
+        )
+
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return addReport(new ReportData(
+                        "sanjay_dutt@email.com",
+                        "pics",
+                        "hello",
+                        "size",
+                        "severe",
+                        new LocationDetails(
+                                12.12,
+                                12.122
+                        )
+                )
+                );
+            }
+        };
+
+        queue.add(stringRequest);
+    }
+
+    public static Map<String, String> addReport(ReportData reportObj) {
+        Map<String,String> params = new HashMap<>();
+        params.put("user_email",reportObj.getReporteeID());
+        params.put("pictures", reportObj.getImages());
+        params.put("description",reportObj.getDescription());
+        params.put("size",reportObj.getSize());
+        params.put("severity_level",reportObj.getSeverityLevel());
+        params.put("location", " { \"lat\": " + reportObj.getLocation().getLatitude() +", \"lng\": "+ reportObj.getLocation().getLongitude() + "}" );
+
+        Log.d("REPORT", params.toString());
+
         return params;
     }
 }

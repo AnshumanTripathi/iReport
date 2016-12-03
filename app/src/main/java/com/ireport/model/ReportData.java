@@ -12,9 +12,9 @@ import java.util.List;
 
 public class ReportData {
     //Images
-    private List<File> images;
+    private String images;
     //UserInfo Location
-    private Location location;
+    private LocationDetails location;
     private String description;
     //Area size
     private String size;
@@ -24,19 +24,40 @@ public class ReportData {
 
     private String reporteeID;      // the userID who reported it
 
-    public List<File> getImages() {
+    public void ReportData() {
+
+    }
+
+    public ReportData(
+            String email,
+            String images,
+            String description,
+            String size,
+            String severityLevel,
+            LocationDetails location
+    ) {
+        this.reporteeID = email;
+        this.images = images;
+        this.description = description;
+        this.size = size;
+        this.severityLevel = severityLevel;
+        this.location = location;
+    }
+
+
+    public String getImages() {
         return images;
     }
 
-    public void setImages(List<File> images) {
+    public void setImages(String images) {
         this.images = images;
     }
 
-    public Location getLocation() {
+    public LocationDetails getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationDetails location) {
         this.location = location;
     }
 
