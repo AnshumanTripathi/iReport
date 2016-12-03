@@ -19,6 +19,22 @@ public class UserInfo implements MongoRepository{
     //UserInfo Settings
     private Settings settings;
 
+    public UserInfo() {
+
+    }
+
+    public UserInfo(String screenName,
+                    String email,
+                    String firstName,
+                    String lastName,
+                    String homeAddress) {
+        this.screenName = screenName;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.homeAddress = homeAddress;
+    }
+
     public boolean isOfficial() {
         return isOfficial;
     }

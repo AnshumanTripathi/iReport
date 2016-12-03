@@ -8,6 +8,19 @@ public class Settings {
     private boolean isAllowEmailNotification;
     private boolean isAnonymous;
 
+    public Settings(boolean isAllowEmailConfirmation,
+                    boolean isAllowEmailNotification,
+                    boolean isAnonymous) {
+
+        this.isAnonymous = isAnonymous;
+        this.isAllowEmailConfirmation = isAllowEmailConfirmation;
+        this.isAllowEmailNotification = isAllowEmailNotification;
+    }
+
+    public Settings() {
+
+    }
+
     public boolean isAllowEmailConfirmation() {
         return isAllowEmailConfirmation;
     }
