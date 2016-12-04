@@ -1,6 +1,7 @@
 package com.ireport.activities;
 
 import com.ireport.R;
+import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
@@ -40,7 +41,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
         reportData = new ReportData();
         // always set emailid
-        reportData.setReporteeID("sandhyafeb1990@gmail.com");
+        reportData.setReporteeID(Constants.SANDHYA_EMAIL);
 
 
         mUploadImagesButton = (Button) findViewById(R.id.add_images_button);

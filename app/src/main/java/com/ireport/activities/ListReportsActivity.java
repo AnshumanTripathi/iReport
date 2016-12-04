@@ -1,7 +1,10 @@
 package com.ireport.activities;
 
 import com.ireport.R;
+import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
+import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
 import android.content.Intent;
@@ -16,11 +19,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListReportsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity {
 
     private static String TAG = "ListReportsActivity";
     private UserInfo userInfo;
+    List<ReportData> reportDataList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +48,13 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", "sandhyafeb1990@gmail.com");
+        GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", Constants.SANDHYA_EMAIL);
         getUserForEmailID.getUserDataForEmail();
+
+        // Load any reports
+        reportDataList = new ArrayList<>();
+        GetAllReportsHandler getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
+        getAllReportsHandler.getAllReportsData();
     }
 
     @Override
@@ -122,6 +135,12 @@ public class ListReportsActivity extends AppCompatActivity
             userInfo = (UserInfo) responseObj;
             Log.d(TAG, userInfo.toString());
             Log.d(TAG, userInfo.getSettings().toString());
+        } else if (responseObj instanceof List) {
+            Log.d(TAG, "Got a bunch of reports!");
+            for (ReportData report : (ArrayList <ReportData>) responseObj) {
+                Log.d(TAG, report.toString());
+            }
         }
+
     }
 }

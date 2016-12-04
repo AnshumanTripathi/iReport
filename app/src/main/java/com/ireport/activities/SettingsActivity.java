@@ -10,6 +10,7 @@ import android.preference.SwitchPreference;
 import android.util.Log;
 
 import com.ireport.R;
+import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
 import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
@@ -54,7 +55,7 @@ public class SettingsActivity extends PreferenceActivity implements
             );
             Log.d(TAG, settings.toString());
             UpdateSettingsHandler updateSettingsHandler = new UpdateSettingsHandler
-                    (this, "settings_activity", "sandhyafeb1990@gmail.com", settings);
+                    (this, "settings_activity", Constants.SANDHYA_EMAIL, settings);
             updateSettingsHandler.updateSettingForUser();
         }
     }
