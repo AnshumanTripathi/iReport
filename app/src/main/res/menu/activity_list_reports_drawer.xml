@@ -3,24 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_view_profile"
+            android:icon="@drawable/ic_viewprofile"
             android:title="Profile"/>
         <item
             android:id="@+id/nav_notifcations"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_notifications"
             android:title="Notifications"/>
         <item
             android:id="@+id/nav_newreport"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_newreport"
             android:title="New Report"/>
         <item
             android:id="@+id/nav_allreports"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_viewreports"
             android:title="My Reports"/>
         <item
             android:id="@+id/mSignOut"
-            android:icon="@drawable/report_icon"
+            android:icon="@drawable/ic_signout"
             android:title="Sign Out"/>
     </group>
 

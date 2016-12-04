@@ -1,38 +1,36 @@
 package com.ireport.activites;
 
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.GetUserForEmailID;
+import com.ireport.model.UserInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class ListReportsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity {
 
+    private static String TAG = "ListReportsActivity";
+    private UserInfo userInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "First thing EVER!!");
         setContentView(R.layout.activity_list_reports);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,6 +39,10 @@ public class ListReportsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // load profile details from the server
+        GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", "sandhyafeb1990@gmail.com");
+        getUserForEmailID.getUserDataForEmail();
     }
 
     @Override
@@ -65,11 +67,15 @@ public class ListReportsActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Log.d(TAG, "opetionsitemselected");
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
+            if ( ! userInfo.equals(null)) {
+                intent.putExtra("user_info", userInfo);
+            }
             startActivity(intent);
 
             return true;
@@ -84,13 +90,20 @@ public class ListReportsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_view_profile) {
+            Intent intent = new Intent(this,ViewProfileActivity.class);
+            if ( ! userInfo.equals(null))
+                intent.putExtra("user_info", userInfo);
+            startActivity(intent);
         } else if (id == R.id.nav_notifcations) {
             Intent intent = new Intent(this, ViewNotificationsActivity.class);
+            if ( ! userInfo.equals(null))
+                intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
+            if ( ! userInfo.equals(null))
+                intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_allreports) {
 
@@ -99,5 +112,17 @@ public class ListReportsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
+        // sample code.
+        Log.d(TAG, "In onPostProcessCompletion");
+        if (responseObj instanceof UserInfo) {
+            Log.d(TAG, "got userinfo!!!!");
+            userInfo = (UserInfo) responseObj;
+            Log.d(TAG, userInfo.toString());
+            Log.d(TAG, userInfo.getSettings().toString());
+        }
     }
 }

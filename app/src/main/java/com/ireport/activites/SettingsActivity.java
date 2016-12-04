@@ -1,18 +1,27 @@
 package com.ireport.activites;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toolbar;
 
 import com.ireport.R;
 import com.ireport.model.Settings;
+import com.ireport.model.UserInfo;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
@@ -25,12 +34,19 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setupActionBar();
+        setupActionBar();
         addPreferencesFromResource(R.xml.pref_notification);
 
+        Intent i = getIntent();
+        UserInfo userInfo = i.getParcelableExtra("user_info");
+        Log.d(TAG, "Got userinfo: " + userInfo.toString());
+
         emailPref = (SwitchPreference) findPreference(emailStr);
+        emailPref.setChecked(userInfo.getSettings().isAllowEmailConfirmation());
         notificationsPref = (SwitchPreference) findPreference(notificationStr);
+        notificationsPref.setChecked(userInfo.getSettings().isAllowEmailNotification());
         anonPref = (SwitchPreference) findPreference(anonStr);
+        anonPref.setChecked(userInfo.getSettings().isAnonymous());
     }
 
     @Override
@@ -67,14 +83,15 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
-
+     */
     private void setupActionBar() {
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
+            Log.d(TAG, "crappp");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-     */
+
 
 }
