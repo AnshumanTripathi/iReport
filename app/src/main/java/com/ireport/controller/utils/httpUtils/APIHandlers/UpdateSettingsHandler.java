@@ -1,7 +1,5 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
-package com.ireport.controller.utils.httpUtils;
-
 import com.ireport.activities.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
