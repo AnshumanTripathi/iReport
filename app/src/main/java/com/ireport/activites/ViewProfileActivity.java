@@ -1,8 +1,6 @@
 package com.ireport.activites;
 
 import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.GetUserForEmailID;
-import com.ireport.controller.utils.httpUtils.UpdateSettingsHandler;
 import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 

@@ -1,7 +1,7 @@
 package com.ireport.activites;
 
 import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.GetUserForEmailID;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.UserInfo;
 
 import android.content.Intent;
@@ -41,8 +41,8 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", "sandhyafeb1990@gmail.com");
-        getUserForEmailID.getUserDataForEmail();
+        //GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", "sandhyafeb1990@gmail.com");
+        //getUserForEmailID.getUserDataForEmail();
     }
 
     @Override

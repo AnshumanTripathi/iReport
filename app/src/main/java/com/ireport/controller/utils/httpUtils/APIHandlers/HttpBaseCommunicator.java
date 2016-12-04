@@ -101,7 +101,7 @@ public class HttpBaseCommunicator implements Response.Listener <String>, Respons
             String retResponse = null;
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = this.getRequestURL();
-
+            Log.d("URL",url);
             HttpCommunicatorStringRequest stringRequest = new HttpCommunicatorStringRequest(
                     Request.Method.POST,
                     url,
