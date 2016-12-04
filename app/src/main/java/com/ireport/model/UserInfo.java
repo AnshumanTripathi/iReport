@@ -1,11 +1,14 @@
 package com.ireport.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.ireport.repository.MongoRepository;
 
 /**
  * Created by AnshumanTripathi on 11/24/16.
  */
-public class UserInfo implements MongoRepository{
+public class UserInfo implements MongoRepository, Parcelable{
     //Official and UserInfo have similar properties. This differentiates user from official
     private boolean isOfficial;
 
@@ -106,11 +109,56 @@ public class UserInfo implements MongoRepository{
 
     public String toString() {
         String ans = "";
-        ans += getEmail() + ", ";
+        ans += getEmail() + " -> <";
         ans += getScreenName() + ", ";
         ans += getFirstName() + ", ";
         ans += getLastName() + ", ";
-        ans += getHomeAddress() + ".";
+        ans += getHomeAddress() + ">, <";
+        ans += getSettings().toString() + ">";
         return ans;
     }
+
+
+    /* sandhyar: everything below here is for implementing Parcelable */
+    // Source: http://stackoverflow.com/questions/2139134/how-to-send-an-object-from-one-android-activity-to-another-using-intents
+    // 99.9% of the time you can just ignore this
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // write your object's data to the passed-in Parcel
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(getScreenName()); out.writeString(getEmail());
+        out.writeString(getFirstName());
+        out.writeString(getLastName()); out.writeString(getHomeAddress());
+        out.writeString(Boolean.toString(getSettings().isAllowEmailConfirmation()));
+        out.writeString(Boolean.toString(getSettings().isAllowEmailNotification()));
+        out.writeString(Boolean.toString(getSettings().isAnonymous()));
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<UserInfo> CREATOR = new Parcelable.Creator<UserInfo>() {
+        public UserInfo createFromParcel(Parcel in) {
+            return new UserInfo(in);
+        }
+
+        public UserInfo[] newArray(int size) {
+            return new UserInfo[size];
+        }
+    };
+
+    // example constructor that takes a Parcel and gives you an object populated with it's values
+    private UserInfo(Parcel in) {
+        this.screenName = in.readString();
+        this.email = in.readString();
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.homeAddress = in.readString();
+        this.setSettings(new Settings(Boolean.valueOf(in.readString()),
+                Boolean.valueOf(in.readString()), Boolean.valueOf(in.readString())));
+    }
+
+
 }

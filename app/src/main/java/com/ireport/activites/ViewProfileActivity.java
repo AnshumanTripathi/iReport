@@ -1,8 +1,12 @@
 package com.ireport.activites;
 
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.GetUserForEmailID;
+import com.ireport.controller.utils.httpUtils.UpdateSettingsHandler;
+import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -27,11 +31,20 @@ public class ViewProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
 
+        Intent i = getIntent();
+        UserInfo userInfo = i.getParcelableExtra("user_info");
+        Log.d(TAG, "Got userinfo: " + userInfo.toString());
+
         // initialize all the edit texts and buttons
         screenNameEditText = (EditText) findViewById(R.id.screenNameEditText);
         firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
         homeAddressEditText = (EditText) findViewById(R.id.homeAddressEditText);
+
+        screenNameEditText.setText(userInfo.getScreenName());
+        firstNameEditText.setText(userInfo.getFirstName());
+        lastNameEditText.setText(userInfo.getLastName());
+        homeAddressEditText.setText(userInfo.getHomeAddress());
 
 
         saveButton = (Button) findViewById(R.id.saveButton);
@@ -48,10 +61,5 @@ public class ViewProfileActivity extends AppCompatActivity {
                 Log.d(TAG, "New user info: " + userInfo.toString());
             }
         });
-
-        // load profile details from the server
-
-        // overwrite default stuff.
-        // if save button is clicked, send current stuff to server
     }
 }

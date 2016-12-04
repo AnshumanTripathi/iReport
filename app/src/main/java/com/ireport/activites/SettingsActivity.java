@@ -1,6 +1,7 @@
 package com.ireport.activites;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Toolbar;
 
 import com.ireport.R;
 import com.ireport.model.Settings;
+import com.ireport.model.UserInfo;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
@@ -34,24 +36,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         super.onCreate(savedInstanceState);
         setupActionBar();
         addPreferencesFromResource(R.xml.pref_notification);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
-        /*
-        addPreferencesFromResource(R.layout.settings_toolbar);
-        LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
-        android.support.v7.widget.Toolbar bar = (android.support.v7.widget.Toolbar) findViewById(R.id.settings_toolbar);
-        root.addView(bar, 0); // insert at top
-        bar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
+        Intent i = getIntent();
+        UserInfo userInfo = i.getParcelableExtra("user_info");
+        Log.d(TAG, "Got userinfo: " + userInfo.toString());
 
         emailPref = (SwitchPreference) findPreference(emailStr);
+        emailPref.setChecked(userInfo.getSettings().isAllowEmailConfirmation());
         notificationsPref = (SwitchPreference) findPreference(notificationStr);
+        notificationsPref.setChecked(userInfo.getSettings().isAllowEmailNotification());
         anonPref = (SwitchPreference) findPreference(anonStr);
+        anonPref.setChecked(userInfo.getSettings().isAnonymous());
     }
 
     @Override

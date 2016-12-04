@@ -51,13 +51,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         /************TEST CODE****************************************************/
-        UpdateSettingsHandler uih = new UpdateSettingsHandler(
+        /*UpdateSettingsHandler uih = new UpdateSettingsHandler(
                 this,
                 "updateSettings",
                 "sanjay_dutt@email.com",
                 new Settings(true,true,true)
         );
-        uih.updateSettingForUser();
+        uih.updateSettingForUser();*/
 
         /***************************************************************************/
 
