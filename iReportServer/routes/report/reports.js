@@ -68,6 +68,8 @@ exports.getReports = function (req, res) {
         query = {status: req.body.status};
     } else if (req.body.hasOwnProperty("email".toLowerCase())) {
         query = {user_email: req.body.email}
+    } else if (req.body.hasOwnProperty("location".toLowerCase())) {
+        query = {location: req.body.location}
     }
     console.log(query);
     Report.find(query, function (err, report) {
