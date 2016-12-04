@@ -65,11 +65,21 @@ public class UpdateUserInfoHandler extends HttpBaseCommunicator {
     protected Map<String, String> getPostParams() {
         Map<String,String> params = new HashMap<String, String>();
         params.put("email",uiObj.getEmail());
-        params.put("first_name",uiObj.getFirstName());
-        params.put("last_name",uiObj.getLastName());
-        params.put("screen_name",uiObj.getScreenName());
-        params.put("home_address",uiObj.getHomeAddress());
+
+        if(uiObj.getFirstName() != null)
+            params.put("first_name",uiObj.getFirstName());
+
+        if(uiObj.getLastName() != null)
+            params.put("last_name",uiObj.getLastName());
+
+        if(uiObj.getScreenName() != null)
+            params.put("screen_name",uiObj.getScreenName());
+
+        if(uiObj.getHomeAddress() != null)
+            params.put("home_address",uiObj.getHomeAddress());
+
         Log.d("PARAMS------->>>",params.toString());
+
         return params;
     }
 
