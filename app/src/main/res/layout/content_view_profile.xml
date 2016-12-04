@@ -32,6 +32,7 @@
                 android:textColor="#212121" />
 
             <EditText
+                android:id="@+id/screenNameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/screenNameText"
@@ -60,6 +61,7 @@
                 android:textColor="#212121" />
 
             <EditText
+                android:id="@+id/firstNameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/firstNameText"
@@ -88,13 +90,13 @@
                 android:textColor="#212121" />
 
             <EditText
+                android:id="@+id/lastNameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lastNameText"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
-
 
         </RelativeLayout>
 
@@ -114,6 +116,7 @@
                 android:textColor="#212121" />
 
             <EditText
+                android:id="@+id/homeAddressEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/homeAddressText"
@@ -121,19 +124,23 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#727272" />
 
-
         </RelativeLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/activity_horizontal_margin">
+
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:id="@+id/saveButton"
                 android:text="Save" />
 
         </LinearLayout>

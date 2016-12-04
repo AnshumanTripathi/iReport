@@ -103,4 +103,14 @@ public class UserInfo implements MongoRepository{
     public void resetInfo() {
         //TODO:
     }
+
+    public String toString() {
+        String ans = "";
+        ans += getEmail() + ", ";
+        ans += getScreenName() + ", ";
+        ans += getFirstName() + ", ";
+        ans += getLastName() + ", ";
+        ans += getHomeAddress() + ".";
+        return ans;
+    }
 }
