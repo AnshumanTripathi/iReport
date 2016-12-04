@@ -24,8 +24,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-    ICallbackActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static int RC_SIGN_IN = 0;
     private static String TAG = "MAIN_ACTIVITY";
     private GoogleApiClient mGoogleApiClient;
@@ -33,16 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private String AUTH_TAG = "AUTH";
-
-    /**********************************TEST CODE*********************/
-    @Override
-    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
-        // sample code.
-        if (responseObj instanceof String) {
-            Log.d("Status Code is:", responseObj.toString());
-        }
-    }
-    /*********************TEST CODE**********************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +50,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this,ListReportsActivity.class);
             startActivity(intent);
             //Firebase code starts here
-            startActivityForResult(AuthUI.getInstance()
+            /*startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setProviders(
                             AuthUI.FACEBOOK_PROVIDER,
                             AuthUI.GOOGLE_PROVIDER)
                     .build(), RC_SIGN_IN
 
-            );
+            );*/
 
         }
 
