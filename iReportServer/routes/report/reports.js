@@ -58,36 +58,10 @@ exports.addReport = function (req, res) {
         }
         res.send(jsonResponse);
     });
-    
+
 };
 
-exports.getAllreports = function (req, res) {
-    Report.find({}, function (err, report) {
-        if (err) {
-            console.log("Error occured in fetching all reports: " + err);
-            res.send({
-                statusCode: 500,
-                data: err
-            });
-        }
-        if (report.length < 1) {
-            console.log("No reports found!");
-            res.send({
-                statusCode: 400,
-                data: "No reports in Database"
-            });
-        } else {
-            console.log(report);
-            res.send({
-                statusCode: 200,
-                data: report
-            });
-        }
-    });
-};
-
-
-exports.getReport = function (req, res) {
+exports.getReports = function (req, res) {
     var query;
     console.log(req.body);
     if (req.body.hasOwnProperty("status".toLowerCase())) {
