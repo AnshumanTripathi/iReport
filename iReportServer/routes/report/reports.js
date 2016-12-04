@@ -9,63 +9,56 @@ exports.addReport = function (req, res) {
     var jsonResponse;
     report.set('status', 'still_there');
     console.log(report);
-    report.save(function (err, report) {
+    User.findOne({"email": report.user_email}, function (err, user) {
         if (err) {
-            console.log("Error occured while connecting saving report:" + err);
-            res.send({
+            console.log("Error Occured retrieving user data: " + err);
+            jsonResponse = {
                 statusCode: 500,
                 data: err
-            });
+            };
+        } else if (user == null) {
+            console.log("No user found with the given email: " + report.user_email);
+            jsonResponse = {
+                statusCode: 400,
+                data: "No user found with the given email: " + report.user_email
+            };
         } else {
-            User.findOne({"email": report.user_email}, function (err, user) {
+            console.log("User found");
+            if (!user.settings.anonymous) {
+                report.isAnonymous = false;
+                user.reports.push(report.id);
+                report.user_screen_name = user.screen_name;
+                report.user_email = user.email;
+            } else {
+                report.isAnonymous = true;
+            }
+            report.save(function (err) {
+                console.log("Saving report");
                 if (err) {
-                    console.log("Error Occured retrieving user data: " + err);
+                    console.log("Error Occured in Report saving: " + err);
                     jsonResponse = {
                         statusCode: 500,
                         data: err
                     };
-                } else if (user == null) {
-                    console.log("No user found with the given email: " + report.user_email);
+                }
+            });
+            user.save(function (err) {
+                if (err) {
+                    console.log("Error occured: " + err);
                     jsonResponse = {
-                        statusCode: 400,
-                        data: "No user found with the given email: " + report.user_email
-                    };
-                } else {
-                    if (!user.settings.anonymous) {
-                        report.isAnonymous = false;
-                        user.reports.push(report.id);
-                        report.user_screen_name = user.screen_name;
-                        report.user_email = user.email;
-                    } else {
-                        report.isAnonymous = true;
-                    }
-                    report.save(function (err) {
-                        if (err) {
-                            console.log("Error Occured in Report saving: " + err);
-                            jsonResponse = {
-                                statusCode: 500,
-                                data: err
-                            };
-                        }
-                    });
-                    user.save(function (err) {
-                        if (err) {
-                            console.log("Error occured: " + err);
-                            jsonResponse = {
-                                statusCode: 500,
-                                data: err
-                            };
-                        }
-                    });
-                    jsonResponse = {
-                        statusCode: 200,
-                        data: "Report Added"
+                        statusCode: 500,
+                        data: err
                     };
                 }
-                res.send(jsonResponse);
             });
+            jsonResponse = {
+                statusCode: 200,
+                data: "Report Added"
+            };
         }
+        res.send(jsonResponse);
     });
+    
 };
 
 exports.getAllreports = function (req, res) {
@@ -97,9 +90,9 @@ exports.getAllreports = function (req, res) {
 exports.getReport = function (req, res) {
     var query;
     console.log(req.body);
-    if(req.body.hasOwnProperty("status".toLowerCase())){
-        query= {status: req.body.status};
-    }else if(req.body.hasOwnProperty("email".toLowerCase())){
+    if (req.body.hasOwnProperty("status".toLowerCase())) {
+        query = {status: req.body.status};
+    } else if (req.body.hasOwnProperty("email".toLowerCase())) {
         query = {user_email: req.body.email}
     }
     console.log(query);
