@@ -1,4 +1,4 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 /**
  * Created by Somya on 12/3/2016.

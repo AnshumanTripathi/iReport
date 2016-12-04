@@ -1,6 +1,6 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
-import com.ireport.activites.ICallbackActivity;
+import com.ireport.activities.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
 import com.ireport.model.Settings;

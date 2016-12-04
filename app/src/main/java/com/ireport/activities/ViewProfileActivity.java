@@ -1,36 +1,34 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 import com.ireport.R;
-import com.ireport.model.Settings;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateUserInfoHandler;
 import com.ireport.model.UserInfo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ViewProfileActivity extends AppCompatActivity {
+public class ViewProfileActivity extends AppCompatActivity implements ICallbackActivity {
 
     private EditText screenNameEditText, firstNameEditText, lastNameEditText, homeAddressEditText;
     private Button saveButton;
     private static String TAG = "ViewProfileActivity";
+    private UserInfo userInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+        getSupportActionBar().setTitle("Your Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-        UserInfo userInfo = i.getParcelableExtra("user_info");
+        userInfo = i.getParcelableExtra("user_info");
         Log.d(TAG, "Got userinfo: " + userInfo.toString());
 
         // initialize all the edit texts and buttons
@@ -50,14 +48,20 @@ public class ViewProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Save clicked");
-                String screenName = screenNameEditText.getText().toString();
-                String firstName = firstNameEditText.getText().toString();
-                String lastName = lastNameEditText.getText().toString();
-                String homeAddress= homeAddressEditText.getText().toString();
-                UserInfo userInfo = new UserInfo(screenName, "sandhyafeb1990@gmail.com",
-                        firstName, lastName, homeAddress);
+                userInfo.setScreenName(screenNameEditText.getText().toString());
+                userInfo.setFirstName(firstNameEditText.getText().toString());
+                userInfo.setLastName(lastNameEditText.getText().toString());
+                userInfo.setHomeAddress(homeAddressEditText.getText().toString());
+
+                UpdateUserInfoHandler updateUserInfoHandler = new UpdateUserInfoHandler(ViewProfileActivity.this, "view_profile_activity", userInfo);
+                updateUserInfoHandler.updateUserInfo();
                 Log.d(TAG, "New user info: " + userInfo.toString());
             }
         });
+    }
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
+
     }
 }

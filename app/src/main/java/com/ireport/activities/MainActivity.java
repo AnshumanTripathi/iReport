@@ -1,4 +1,4 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -24,8 +24,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-    ICallbackActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static int RC_SIGN_IN = 0;
     private static String TAG = "MAIN_ACTIVITY";
     private GoogleApiClient mGoogleApiClient;
@@ -33,16 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private String AUTH_TAG = "AUTH";
-
-    /**********************************TEST CODE*********************/
-    @Override
-    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
-        // sample code.
-        if (responseObj instanceof String) {
-            Log.d("Status Code is:", responseObj.toString());
-        }
-    }
-    /*********************TEST CODE**********************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppEventsLogger.activateApp(this);
 
         setContentView(R.layout.activity_main);
-
-        /************TEST CODE****************************************************/
-        ReportData repObj = new ReportData();
-        repObj.setLocation(new LocationDetails(12.12,12.13));
-        repObj.setImages("la bla bla");
-        repObj.setSize("huge huge huge");
-        repObj.setDescription("kachra found");
-        repObj.setReporteeID("sanjay_dutt@email.com");
-        repObj.setSeverityLevel("high severe");
-        AddReportHandler uih = new AddReportHandler(
-                this,
-                "getAllReports",
-                repObj
-        );
-        uih.addNewReport();
-
-        /***************************************************************************/
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {

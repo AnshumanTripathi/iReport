@@ -15,6 +15,7 @@ var app = express();
 
 //Create Mongo Connection
 mongoose.connect("mongodb://" + host + ":27017/iReport");
+
 // view engine setup
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -40,9 +41,8 @@ app.post('/addUser',user.addUser);
 app.post('/updateUserInfo',user.updateUserInfo);
 
 //My Report API
-app.get('/getAllReports',report.getAllreports);
 app.post('/addReport',report.addReport);
-app.post('/getReport',report.getReport);
+app.post('/getReports',report.getReports);
 
 //TestAPIs
 app.post('/testPic',function (req,res) {
