@@ -1,11 +1,5 @@
 package com.ireport.model;
 
-<<<<<<< HEAD
-/**
- * Created by AnshumanTripathi on 11/24/16.
- */
-public class UserInfo{
-=======
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -15,7 +9,6 @@ import com.ireport.repository.MongoRepository;
  * Created by AnshumanTripathi on 11/24/16.
  */
 public class UserInfo implements MongoRepository, Parcelable{
->>>>>>> be793a221c5e0e9371b8de08f71836f6b24adcab
     //Official and UserInfo have similar properties. This differentiates user from official
     private boolean isOfficial;
 
