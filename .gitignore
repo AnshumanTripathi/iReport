@@ -18,3 +18,4 @@
 *.lock
 *.jpg
 writeto/
+/bin/
