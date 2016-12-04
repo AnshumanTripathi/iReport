@@ -1,29 +1,20 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toolbar;
 
 import com.ireport.R;
 import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class SettingsActivity extends PreferenceActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener, ICallbackActivity {
 
     public SwitchPreference emailPref, notificationsPref, anonPref;
     private static String TAG = "Settings";
@@ -90,6 +81,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             // Show the Up button in the action bar.
             Log.d(TAG, "crappp");
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
+        // sample code.
+        Log.d(TAG, "In onPostProcessCompletion");
+        if (responseObj instanceof UserInfo) {
+            Log.d(TAG, "got userinfo!!!!");
+            UserInfo userInfo = (UserInfo) responseObj;
+            Log.d(TAG, userInfo.toString());
+            Log.d(TAG, userInfo.getSettings().toString());
         }
     }
 

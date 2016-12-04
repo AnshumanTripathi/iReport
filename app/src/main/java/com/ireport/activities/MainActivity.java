@@ -1,4 +1,4 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;

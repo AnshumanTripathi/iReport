@@ -21,7 +21,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
-        <activity android:name=".activites.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -47,12 +47,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.ListReportsActivity"
+            android:name=".activities.ListReportsActivity"
             android:label="@string/title_activity_list_reports"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
         <!-- This meta-data tag is required to use Google Play Services. -->
@@ -61,29 +61,32 @@
             android:value="@integer/google_play_services_version"/>
 
         <activity
-            android:name=".activites.CreateReportActivity"
-            android:label="@string/title_activity_create_report">
+            android:name=".activities.CreateReportActivity"
+            android:label="@string/title_activity_create_report"
+            android:parentActivityName=".activities.ListReportsActivity">
         </activity> <!-- Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent"/>
-        <activity android:name=".activites.ViewNotificationsActivity">
+        <activity
+            android:name=".activities.ViewNotificationsActivity"
+            android:label="Your Notifications"
+            android:parentActivityName=".activities.ListReportsActivity">
         </activity>
         <activity
-            android:name=".CreateProfile"
-            android:label="@string/title_activity_create_profile">
-        </activity>
-        <activity android:name=".activites.ViewProfileActivity">
+            android:name=".activities.ViewProfileActivity"
+            android:label="Your Profile"
+            android:parentActivityName=".activities.ListReportsActivity">
         </activity>
         <activity
-            android:name=".activites.UploadImagesActivity"
-            android:label="@string/title_activity_upload_images"
-            android:parentActivityName=".activites.CreateReportActivity"
+            android:name=".activities.UploadImagesActivity"
+            android:label="Upload Images"
+            android:parentActivityName=".activities.CreateReportActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ireport.activites.CreateReportActivity"/>
+                android:value="com.ireport.activities.CreateReportActivity"/>
         </activity>
     </application>
 

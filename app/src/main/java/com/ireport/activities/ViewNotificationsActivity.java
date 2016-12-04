@@ -1,4 +1,4 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +22,9 @@ public class ViewNotificationsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setListAdapter(new NotificationsArrayAdapter(this, MOBILE_OS));
+
+            getSupportActionBar().setTitle("Your Notifications");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
 

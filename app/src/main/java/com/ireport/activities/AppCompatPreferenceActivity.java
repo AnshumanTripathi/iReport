@@ -1,4 +1,4 @@
-package com.ireport.activites;
+package com.ireport.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
