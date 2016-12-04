@@ -3,7 +3,6 @@ package com.ireport.controller.utils.httpUtils;
 import com.ireport.activites.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
-import com.ireport.model.UserInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +27,8 @@ public class GetAllUsersHandler extends HttpBaseCommunicator {
     @Override
     protected void handleResponse(String response) throws IReportException {
         // TODO: parse json and populate the user data
+        //TODO: do this if needed in the project.
+
         // create the final object here. test code for now
         this.activity_.onPostProcessCompletion(
                 response,
@@ -36,7 +37,7 @@ public class GetAllUsersHandler extends HttpBaseCommunicator {
     }
 
     @Override
-    protected Map<String, String> getParams() throws IReportException {
+    protected Map<String, String> getPostParams() {
         return new HashMap<>();
     }
 
