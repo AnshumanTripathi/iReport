@@ -10,6 +10,7 @@ import android.preference.SwitchPreference;
 import android.util.Log;
 
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
 import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 
@@ -52,7 +53,9 @@ public class SettingsActivity extends PreferenceActivity implements
                 sharedPreferences.getBoolean(anonStr, false)
             );
             Log.d(TAG, settings.toString());
-//            HttpUtils.volley_updateSettings(settings, "sandhyafeb1990@gmail.com");
+            UpdateSettingsHandler updateSettingsHandler = new UpdateSettingsHandler
+                    (this, "settings_activity", "sandhyafeb1990@gmail.com", settings);
+            updateSettingsHandler.updateSettingForUser();
         }
     }
 

@@ -1,6 +1,9 @@
 package com.ireport.activities;
 
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,28 +14,62 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class CreateReportActivity extends AppCompatActivity {
+public class CreateReportActivity extends AppCompatActivity implements ICallbackActivity {
 
     private String TAG = "CreateReportActivity";
+    private EditText descriptionText, locationText;
+    private Button mUploadImagesButton, saveButton;
+    private RadioGroup radioGroupSize, radioGroupSeverity;
+
+    private ReportData reportData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Button mUploadImages = (Button) findViewById(R.id.media_actions);
-        mUploadImages.setOnClickListener(new View.OnClickListener() {
+
+        descriptionText = (EditText) findViewById(R.id.user_litter_desc);
+
+        radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
+        radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
+
+        reportData = new ReportData();
+        // always set emailid
+        reportData.setReporteeID("sandhyafeb1990@gmail.com");
+
+
+        mUploadImagesButton = (Button) findViewById(R.id.add_images_button);
+        mUploadImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v(TAG,"Attempting to upload images");
                 Intent intent = new Intent(getApplicationContext(),UploadImagesActivity.class);
                 startActivity(intent);
             }
-        })
-        ;
-        //setSupportActionBar(toolbar);
+        });
+
+
+        saveButton = (Button) findViewById(R.id.create_report_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // create a new report
+                reportData.setLocation(new LocationDetails(12.12,12.13));
+                reportData.setImages("la bla bla");
+                reportData.setDescription(descriptionText.getText().toString());
+                AddReportHandler uih = new AddReportHandler(
+                    CreateReportActivity.this, "create_report_activity", reportData);
+                uih.addNewReport();
+                // grab a handler
+
+                // upload
+            }
+        });
     }
 
     @Override
@@ -51,6 +88,8 @@ public class CreateReportActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //Intent intent = new Intent(this,SettingsActivity.class);
+            //startActivity(intent);
             return true;
         }
 
@@ -58,20 +97,22 @@ public class CreateReportActivity extends AppCompatActivity {
     }
 
     public void onRadioButtonClicked(View view) {
-        RadioGroup radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
-        RadioGroup radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
-
         boolean checked = ((RadioButton) view).isChecked();
         String litterSize = "", litterSeverity="";
         // Check which radio button was clicked
         if (-1 != radioGroupSize.getCheckedRadioButtonId()) {
             litterSize = ((RadioButton) findViewById(radioGroupSize.getCheckedRadioButtonId())).getText().toString();
+            reportData.setSize(litterSize);
         }
         if (-1 != radioGroupSeverity.getCheckedRadioButtonId()) {
             litterSeverity = ((RadioButton) findViewById(radioGroupSeverity.getCheckedRadioButtonId())).getText().toString();
+            reportData.setSeverityLevel(litterSeverity);
         }
-        Log.v(TAG, "Size is: " + litterSize);
-        Log.v(TAG, "Severity is: " + litterSeverity);
+        Log.d(TAG, reportData.toString());
+    }
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
 
     }
 }

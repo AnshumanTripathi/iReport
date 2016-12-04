@@ -53,23 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-        /************TEST CODE****************************************************/
-        ReportData repObj = new ReportData();
-        repObj.setLocation(new LocationDetails(12.12,12.13));
-        repObj.setImages("la bla bla");
-        repObj.setSize("huge huge huge");
-        repObj.setDescription("kachra found");
-        repObj.setReporteeID("sanjay_dutt@email.com");
-        repObj.setSeverityLevel("high severe");
-        AddReportHandler uih = new AddReportHandler(
-                this,
-                "getAllReports",
-                repObj
-        );
-        uih.addNewReport();
-
-        /***************************************************************************/
-
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             Log.d(AUTH_TAG, mAuth.getCurrentUser().getEmail());

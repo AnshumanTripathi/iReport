@@ -33,6 +33,7 @@
                 android:textColor="#212121" />
 
             <EditText
+                android:id="@+id/user_litter_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/litterDesc"
@@ -200,13 +201,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:text="Upload Images"
+                android:text="Add Images"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
 
             <Button
-                android:id="@+id/media_actions"
+                android:id="@+id/add_images_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
@@ -230,7 +231,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="Save" />
+                android:id="@+id/create_report_button"
+                android:text="Create" />
 
         </LinearLayout>
     </LinearLayout>

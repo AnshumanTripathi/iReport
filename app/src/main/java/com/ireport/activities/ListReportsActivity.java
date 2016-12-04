@@ -72,7 +72,7 @@ public class ListReportsActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
-            if ( ! userInfo.equals(null)) {
+            if ( null != userInfo ) {
                 intent.putExtra("user_info", userInfo);
             }
             startActivity(intent);
@@ -91,17 +91,17 @@ public class ListReportsActivity extends AppCompatActivity
 
         if (id == R.id.nav_view_profile) {
             Intent intent = new Intent(this,ViewProfileActivity.class);
-            if ( ! userInfo.equals(null))
+            if ( null != userInfo)
                 intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_notifcations) {
             Intent intent = new Intent(this, ViewNotificationsActivity.class);
-            if ( ! userInfo.equals(null))
+            if ( null != userInfo)
                 intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
-            if ( ! userInfo.equals(null))
+            if ( null != userInfo)
                 intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_allreports) {

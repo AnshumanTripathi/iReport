@@ -105,5 +105,11 @@ public class ReportData {
         this.reporteeID = reporteeID;
     }
 
+    public String toString() {
+        String ans = "";
+        ans += this.reporteeID + " -> " + this.description + ", " + this.size + ", " + this.severityLevel + ", " + this.location;
+        return ans;
+    }
+
 
 }

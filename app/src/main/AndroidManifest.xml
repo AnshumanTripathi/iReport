@@ -62,7 +62,7 @@
 
         <activity
             android:name=".activities.CreateReportActivity"
-            android:label="@string/title_activity_create_report"
+            android:label="Create a New Report"
             android:parentActivityName=".activities.ListReportsActivity">
         </activity> <!-- Include the AdActivity configChanges and theme. -->
         <activity
