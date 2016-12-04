@@ -84,8 +84,9 @@ public class ListReportsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_view_profile) {
+            Intent intent = new Intent(this,ViewProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_notifcations) {
             Intent intent = new Intent(this, ViewNotificationsActivity.class);
             startActivity(intent);
