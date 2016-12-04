@@ -43,6 +43,7 @@ app.post('/updateUserInfo',user.updateUserInfo);
 //My Report API
 app.post('/addReport',report.addReport);
 app.post('/getReports',report.getReports);
+app.post('/getUserReportLocation',report.getUserReportLocation);
 
 //TestAPIs
 app.post('/testPic',function (req,res) {
