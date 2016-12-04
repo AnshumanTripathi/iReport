@@ -76,6 +76,15 @@
         </activity>
         <activity android:name=".activites.ViewProfileActivity">
         </activity>
+        <activity
+            android:name=".activites.UploadImagesActivity"
+            android:label="@string/title_activity_upload_images"
+            android:parentActivityName=".activites.CreateReportActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ireport.activites.CreateReportActivity"/>
+        </activity>
     </application>
 
 </manifest>
