@@ -1,13 +1,9 @@
-package com.ireport.controller.utils.httpUtils;
-
-import android.util.Log;
+package com.ireport.controller.utils.httpUtils.APIHandlers;
 
 import com.ireport.activites.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
-import com.ireport.model.AppContext;
 import com.ireport.model.Settings;
-import com.ireport.model.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;

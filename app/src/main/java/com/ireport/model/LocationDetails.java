@@ -33,4 +33,11 @@ public class LocationDetails {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public String toString() {
+        return "{lat: " + Double.toString(this.getLatitude()) +
+                ", lng: " + Double.toString(this.getLongitude()) +
+                "}";
+    }
 }

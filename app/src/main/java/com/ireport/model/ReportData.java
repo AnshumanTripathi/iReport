@@ -26,7 +26,17 @@ public class ReportData {
 
     private String reporteeID;      // the userID who reported it
 
-    public void ReportData() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status;
+
+    public ReportData() {
 
     }
 
@@ -94,4 +104,6 @@ public class ReportData {
     public void setReporteeID(String reporteeID) {
         this.reporteeID = reporteeID;
     }
+
+
 }

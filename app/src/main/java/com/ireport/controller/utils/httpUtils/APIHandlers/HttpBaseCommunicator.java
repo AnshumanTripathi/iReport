@@ -1,8 +1,7 @@
-package com.ireport.controller.utils.httpUtils;
+package com.ireport.controller.utils.httpUtils.APIHandlers;
 
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,11 +10,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ireport.controller.IReportException;
-import com.ireport.controller.utils.Constants;
-import com.ireport.model.Settings;
-import com.ireport.model.UserInfo;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;

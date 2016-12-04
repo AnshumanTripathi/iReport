@@ -8,11 +8,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.GetAllUsersHandler;
-import com.ireport.controller.utils.httpUtils.GetUserForEmailID;
-import com.ireport.controller.utils.httpUtils.UpdateSettingsHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
 import com.ireport.model.Settings;
-import com.ireport.model.UserInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
     ICallbackActivity {
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         // sample code.
         if (responseObj instanceof String) {
-            Log.d("Response Code", responseObj.toString());
+            Log.d("Status Code is:", responseObj.toString());
         }
     }
     /*********************TEST CODE**********************************/
@@ -51,13 +54,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         /************TEST CODE****************************************************/
-        UpdateSettingsHandler uih = new UpdateSettingsHandler(
+        ReportData repObj = new ReportData();
+        repObj.setLocation(new LocationDetails(12.12,12.13));
+        repObj.setImages("la bla bla");
+        repObj.setSize("huge huge huge");
+        repObj.setDescription("kachra found");
+        repObj.setReporteeID("sanjay_dutt@email.com");
+        repObj.setSeverityLevel("high severe");
+        AddReportHandler uih = new AddReportHandler(
                 this,
-                "updateSettings",
-                "sanjay_dutt@email.com",
-                new Settings(true,true,true)
+                "getAllReports",
+                repObj
         );
-        uih.updateSettingForUser();
+        uih.addNewReport();
 
         /***************************************************************************/
 

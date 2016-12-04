@@ -1,4 +1,4 @@
-package com.ireport.controller.utils.httpUtils;
+package com.ireport.controller.utils.httpUtils.APIHandlers;
 
 import com.ireport.activites.ICallbackActivity;
 import com.ireport.controller.IReportException;
