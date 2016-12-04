@@ -69,14 +69,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this,ListReportsActivity.class);
             startActivity(intent);
             //Firebase code starts here
-            /*startActivityForResult(AuthUI.getInstance()
+            startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setProviders(
                             AuthUI.FACEBOOK_PROVIDER,
                             AuthUI.GOOGLE_PROVIDER)
                     .build(), RC_SIGN_IN
 
-            );*/
+            );
 
         }
 

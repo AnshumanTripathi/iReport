@@ -1,11 +1,9 @@
 package com.ireport.model;
 
-import com.ireport.repository.MongoRepository;
-
 /**
  * Created by AnshumanTripathi on 11/24/16.
  */
-public class UserInfo implements MongoRepository{
+public class UserInfo{
     //Official and UserInfo have similar properties. This differentiates user from official
     private boolean isOfficial;
 
@@ -90,15 +88,6 @@ public class UserInfo implements MongoRepository{
         this.settings = settings;
     }
 
-    @Override
-    public void insert() {
-
-    }
-
-    @Override
-    public void getAll() {
-
-    }
 
     public void resetInfo() {
         //TODO:
