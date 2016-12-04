@@ -9,6 +9,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.GetAllUsersHandler;
+import com.ireport.controller.utils.httpUtils.GetUserForEmailID;
+import com.ireport.controller.utils.httpUtils.UpdateSettingsHandler;
+import com.ireport.model.Settings;
+import com.ireport.model.UserInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,16 +31,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String AUTH_TAG = "AUTH";
 
+    /**********************************TEST CODE*********************/
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         // sample code.
         if (responseObj instanceof String) {
-            System.out.println("Got reponse from handler in asycn manner:" + responseObj);
-            System.out.println("Got reponse from handler in asycn manner with id:" + identifier);
-            // now we can update the UI here when response has been retrieved
-            // note that this function is still called in Volley thread most probably.
+            Log.d("Response Code", responseObj.toString());
         }
     }
+    /*********************TEST CODE**********************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +50,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-        //String url = "http://ec2-35-165-22-113.us-west-2.compute.amazonaws.com:3000/getAllUsers";
-//        HttpUtils.sendHttpGetRequest();
+        /************TEST CODE****************************************************/
+        UpdateSettingsHandler uih = new UpdateSettingsHandler(
+                this,
+                "updateSettings",
+                "sanjay_dutt@email.com",
+                new Settings(true,true,true)
+        );
+        uih.updateSettingForUser();
 
-        GetAllUsersHandler hh = new GetAllUsersHandler(this, "getAllUserCall");
-        hh.getAllUsersData();
+        /***************************************************************************/
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
