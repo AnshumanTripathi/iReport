@@ -67,23 +67,28 @@ public class GetReportLocationForUser extends HttpBaseCommunicator {
 
         try {
             JSONObject json = new JSONObject(response);
-            JSONArray arrJson = json.getJSONArray("data");
+            if(json.has("data")) {
+                JSONArray arrJson = json.getJSONArray("data");
 
-            String[] arr = new String[arrJson.length()];
+                String[] arr = new String[arrJson.length()];
 
-            for (int i = 0; i < arrJson.length(); i++) {
-                arr[i] = arrJson.getString(i);
+                for (int i = 0; i < arrJson.length(); i++) {
+                    arr[i] = arrJson.getString(i);
 
-                JSONObject tempJson = new JSONObject(arr[i]);
-                LocationDetails locObj = new LocationDetails();
+                    JSONObject tempJson = new JSONObject(arr[i]);
+                    LocationDetails locObj = new LocationDetails();
 
-                String lat = tempJson.getString("lat");
-                locObj.setLatitude(Double.valueOf(lat));
+                    if (tempJson.has("lat") &&
+                            tempJson.has("lng")) {
+                        String lat = tempJson.getString("lat");
+                        locObj.setLatitude(Double.valueOf(lat));
 
-                String lng = tempJson.getString("lng");
-                locObj.setLongitude(Double.valueOf(lng));
+                        String lng = tempJson.getString("lng");
+                        locObj.setLongitude(Double.valueOf(lng));
 
-                llist.add(locObj);
+                        llist.add(locObj);
+                    }
+                }
             }
         } catch(JSONException je) {
             je.printStackTrace();
