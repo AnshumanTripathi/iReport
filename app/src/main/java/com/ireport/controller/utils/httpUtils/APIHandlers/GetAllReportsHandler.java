@@ -33,7 +33,7 @@ public class GetAllReportsHandler extends HttpBaseCommunicator {
 
     @Override
     protected String getRequestURL() throws IReportException {
-        return Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getAllReports";
+        return Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getReports";
     }
 
     @Override
@@ -105,7 +105,7 @@ public class GetAllReportsHandler extends HttpBaseCommunicator {
     }
 
     public void getAllReportsData() {
-        this.sendHttpGetRequest();
+        this.sendHttpPostRequest();
         System.out.println("returning from UI thread immediately");
     }
 }
