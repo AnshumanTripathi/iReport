@@ -94,3 +94,35 @@ exports.getReports = function (req, res) {
         }
     });
 };
+
+exports.getUserReportLocation = function (req,res) {
+    var query = req.body.email;
+    console.log(query);
+    var jsonResponse;
+    Report.find({"user_email":query},function (err,report) {
+        if(err){
+            console.log("Error Occured in fetching reports: "+err);
+            jsonResponse = {
+                statusCode: 500,
+                data: err
+            };
+        }else if(report.length < 1){
+            console.log("No report found from user: "+query);
+            jsonResponse = {
+                statusCode: 400,
+                data: "No report found from user: "+query
+            };
+        } else{
+            var reportsArray = [];
+            for(var i = 0; i<report.length;i++){
+                reportsArray.push(report[i].location);
+            }
+            jsonResponse = {
+                statusCode: 200,
+                data: reportsArray
+            };
+        }
+
+        res.send(jsonResponse);
+    });
+};
