@@ -1,5 +1,22 @@
 package com.ireport.activities;
 
+import com.ireport.R;
+import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.cameraUtils.CameraUtility;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
+import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
+import com.ireport.controller.utils.locationUtils.LocationUtils;
+import com.ireport.model.AppContext;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +32,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -32,26 +50,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ireport.R;
-import com.ireport.controller.utils.Constants;
-import com.ireport.controller.utils.cameraUtils.CameraUtility;
-import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
-import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
-import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
-import com.ireport.model.ReportData;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class CreateReportActivity extends AppCompatActivity implements ICallbackActivity {
 
     private String TAG = "CreateReportActivity";
-    private EditText descriptionText, locationText;
+    private EditText descriptionText;
+    private TextView mLocationText;
     private Button mUploadImagesButton, saveButton, locationButton;
     private RadioGroup radioGroupSize, radioGroupSeverity;
 
@@ -121,13 +124,21 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
         locationButton = (Button) findViewById(R.id.enterLocation);
         CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
-        /*locationButton.setOnClickListener(new View.OnClickListener() {
+        LocationUtils LU = new LocationUtils();
+        String locationStreetAddress = LU.getAddress(this,37.3354123, -121.8853178);
+
+        mLocationText = (TextView) findViewById(R.id.enterLocation);
+        Log.d(TAG,"Address of coordinates" + locationStreetAddress);
+        locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
-                //Log.d(TAG, ctx.getCurrentLocation().toString());
+                //CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
+                 Log.d(TAG,"Trying to get street address!");
+                 //Log.d(TAG, ctx.getCurrentLocation().toString());
+                 //mLocationText.setText(ctx.getCurrentLocation().toString());
+
             }
-        });*/
+        });
 
         numImagesTextView = (TextView) findViewById(R.id.number_of_images);
         numImagesTextView.setText(Integer.toString(numImages) + " images added to report");
@@ -156,6 +167,11 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     CreateReportActivity.this, "create_report_activity", reportData);
                 Log.d(TAG, "Sending: " + reportData.toString());
                 uih.addNewReport();
+                Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
+
+                //Go back to parent activity
+                Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
+                startActivity(upIntent);
             }
         });
     }

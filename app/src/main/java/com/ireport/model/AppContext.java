@@ -8,6 +8,7 @@ public class AppContext {
 
     public static UserInfo currentLoggedInUser;
     private static LocationDetails currentLocation;
+    //private static ReportData currentR
     private static AppContext instance;
 
     public static LocationDetails getCurrentLocation() {
@@ -17,6 +18,7 @@ public class AppContext {
     public static void setCurrentLocation(LocationDetails currentLocation) {
         AppContext.currentLocation = currentLocation;
     }
+
 
     public void reset() {
         currentLoggedInUser.resetInfo();
