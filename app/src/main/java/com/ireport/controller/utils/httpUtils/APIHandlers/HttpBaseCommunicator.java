@@ -1,5 +1,6 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -55,13 +56,13 @@ public class HttpBaseCommunicator implements Response.Listener <String>, Respons
 
     /**************************************************************/
     /*This is a HTTP GET API to get all the users in the database*/
-    public String sendHttpGetRequest() {
+    public String sendHttpGetRequest(Context ctx) {
         Log.d("GET","Sending HTTP get Request through Volley");
 
         try {
             String retResponse = null;
             // Instantiate the RequestQueue.
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            RequestQueue queue = Volley.newRequestQueue(ctx);
             String url = this.getRequestURL();
             Log.d("URL", url);
 
@@ -93,11 +94,11 @@ public class HttpBaseCommunicator implements Response.Listener <String>, Respons
 
     /*********************************************************************/
     //POST: getUser
-    public void sendHttpPostRequest() {
+    public void sendHttpPostRequest(Context ctx) {
 
         try {
             String retResponse = null;
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            RequestQueue queue = Volley.newRequestQueue(ctx);
             String url = this.getRequestURL();
             Log.d("URL",url);
             HttpCommunicatorStringRequest stringRequest = new HttpCommunicatorStringRequest(

@@ -19,6 +19,7 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
     private Button saveButton;
     private static String TAG = "ViewProfileActivity";
     private UserInfo userInfo;
+    UpdateUserInfoHandler updateUserInfoHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +54,12 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
                 userInfo.setLastName(lastNameEditText.getText().toString());
                 userInfo.setHomeAddress(homeAddressEditText.getText().toString());
 
-                UpdateUserInfoHandler updateUserInfoHandler = new UpdateUserInfoHandler(ViewProfileActivity.this, "view_profile_activity", userInfo);
-                updateUserInfoHandler.updateUserInfo();
+                updateUserInfoHandler = new UpdateUserInfoHandler(
+                        ViewProfileActivity.this,
+                        "view_profile_activity",
+                        userInfo
+                );
+                updateUserInfoHandler.updateUserInfo(getApplicationContext());
                 Log.d(TAG, "New user info: " + userInfo.toString());
             }
         });

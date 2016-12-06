@@ -28,6 +28,8 @@ public class ListReportsActivity extends AppCompatActivity
     private static String TAG = "ListReportsActivity";
     private UserInfo userInfo;
     List<ReportData> reportDataList;
+    GetUserForEmailID getUserForEmailID = null;
+    GetAllReportsHandler getAllReportsHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +58,13 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", Constants.SANDHYA_EMAIL);
-        getUserForEmailID.getUserDataForEmail();
+        getUserForEmailID = new GetUserForEmailID(this, "getUser", Constants.SANDHYA_EMAIL);
+        getUserForEmailID.getUserDataForEmail(getApplicationContext());
 
         // Load any reports
         reportDataList = new ArrayList<>();
-        GetAllReportsHandler getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
-        getAllReportsHandler.getAllReportsData();
+        getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
+        getAllReportsHandler.getAllReportsData(getApplicationContext());
     }
 
     @Override

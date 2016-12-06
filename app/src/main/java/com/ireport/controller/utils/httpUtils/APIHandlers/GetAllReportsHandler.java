@@ -1,5 +1,6 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.ireport.activities.ICallbackActivity;
@@ -104,8 +105,8 @@ public class GetAllReportsHandler extends HttpBaseCommunicator {
         return new HashMap<>();
     }
 
-    public void getAllReportsData() {
-        this.sendHttpPostRequest();
+    public void getAllReportsData(Context ctx) {
+        this.sendHttpPostRequest(ctx);
         System.out.println("returning from UI thread immediately");
     }
 }
