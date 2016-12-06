@@ -1,9 +1,16 @@
 package com.ireport.controller.utils.locationUtils;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.provider.SyncStateContract;
+import android.util.Log;
 
 import com.ireport.controller.utils.Constants;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Somya on 12/5/2016.
@@ -37,4 +44,31 @@ public class LocationUtils {
             return true;
         else return false;
     }
+
+    /*
+    For ctx pass application context
+     */
+    public String getAddress(Context ctx, double lat,double long1) {
+        Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
+        String retAddress = null;
+
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(lat, long1, 1);
+
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                retAddress = returnedAddress.getAddressLine(0).toString();
+                Log.d("Address is :", retAddress);
+            } else {
+                Log.d("No address", "No Address returned!");
+            }
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return retAddress;
+    }
+
+
 }
