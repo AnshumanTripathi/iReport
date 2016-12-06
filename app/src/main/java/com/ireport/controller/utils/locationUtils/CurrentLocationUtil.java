@@ -22,7 +22,6 @@ public class CurrentLocationUtil {
 
     static Location userLastLocation;
 
-
     public static void getCurrentLocation(
             AppCompatActivity appActivity,
             AppContext ctx
@@ -71,7 +70,7 @@ public class CurrentLocationUtil {
                 } else {
                     GenericToastManager.showGenericMsg(
                             appActivity.getBaseContext(),
-                            "Failed to get user location even if gps is on"
+                            "Failed to get user location even though gps is on"
                     );
                 }
             } else if (isNetworkOn) {
@@ -90,7 +89,7 @@ public class CurrentLocationUtil {
                 } else {
                     GenericToastManager.showGenericMsg(
                             appActivity.getBaseContext(),
-                            "Failed to get user location. even if network is on"
+                            "Failed to get user location. even though network is on"
                     );
                 }
             } else {
@@ -108,10 +107,4 @@ public class CurrentLocationUtil {
             ((CreateReportActivity)appActivity).checkGPSPermission();
         }
     }
-
-
-
-
-
-
 }
