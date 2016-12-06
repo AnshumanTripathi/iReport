@@ -5,7 +5,6 @@ import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.cameraUtils.CameraUtility;
 import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
 import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
-import com.ireport.controller.utils.locationUtils.LocationUtils;
 import com.ireport.model.AppContext;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
@@ -22,12 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -37,15 +31,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
@@ -59,13 +50,13 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
     private String TAG = "CreateReportActivity";
     private EditText descriptionText, locationText;
-    private Button mUploadImagesButton, saveButton;
+    private Button mUploadImagesButton, saveButton, locationButton;
     private RadioGroup radioGroupSize, radioGroupSeverity;
 
     // For camera
     private String userChoosenTask;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private final ArrayList<String> ImageStringArray= new ArrayList<String>();
+    private final ArrayList<String> imageStringArray = new ArrayList<String>();
     private final ArrayList<Bitmap> ResponseimageArray = new ArrayList<Bitmap>();
     private final int PICK_IMAGE_MULTIPLE =1;
     private TextView numImagesTextView;
@@ -100,7 +91,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         // always set emailid
         reportData.setReporteeID(Constants.SANDHYA_EMAIL);
 
-
         mUploadImagesButton = (Button) findViewById(R.id.add_images_button);
         mUploadImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +99,16 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         });
 
+        locationButton = (Button) findViewById(R.id.enterLocation);
+        CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
+        /*locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
+                //Log.d(TAG, ctx.getCurrentLocation().toString());
+            }
+        });*/
+
         numImagesTextView = (TextView) findViewById(R.id.number_of_images);
         numImagesTextView.setText(Integer.toString(numImages) + " images added to report");
         saveButton = (Button) findViewById(R.id.create_report_button);
@@ -116,15 +116,26 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             @Override
             public void onClick(View view) {
                 // create a new report
-                reportData.setLocation(new LocationDetails(12.12,12.13));
-                reportData.setImages("la bla bla");
+                if (ctx.getCurrentLocation() != null) {
+                    reportData.setLocation(ctx.getCurrentLocation());
+                } else {
+                    reportData.setLocation(new LocationDetails(12.12, 12.13));
+                }
+                // put images together
+                String images = "";
+                for (int i = 0; i < imageStringArray.size(); i++) {
+                    images += imageStringArray.get(i);
+                    images += ",";
+                }
+                if (images.length() > 1 && images.charAt(images.length()-1) == ',') {
+                    images.substring(0, images.length() - 1);
+                }
+                reportData.setImages(images);
                 reportData.setDescription(descriptionText.getText().toString());
                 AddReportHandler uih = new AddReportHandler(
                     CreateReportActivity.this, "create_report_activity", reportData);
+                Log.d(TAG, "Sending: " + reportData.toString());
                 uih.addNewReport();
-                // grab a handler
-
-                // upload
             }
         });
     }
@@ -206,7 +217,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     else if(userChoosenTask.equals("Choose from Library"))
                     {
                         ResponseimageArray.clear();
-                        ImageStringArray.clear();
+                        imageStringArray.clear();
                         galleryIntent();
 
                     }
@@ -328,7 +339,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             if (requestCode == SELECT_FILE){
                 Log.d(TAG, "Select from gallery chosen");
                 //onCaptureImageResult(data);
-                numImagesTextView.setText(numImagesTextView.getText().toString() + "\n. Image Received from gallery.\n");
+                numImagesTextView.setText(numImagesTextView.getText().toString() + "\n. Image Received from gallery.");
             } else if (requestCode == REQUEST_CAMERA) {
                 Log.d(TAG, "Took a pic.");
                 onCaptureImageResult(data);
@@ -364,26 +375,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         numImages++;
         numImagesTextView.setText(numImagesTextView.getText().toString() +
                 "\n" + Integer.toString(numImages) +
-                " images added to report.\n");
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-        Log.d(TAG, "Captured: " + destination.getPath());
-
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                " images added to report.");
+        if (data != null)
+            imageStringArray.add(getStringImage((Bitmap) data.getExtras().get("data")));
     }
 
     // For camera. This method converts Image to String
