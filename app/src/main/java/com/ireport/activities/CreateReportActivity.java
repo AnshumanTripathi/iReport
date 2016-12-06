@@ -252,6 +252,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         Log.d(TAG, reportData.toString());
     }
 
+
+    //read the response back from the add report server call and make sure it is uploaded successfully.
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
 

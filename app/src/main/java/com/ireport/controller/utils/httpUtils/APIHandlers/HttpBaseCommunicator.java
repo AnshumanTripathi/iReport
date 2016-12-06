@@ -14,8 +14,6 @@ import com.ireport.controller.IReportException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /*
     Generic class to interact with server for a particular method
  */
