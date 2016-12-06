@@ -1,72 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools" package="com.ireport">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.ireport">
 
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-<!-- To auto-complete the email text field in the login form with the user's emails -->
-<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-<uses-permission android:name="android.permission.READ_PROFILE" />
-<uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
-<!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-
-<uses-feature android:glEsVersion="0x00020000" android:required="true"></uses-feature>
-
-<application android:allowBackup="true" android:icon="@mipmap/ic_signout" android:label="@string/app_name"
-    android:supportsRtl="true" android:theme="@style/AppTheme">
-    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
-
-    <activity android:name=".activities.MainActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-        android:label="@string/app_name" android:theme="@android:style/Theme.Translucent.NoTitleBar"
-        tools:replace="android:theme" />
-    <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <data android:scheme="@string/fb_login_protocol_scheme" />
-        </intent-filter>
-    </activity>
-    <activity android:name=".activities.ListReportsActivity" android:label="@string/title_activity_list_reports"
-        android:theme="@style/AppTheme.NoActionBar"></activity>
-    <activity android:name=".activities.SettingsActivity" android:label="@string/title_activity_settings"></activity>
-    <!-- This meta-data tag is required to use Google Play Services. -->
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-
-    <activity android:name=".activities.CreateReportActivity" android:label="Create a New Report"
-        android:parentActivityName=".activities.ListReportsActivity"></activity> <!-- Include the AdActivity configChanges and theme. -->
-    <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-        android:theme="@android:style/Theme.Translucent" />
-    <activity android:name=".activities.ViewNotificationsActivity" android:label="Your Notifications"
-        android:parentActivityName=".activities.ListReportsActivity"></activity>
-    <activity android:name=".activities.ViewProfileActivity" android:label="Your Profile"
-        android:parentActivityName=".activities.ListReportsActivity"></activity>
-    <activity android:name=".activities.UploadImagesActivity" android:label="Upload Images"
-        android:parentActivityName=".activities.CreateReportActivity" android:theme="@style/AppTheme.NoActionBar">
-        <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.ireport.activities.CreateReportActivity" />
-    </activity>
-
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key" />
-
-    <activity android:name="com.ireport.activities.MapsActivity" android:label="@string/title_activity_maps"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_signout"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
 
-</application>
+        <activity android:name=".activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ListReportsActivity"
+            android:label="@string/title_activity_list_reports"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
+        <activity
+            android:name=".activities.CreateReportActivity"
+            android:label="Create a New Report"
+            android:parentActivityName=".activities.ListReportsActivity">
+        </activity> <!-- Include the AdActivity configChanges and theme. -->
+
+        <activity
+            android:name=".activities.ViewNotificationsActivity"
+            android:label="Your Notifications"
+            android:parentActivityName=".activities.ListReportsActivity">
+        </activity>
+        <activity
+            android:name=".activities.ViewProfileActivity"
+            android:label="Your Profile"
+            android:parentActivityName=".activities.ListReportsActivity">
+        </activity>
+        <activity
+            android:name=".activities.UploadImagesActivity"
+            android:label="Upload Images"
+            android:parentActivityName=".activities.CreateReportActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ireport.activities.CreateReportActivity"/>
+        </activity>
+        <activity android:name=".activities.CustomPhotoGalleryActivity"
+            android:label="Select from custom" />
+        <activity android:name=".activities.ViewReportActivity"/>
+    </application>
 
 </manifest>
