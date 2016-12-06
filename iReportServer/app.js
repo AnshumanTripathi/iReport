@@ -11,6 +11,7 @@ var user = require('./routes/user/user');
 var reportTest = require("./routes/report/reportTest");
 var report = require('./routes/report/reports');
 var host = require("./routes/SharedConst").host;
+var email = require("./routes/emailNotify");
 var app = express();
 
 //Create Mongo Connection
@@ -52,6 +53,7 @@ app.post('/testPic',function (req,res) {
     res.write(img);
     res.end();
 });
+app.get('/sendEmail',email.sendEmail);
 app.get('/getFile',reportTest.getFile);
 app.post('/testGrid',reportTest.uploadFile);
 
