@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     */
         LocationUtils LU = new LocationUtils();
         String Address = LU.getAddress(this,37.3354123, -121.8853178);
-        Log.d("Address of coordinates",Address);
+        Log.d("Address of coordinates",""+Address);
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
