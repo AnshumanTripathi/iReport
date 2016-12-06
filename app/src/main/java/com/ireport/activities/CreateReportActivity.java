@@ -1,5 +1,37 @@
 package com.ireport.activities;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ireport.R;
 import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.cameraUtils.CameraUtility;
@@ -8,36 +40,6 @@ import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
 import com.ireport.model.AppContext;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.graphics.Bitmap;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
-
-import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -58,7 +60,11 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private final ArrayList<String> imageStringArray = new ArrayList<String>();
     private final ArrayList<Bitmap> ResponseimageArray = new ArrayList<Bitmap>();
+    private final ArrayList<Bitmap> ShowImagesCaptured = new ArrayList<Bitmap>();
     private final int PICK_IMAGE_MULTIPLE =1;
+    private LinearLayout lnrImages;
+    private ArrayList<String> imagesPathList;
+    private Bitmap yourbitmap;
     private TextView numImagesTextView;
     private int numImages = 0;
     // Report data
@@ -80,12 +86,26 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         //lu.getCurrentLocation(this,ctx);
         ///////////////////////////////////////////////////////////
 
+
+        ///////////////////////////////////////////////////////////
+        /* 
+        Get Address Line i.e. Street Address from lat,long  of current location
+        Change the lat long after taking it from current location
+        and auto-populate Address line while adding Report
+        */
+        //LocationUtils LU = new LocationUtils();
+        //String Address = LU.getAddress(this,37.3354123, -121.8853178);
+        //Log.d("Address of coordinates",Address);
+        ///////////////////////////////////////////////////////////
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         descriptionText = (EditText) findViewById(R.id.user_litter_desc);
 
         radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
+
+        lnrImages=(LinearLayout)findViewById(R.id.lnrImages);
 
         reportData = new ReportData();
         // always set emailid
@@ -378,6 +398,48 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 " images added to report.");
         if (data != null)
             imageStringArray.add(getStringImage((Bitmap) data.getExtras().get("data")));
+
+        ////Store captured image in sdcard of device
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+        Log.d("captured",destination.getPath());
+
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /////////////////////////////////////////////
+
+        //Show images taken from camera in list format i.e. in linear layout
+        ShowImagesCaptured.add((Bitmap) data.getExtras().get("data"));
+
+        if(ShowImagesCaptured.size()!=0) {
+            lnrImages.removeAllViews();
+            for (int i = 0; i < ShowImagesCaptured.size(); i++) {
+                yourbitmap = ShowImagesCaptured.get(i);
+                ImageView imageView = new ImageView(this);
+                imageView.setImageBitmap(yourbitmap);
+                imageView.setAdjustViewBounds(true);
+                ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(lnrImages.getLayoutParams());
+                params.setMargins(10, 10, 10, 10);
+                imageView.setPadding(10, 10, 10, 10);
+                //Take lnrImages as a linear layout in Activity
+                lnrImages.addView(imageView, params);
+            }
+        }
+        /////////////////////////////////////////////
+
     }
 
     // For camera. This method converts Image to String

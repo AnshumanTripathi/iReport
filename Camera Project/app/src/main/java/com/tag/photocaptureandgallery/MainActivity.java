@@ -1,15 +1,5 @@
 package com.tag.photocaptureandgallery;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -39,6 +29,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.takeimage.R;
 
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -185,7 +184,7 @@ public class MainActivity extends Activity {
 		imagesPathList = new ArrayList<String>();
 
 		String[] imagesPath = data.getStringExtra("data").split("\\|");
-		String url = "http://10.250.228.65:3000/testPic";
+
 		try{
 			lnrImages.removeAllViews();
 		}catch (Throwable e){
@@ -196,7 +195,7 @@ public class MainActivity extends Activity {
 			yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
 			imageStringArray.add(getStringImage(yourbitmap));
 		}
-		getImage(url);
+		getImage();
 
 		for(int i=0;i<ResponseimageArray.size();i++)
 		{
@@ -217,7 +216,7 @@ public class MainActivity extends Activity {
     */
 	public void PostReport()
 	{
-		String url = "http://10.250.228.65:3000/postReport";
+		String url = "http://192.168.0.19:3000/postReport";
 		RequestQueue queue = Volley.newRequestQueue(this);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 			@Override
@@ -246,7 +245,7 @@ public class MainActivity extends Activity {
 		}, new Response.ErrorListener(){
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				Log.d("Error","in error");
+				Log.d("Error",error.toString());
 			}
 		}){
 			@Override
@@ -280,7 +279,7 @@ public class MainActivity extends Activity {
 	public void getReport()
 	{
 				RequestQueue queue = Volley.newRequestQueue(this);
-		String url1 ="http://10.250.228.65:3000/getReport";
+		String url1 ="http://192.168.0.19:3000/getReport";
 // Request a string response from the provided URL.
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, url1,
 				new Response.Listener<String>() {
@@ -310,9 +309,9 @@ public class MainActivity extends Activity {
 	This method is for testing..
 	You can modify it to any other function
 	 */
-	public void getImage(String url)
+	public void getImage()
 	{
-
+		String url ="http://192.168.0.19:3000/testPic";
 		RequestQueue queue = Volley.newRequestQueue(this);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 			@Override

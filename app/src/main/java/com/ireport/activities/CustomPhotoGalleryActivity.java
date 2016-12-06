@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.ireport.R;
 
 /**
- * Created by saurabhkulkarni on 11/29/16.
+ * Created by Aparna kulkarni on 11/29/16.
  */
 public class CustomPhotoGalleryActivity extends Activity {
 
@@ -132,7 +132,6 @@ public class CustomPhotoGalleryActivity extends Activity {
 
     /**
      * List adapter
-     * @author tasol
      */
 
     public class ImageAdapter extends BaseAdapter {
@@ -208,7 +207,6 @@ public class CustomPhotoGalleryActivity extends Activity {
 
     /**
      * Inner class
-     * @author tasol
      */
     class ViewHolder {
         ImageView imgThumb;

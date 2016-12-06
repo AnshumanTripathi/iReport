@@ -1,0 +1,7 @@
+#Mon Dec 05 20:15:43 PST 2016
+base.0=/Users/saurabhkulkarni/IReport/iReport/Camera Project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5ab86c11d279815336c73311227071447fd4ddec
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=/Users/saurabhkulkarni/IReport/iReport/Camera Project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_318f86269e40ad08163f0fce976088d376ceff84/classes.dex
+base.1=/Users/saurabhkulkarni/IReport/iReport/Camera Project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_318f86269e40ad08163f0fce976088d376ceff84
+file.0=/Users/saurabhkulkarni/IReport/iReport/Camera Project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5ab86c11d279815336c73311227071447fd4ddec/classes.dex
