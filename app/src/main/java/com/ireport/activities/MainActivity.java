@@ -1,5 +1,12 @@
 package com.ireport.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.firebase.ui.auth.AuthUI;
@@ -8,21 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
-import com.ireport.model.LocationDetails;
-import com.ireport.model.ReportData;
-import com.ireport.model.Settings;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-
-import java.util.ArrayList;
+import com.ireport.controller.utils.locationUtils.LocationUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static int RC_SIGN_IN = 0;
@@ -41,6 +34,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppEventsLogger.activateApp(this);
 
         setContentView(R.layout.activity_main);
+
+    /* 
+    Get Address from lat,long 
+    Change the lat long after taking it from current location
+    and auto-populate Address line while adding Report
+    */
+        LocationUtils LU = new LocationUtils();
+        String Address = LU.getAddress(this,37.3354123, -121.8853178);
+        Log.d("Address of coordinates",Address);
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
