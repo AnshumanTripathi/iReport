@@ -12,4 +12,6 @@ public class Constants {
     // email id: dont harcode
     final public static String SANDHYA_EMAIL = "sandhyafeb1990@gmail.com";
     final public static String MR_SANJAY_DUTT_EMAIL = "sanjay_dutt@gmail.com";
+
+    final public static double DISTANCE_TO_UPDATE_REPORT = 30.0;
 }
