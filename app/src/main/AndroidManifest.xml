@@ -92,8 +92,8 @@
                 android:value="com.ireport.activities.CreateReportActivity"/>
         </activity>
         <activity android:name=".activities.CustomPhotoGalleryActivity"
-            android:label="Select from custom" >
-        </activity>
+            android:label="Select from custom" />
+        <activity android:name=".activities.ViewReportActivity"/>
     </application>
 
 </manifest>

@@ -7,6 +7,9 @@ import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,9 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListReportsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity {
@@ -37,6 +37,14 @@ public class ListReportsActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /* Sandhya - Testing View Report Activity*/
+
+        /*/Send a report object with app context
+
+
+        Intent intent = new Intent(this,ViewReportActivity.class);
+        startActivity(intent);
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
