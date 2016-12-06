@@ -56,7 +56,7 @@ public class LocationUtils {
         try {
             addresses = geocoder.getFromLocation(lat, long1, 1);
 
-            if (addresses != null) {
+            if (addresses != null && addresses.size() > 0) {
                 Address returnedAddress = addresses.get(0);
                 retAddress = returnedAddress.getAddressLine(0).toString();
                 Log.d("Address is :", retAddress);

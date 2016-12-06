@@ -77,40 +77,23 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     private static final int ACCESS_COARSE_LOCATION = 1;
     AppContext ctx = AppContext.getInstance();
 
+    //handlers
+    AddReportHandler uih = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
 
-        ///////////////////////////////////////////////////////////
-        //Calling to get the current location of the user.
-        //Test Code: Sandhya , use this fn for reference
-        //CurrentLocationUtil lu = new CurrentLocationUtil();
-        //lu.getCurrentLocation(this,ctx);
-        ///////////////////////////////////////////////////////////
-
-
-        ///////////////////////////////////////////////////////////
-        /* 
-        Get Address Line i.e. Street Address from lat,long  of current location
-        Change the lat long after taking it from current location
-        and auto-populate Address line while adding Report
-        */
-        //LocationUtils LU = new LocationUtils();
-        //String Address = LU.getAddress(this,37.3354123, -121.8853178);
-        //Log.d("Address of coordinates",Address);
-        ///////////////////////////////////////////////////////////
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         descriptionText = (EditText) findViewById(R.id.user_litter_desc);
-
         radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
-
         lnrImages=(LinearLayout)findViewById(R.id.lnrImages);
 
+        //create a new object for report data
         reportData = new ReportData();
+
         // always set emailid
         reportData.setReporteeID(Constants.SANDHYA_EMAIL);
 
@@ -123,35 +106,85 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         });
 
         locationButton = (Button) findViewById(R.id.enterLocation);
-        CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
-        LocationUtils LU = new LocationUtils();
-        String locationStreetAddress = LU.getAddress(this,37.3354123, -121.8853178);
 
-        mLocationText = (TextView) findViewById(R.id.enterLocation);
-        Log.d(TAG,"Address of coordinates" + locationStreetAddress);
+
+        //read the litter size from the add report page
+        radioGroupSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String litterSize = ((RadioButton) findViewById(
+                        radioGroupSize.getCheckedRadioButtonId())).
+                        getText().
+                        toString();
+
+                //set the size of the litter in the report data object
+                reportData.setSize(litterSize);
+            }
+        });
+
+        //read the litter severity from the add report page
+        radioGroupSeverity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String severity = ((RadioButton) findViewById(
+                        radioGroupSeverity.getCheckedRadioButtonId())).
+                        getText().
+                        toString();
+
+                //set the severity of the litter in the report data object
+                reportData.setSeverityLevel(severity);
+            }
+        });
+
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
-                 Log.d(TAG,"Trying to get street address!");
-                 //Log.d(TAG, ctx.getCurrentLocation().toString());
-                 //mLocationText.setText(ctx.getCurrentLocation().toString());
+                //get current location and fill it in the context
+                CurrentLocationUtil.getCurrentLocation(CreateReportActivity.this, ctx);
 
+                //using the currnet coordinated, give the street address back
+                LocationUtils LU = new LocationUtils();
+
+                //get the street address only if the current location is available
+                if(ctx.getCurrentLocation() != null) {
+
+                    double curLat = ctx.getCurrentLocation().getLatitude();
+                    double curLng = ctx.getCurrentLocation().getLatitude();
+
+                    String locationStreetAddress = LU.getAddress(
+                            getApplicationContext(),
+                            curLat,
+                            curLng
+                    );
+
+                    //if street address is available, then only set the address
+                    if(locationStreetAddress != null && locationStreetAddress.length() > 0) {
+                        mLocationText = (TextView) findViewById(R.id.enterLocation);
+                        Log.d(TAG, "Address of coordinates" + locationStreetAddress);
+                    }
+                }
             }
         });
 
         numImagesTextView = (TextView) findViewById(R.id.number_of_images);
         numImagesTextView.setText(Integer.toString(numImages) + " images added to report");
         saveButton = (Button) findViewById(R.id.create_report_button);
+
+        //save button is create new report button
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // create a new report
+
+                // create a new report object and send to the server
+
+                //set the location
                 if (ctx.getCurrentLocation() != null) {
                     reportData.setLocation(ctx.getCurrentLocation());
                 } else {
-                    reportData.setLocation(new LocationDetails(12.12, 12.13));
+                    reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
+                            Constants.DEF_LNG));
                 }
+
                 // put images together
                 String images = "";
                 for (int i = 0; i < imageStringArray.size(); i++) {
@@ -162,11 +195,15 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     images.substring(0, images.length() - 1);
                 }
                 reportData.setImages(images);
+
+                //fill in the description
                 reportData.setDescription(descriptionText.getText().toString());
-                AddReportHandler uih = new AddReportHandler(
+
+                uih = new AddReportHandler(
                     CreateReportActivity.this, "create_report_activity", reportData);
                 Log.d(TAG, "Sending: " + reportData.toString());
                 uih.addNewReport();
+
                 Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
 
                 //Go back to parent activity
