@@ -205,7 +205,7 @@
     <!-- ***********************Defined By Anshuman********************* -->
 
     <string name="title_activity_maps">Map</string>
-    <string name="facebook_app_id">395019697311167</string>
+    <string name="facebook_app_id">** Facebook App id here**</string>
     <string name="homeText">Login Here</string>
     <string name="title_activity_google_sign_in_activty">GoogleSignInActivty</string>
     <string name="signIn">Sign In</string>
