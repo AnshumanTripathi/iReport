@@ -115,6 +115,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
         lnrImages=(LinearLayout)findViewById(R.id.lnrImages);
         ErrorMessage=(TextView) findViewById(R.id.error_message);
+        mLocationText = (TextView) findViewById(R.id.enterLocation);
 
         saveButton = (Button) findViewById(R.id.create_report_button);
         numImagesTextView = (TextView) findViewById(R.id.number_of_images);
@@ -125,7 +126,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         reportData = new ReportData();
 
         // always set emailid
-        reportData.setReporteeID(Constants.SANDHYA_EMAIL);
+        reportData.setReporteeID(ctx.getCurrentLoggedInUser().getEmail());
 
         mUploadImagesButton = (Button) findViewById(R.id.add_images_button);
         mUploadImagesButton.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +201,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
                     //if street address is available, then only set the address
                     if(locationStreetAddress != null && locationStreetAddress.length() > 0) {
-                        mLocationText = (TextView) findViewById(R.id.enterLocation);
+                        mLocationText.setText(locationStreetAddress);
                         Log.d(TAG, "Address of coordinates" + locationStreetAddress);
                     }
                 }
@@ -221,62 +222,48 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 ErrorMessage.setText("");
                 Allerrors.delete(0,Allerrors.toString().length());
 
-               // Log.d("Description is", descriptionText.getText().toString());
-                if(ValidateReportFields())
-                {
-                    // put images together
-                    String images = TextUtils.join(",", imageStringArray);;
-                    reportData.setImages(images);
+                //Save the desc in report data now
+                reportData.setDescription(descriptionText.getText().toString());
 
-                    //fill in the description
-                    if(descriptionText.getText().toString().length()!=0) {
-                        reportData.setDescription(descriptionText.getText().toString());
-                    }
-                    uih = new AddReportHandler(
+                //save the images in report data now
+                // put images together
+                String images = TextUtils.join(",", imageStringArray);;
+                reportData.setImages(images);
+
+                //If validation passes set everything in the reportData Object
+                if(ValidateReportFields(reportData))
+                {
+                   uih = new AddReportHandler(
                             CreateReportActivity.this, "create_report_activity", reportData);
                     Log.d(TAG, "Sending: " + reportData.toString());
                     uih.addNewReport(getApplicationContext());
 
                     Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
+
                     //Go back to parent activity
                     Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
                     startActivity(upIntent);
                 }
                 else
                 {
-                    ErrorMessage.setText(Allerrors.toString());
-                    Toast.makeText(getBaseContext(), "Report Can not be created", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            getBaseContext(),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
-
-                /*// put images together
-                Log.v("Images", imageStringArray.get(0));
-                Log.v("Images", "***********************************************");
-                Log.v("Images", imageStringArray.get(1));
-                ArrayList <String> x = new ArrayList<String>(2);
-                x.add("Hello");x.add("World");
-                String y = TextUtils.join(",", x);
-                Log.v("Images", y);
-
-                String mf = TextUtils.join(",", imageStringArray);
-
-                String allImages = TextUtils.join(",", imageStringArray);
-                reportData.setImages(allImages);
-                Log.v("Images", "Number of images is " + Integer.toString(imageStringArray.size()));
-                Log.v("Images", allImages);
-                */
             }
         });
     }
 
-    public boolean ValidateReportFields()
-    {
 
-        if(descriptionText.getText().toString().equals(""))
+    // This function will validate the report fields.
+    public boolean ValidateReportFields(ReportData reportdata)
+    {
+        if(reportdata.getDescription().equals(""))
         {
-            //Log.d("Description is", descriptionText.getText().toString());
             Allerrors.append("Description is mandatory\n");
         }
-        if(reportData.getSize()==null)
+        if(reportData.getSize() == null)
         {
             Allerrors.append("Please select size\n");
         }
@@ -284,15 +271,14 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         {
             Allerrors.append("Please select Severity Level\n");
         }
-        if(imageStringArray.size()==0)
+        if(reportdata.getImages().length() == 0 || imageStringArray.size() == 0)
         {
             Allerrors.append("Atleast one Image is necessary\n");
         }
 
-        if(Allerrors.length()==0)
+        if(Allerrors.length() == 0)
             return true;
         return false;
-
     }
 
     public void SetLocation()
@@ -304,7 +290,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
                     Constants.DEF_LNG));
         }
-
     }
 
     @Override
@@ -352,8 +337,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
 
     }
-
-
 
     /*
        These functions will help in fetching the current location for the user.
@@ -515,30 +498,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         }
     }
-
-    // camera
-    /*
-    @SuppressWarnings("deprecation")
-    private void onSelectFromGalleryResult(Intent data) {
-        Bitmap yourbitmap;
-        ArrayList<String> imagesPathList;
-        ArrayList<String> imageStringArray= new ArrayList<String>();
-        String[] imagesPath = data.getStringExtra("data").split("\\|");
-        imagesPathList = new ArrayList<String>();
-
-        for (int i=0;i<imagesPath.length;i++){
-            imagesPathList.add(imagesPath[i]);
-            yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
-            imageStringArray.add(getStringImage(yourbitmap));
-        }
-
-        for(int i = 0;i < ResponseimageArray.size(); i++) {
-            yourbitmap = ResponseimageArray.get(i);
-            ImageView imageView = new ImageView(this);
-            imageView.setImageBitmap(yourbitmap);
-            imageView.setAdjustViewBounds(true);
-        }
-    } */
 
     private void onCaptureImageResult(Intent data) {
         numImages++;
