@@ -19,3 +19,13 @@
 *.jpg
 writeto/
 /bin/
+Android-Take-Photo-From-Camera-and-Gallery-Code-Sample-master/gradlew
+Android-Take-Photo-From-Camera-and-Gallery-Code-Sample-master/gradlew.bat
+Android-Take-Photo-From-Camera-and-Gallery-Code-Sample-master/local.properties
+Android-Take-Photo-From-Camera-and-Gallery-Code-Sample-master/gradle/wrapper/gradle-wrapper.jar
+Android-Take-Photo-From-Camera-and-Gallery-Code-Sample-master/gradle/wrapper/gradle-wrapper.properties
+app/gradlew
+app/gradlew.bat
+app/local.properties
+app/gradle/wrapper/gradle-wrapper.jar
+app/gradle/wrapper/gradle-wrapper.properties

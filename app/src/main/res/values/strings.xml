@@ -6,8 +6,6 @@
     <string name="email">Email</string>
     <string name="address">Address</string>
     <string name="submit">Submit</string>
-    <string name="facebook_application_id">1634052013566657</string>
-    <string name="facebook_app_id">1634052013566657</string>
     <string name="fb_login_protocol_scheme">fb1634052013566657</string>
     <string name="title_activity_list_reports">ListReports</string>
 
@@ -203,5 +201,23 @@
         completions."
     </string>
     <string name="title_activity_upload_images">UploadImagesActivity</string>
+
+    <!-- ***********************Defined By Anshuman********************* -->
+
     <string name="title_activity_maps">Map</string>
+    <string name="facebook_app_id">395019697311167</string>
+    <string name="homeText">Login Here</string>
+    <string name="title_activity_google_sign_in_activty">GoogleSignInActivty</string>
+    <string name="signIn">Sign In</string>
+    <string name="signOut">Sign Out</string>
+    <string name="emailSignIn">Log In with Email</string>
+    <string name="signUp">Sign Up</string>
+    <string name="emailHint">jon.doe@email.com</string>
+    <string name="password">Password</string>
+    <string name="passwordHint">********</string>
+    <string name="forgotPassword">Forgot Password</string>
+    <string name="resetPassword">Reset Password</string>
+    <string name ="resetPasswordConfirm">Reset Password Email Sent!</string>
+
+    <!--  *******************************************************   -->
 </resources>

@@ -202,7 +202,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 uih = new AddReportHandler(
                     CreateReportActivity.this, "create_report_activity", reportData);
                 Log.d(TAG, "Sending: " + reportData.toString());
-                uih.addNewReport();
+                uih.addNewReport(getApplicationContext());
 
                 Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
 

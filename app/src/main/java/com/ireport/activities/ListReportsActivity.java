@@ -57,8 +57,8 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        GetUserForEmailID getUserForEmailID = new GetUserForEmailID(this, "getUser", Constants.SANDHYA_EMAIL);
-        getUserForEmailID.getUserDataForEmail();
+        getUserForEmailID = new GetUserForEmailID(this, "getUser", Constants.SANDHYA_EMAIL);
+        getUserForEmailID.getUserDataForEmail(getApplicationContext());
 
         // Load any reports
         reportDataList = new ArrayList<>();

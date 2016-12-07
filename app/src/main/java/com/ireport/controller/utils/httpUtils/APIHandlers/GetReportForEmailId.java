@@ -1,5 +1,6 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.ireport.activities.ICallbackActivity;
@@ -111,8 +112,8 @@ public class GetReportForEmailId extends HttpBaseCommunicator {
         return params;
     }
 
-    public void getReportForEmailId() {
-        this.sendHttpPostRequest();
+    public void getReportForEmailId(Context ctx) {
+        this.sendHttpPostRequest(ctx);
         System.out.println("returning from UI thread immediately");
     }
 }

@@ -1,5 +1,7 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
+
 import com.ireport.activities.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
@@ -41,8 +43,8 @@ public class GetAllUsersHandler extends HttpBaseCommunicator {
         return new HashMap<>();
     }
 
-    public void getAllUsersData() {
-        this.sendHttpGetRequest();
+    public void getAllUsersData(Context ctx) {
+        this.sendHttpGetRequest(ctx);
         System.out.println("returning from UI thread immediately");
     }
 }

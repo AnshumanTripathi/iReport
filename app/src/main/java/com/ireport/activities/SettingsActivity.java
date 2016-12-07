@@ -24,6 +24,8 @@ public class SettingsActivity extends PreferenceActivity implements
     private static String emailStr = "notifications_email_confirmation";
     private static String notificationStr = "notifications_status_change";
 
+    UpdateSettingsHandler updateSettingsHandler = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +56,9 @@ public class SettingsActivity extends PreferenceActivity implements
                 sharedPreferences.getBoolean(anonStr, false)
             );
             Log.d(TAG, settings.toString());
-            UpdateSettingsHandler updateSettingsHandler = new UpdateSettingsHandler
+            updateSettingsHandler = new UpdateSettingsHandler
                     (this, "settings_activity", Constants.SANDHYA_EMAIL, settings);
-            updateSettingsHandler.updateSettingForUser();
+            updateSettingsHandler.updateSettingForUser(getApplicationContext());
         }
     }
 

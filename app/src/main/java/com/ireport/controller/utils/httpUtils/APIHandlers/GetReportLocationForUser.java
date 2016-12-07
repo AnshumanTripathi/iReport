@@ -1,5 +1,6 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.ireport.activities.ICallbackActivity;
@@ -57,8 +58,8 @@ public class GetReportLocationForUser extends HttpBaseCommunicator {
         return params;
     }
 
-    public void getAllReportsLocation() {
-        this.sendHttpPostRequest();
+    public void getAllReportsLocation(Context ctx) {
+        this.sendHttpPostRequest(ctx);
         System.out.println("returning from UI thread immediately");
     }
 

@@ -1,5 +1,7 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
+
 import com.ireport.activities.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
@@ -63,8 +65,8 @@ public class UpdateSettingsHandler extends HttpBaseCommunicator {
         return params;
     }
 
-    public void updateSettingForUser() {
-        this.sendHttpPostRequest();
+    public void updateSettingForUser(Context ctx) {
+        this.sendHttpPostRequest(ctx);
         System.out.println("returning from UI thread immediately");
     }
 

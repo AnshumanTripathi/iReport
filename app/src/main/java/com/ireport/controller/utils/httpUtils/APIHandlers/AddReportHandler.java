@@ -1,5 +1,7 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
+import android.content.Context;
+
 import com.ireport.activities.ICallbackActivity;
 import com.ireport.controller.IReportException;
 import com.ireport.controller.utils.Constants;
@@ -62,8 +64,8 @@ public class AddReportHandler extends HttpBaseCommunicator {
         return params;
     }
 
-    public void addNewReport() {
-        this.sendHttpPostRequest();
+    public void addNewReport(Context ctx) {
+        this.sendHttpPostRequest(ctx);
         System.out.println("returning from UI thread immediately");
     }
 }
