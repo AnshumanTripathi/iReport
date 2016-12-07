@@ -1,10 +1,5 @@
 package com.ireport.activities;
 
-import com.ireport.R;
-import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
-import com.ireport.model.ReportData;
-
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +10,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ireport.R;
+import com.ireport.model.AppContext;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
 
 public class ViewReportActivity extends AppCompatActivity {
     public static String TAG = "ViewReportActivity";
@@ -27,9 +27,9 @@ public class ViewReportActivity extends AppCompatActivity {
 
     AppContext ctx = AppContext.getInstance();
 
-    public ViewReportActivity() {
-        ctx.statusChangedByApp = false;
-    }
+//    public ViewReportActivity() {
+//        ctx.statusChangedByApp = false;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
