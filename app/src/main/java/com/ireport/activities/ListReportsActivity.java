@@ -29,6 +29,8 @@ public class ListReportsActivity extends AppCompatActivity
     private static String TAG = "ListReportsActivity";
     private UserInfo userInfo;
     List<ReportData> reportDataList;
+    GetAllReportsHandler getAllReportsHandler = null;
+    GetUserForEmailID getUserForEmailID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,8 @@ public class ListReportsActivity extends AppCompatActivity
 
         // Load any reports
         reportDataList = new ArrayList<>();
-        GetAllReportsHandler getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
-        getAllReportsHandler.getAllReportsData();
+        getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
+        getAllReportsHandler.getAllReportsData(getApplicationContext());
 
     }
 
