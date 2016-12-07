@@ -42,9 +42,12 @@ public class ListReportsActivity extends AppCompatActivity
     public static final String[] titles = new String[] { "Strawberry",
             "Banana", "Orange", "Mixed" , "one", "one more", "one more too", "two"};
 
+    public static final String[] status = new String[] { "111111111",
+            "22222222222", "33333333333", "44444444" , "555555555", "66666666", "7", "8"};
+
     public static final String[] descriptions = new String[] {
             "It is an aggregate accessory fruit",
-            "It is the largest herbaceous flowering plant", "Citrus Fruit",
+            "It is the", "Citrus Fruit",
             "Mixed Fruits","one", "one more", "one more too", "two" };
 
     public static final Integer[] images = { R.drawable.report_icon,
@@ -101,7 +104,8 @@ public class ListReportsActivity extends AppCompatActivity
             ListActivityRowClass item = new ListActivityRowClass(
                     images[i],
                     titles[i],
-                    descriptions[i]
+                    descriptions[i],
+                    status[i]
             );
             rowItems.add(item);
         }
