@@ -131,8 +131,28 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
+                userEmail = "somyaaggarwal@ymail.com";
+                System.out.println("User email: "+userEmail);
+
+                //set the current user in app context
+                AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
+
+                //create the new user on server
+                addUserHandler = new AddUserHandler(
+                        MainActivity.this,
+                        "Add new user",
+                        userEmail,
+                        false);
+                addUserHandler.addNewUser(getApplicationContext());
+
+                //direct the user to list reports activity
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        ListReportsActivity.class
+                );
                 startActivity(intent);
+
+                updateUI();
             }
         });
 
@@ -224,8 +244,10 @@ public class MainActivity extends AppCompatActivity implements
                                 false);
                         addUserHandler.addNewUser(getApplicationContext());
 
+                        //direct the user to list reports activity now
                         Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
                         startActivity(intent);
+
                         if (!task.isSuccessful()) {
                             //Signin Failed
                             Log.w(TAG, "signInWithCredential", task.getException());
@@ -253,8 +275,8 @@ public class MainActivity extends AppCompatActivity implements
                                             JSONObject object,
                                             GraphResponse response) {
                                         try {
-                                            System.out.println("Here: " + object.getString("email"));
                                             userEmail = object.getString("email");
+                                            System.out.println("User email: "+userEmail);
 
                                             //set the current user in app context
                                             AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
@@ -267,13 +289,19 @@ public class MainActivity extends AppCompatActivity implements
                                                     false);
                                             addUserHandler.addNewUser(getApplicationContext());
 
+                                            //direct the user to list reports activity
+                                            Intent intent = new Intent(
+                                                    MainActivity.this,
+                                                    ListReportsActivity.class
+                                            );
+                                            startActivity(intent);
+
                                             updateUI();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 });
-                        System.out.println("User email: "+userEmail);
                         Bundle parameters = new Bundle();
                         parameters.putString("fields", "id, name, email");
                         request.setParameters(parameters);
@@ -305,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         if(responseObj instanceof String) {
             Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
-            if(responseObj.toString() == "200") {
+            if(responseObj.toString() == "200" || responseObj.toString() == "501") {
                 Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
             } else {
                 Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");

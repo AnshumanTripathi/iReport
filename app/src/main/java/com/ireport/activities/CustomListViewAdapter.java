@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.ireport.R;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 /**
@@ -45,16 +43,16 @@ public class CustomListViewAdapter extends ArrayAdapter<ListActivityRowClass> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item, null);
             holder = new ViewHolder();
-            holder.txtDesc = (TextView) convertView.findViewById(R.id.desc);
-            holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
+            holder.txtDesc = (TextView) convertView.findViewById(R.id.description);
+            holder.txtTitle = (TextView) convertView.findViewById(R.id.streetAddress);
             holder.imageView = (ImageView) convertView.findViewById(R.id.icon);
             holder.status = (TextView) convertView.findViewById(R.id.status);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
 
-        holder.txtDesc.setText(rowItem.getDesc());
-        holder.txtTitle.setText(rowItem.getTitle());
+        holder.txtDesc.setText(rowItem.getStreetAddress());
+        holder.txtTitle.setText(rowItem.getDescription());
         holder.imageView.setImageResource(rowItem.getImageId());
         holder.status.setText(rowItem.getStatus());
 

@@ -5,15 +5,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -37,31 +40,15 @@ public class ListReportsActivity extends AppCompatActivity
 
     private static String TAG = "ListReportsActivity";
     private UserInfo userInfo;
+
     List<ReportData> reportDataList;
-    GetAllReportsHandler getAllReportsHandler = null;
+
+    GetReportForEmailId getCurrUserReports = null;
     GetUserForEmailID getUserForEmailID = null;
 
+    AppContext ctx = AppContext.getInstance();
+
     /*********************************List Report Activity Code: Somya*****************************/
-    public static final String[] titles = new String[] { "Strawberry",
-            "Banana", "Orange", "Mixed" , "one", "one more", "one more too", "two"};
-
-    public static final String[] status = new String[] { "111111111",
-            "22222222222", "33333333333", "44444444" , "555555555", "66666666", "7", "8"};
-
-    public static final String[] descriptions = new String[] {
-            "It is an aggregate accessory fruit",
-            "It is the", "Citrus Fruit",
-            "Mixed Fruits","one", "one more", "one more too", "two" };
-
-    public static final Integer[] images = { R.drawable.report_icon,
-            R.drawable.report_icon, 
-            R.drawable.report_icon,
-            R.drawable.report_icon,
-            R.drawable.report_icon,
-            R.drawable.report_icon,
-            R.drawable.report_icon,
-            R.drawable.report_icon };
-
     ListView listView;
     List<ListActivityRowClass> rowItems;
     /**********************************************************************************************/
@@ -93,32 +80,20 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        getUserForEmailID = new GetUserForEmailID(this, "getUser", Constants.SANDHYA_EMAIL);
-        getUserForEmailID.getUserDataForEmail(getApplicationContext());
+        String currUserEmail = ctx.getCurrentLoggedInUser().getEmail();
+        Log.d(TAG,currUserEmail);
+        //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
+        //getUserForEmailID.getUserDataForEmail(getApplicationContext());
 
         // Load any reports
         reportDataList = new ArrayList<>();
-        getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
-        getAllReportsHandler.getAllReportsData(getApplicationContext());
+        getCurrUserReports = new GetReportForEmailId(this,
+                "getAllReportsForUser",
+                currUserEmail
+        );
+        getCurrUserReports.getReportForEmailId(getApplicationContext());
 
-        /*****************Code by Somya********************/
-        rowItems = new ArrayList<ListActivityRowClass>();
-        for (int i = 0; i < titles.length; i++) {
-            ListActivityRowClass item = new ListActivityRowClass(
-                    images[i],
-                    titles[i],
-                    descriptions[i],
-                    status[i]
-            );
-            rowItems.add(item);
-        }
 
-        listView = (ListView) findViewById(R.id.list);
-        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
-                R.layout.list_item, rowItems);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-        /*******************************************************/
     }
 
     @Override
@@ -210,18 +185,44 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         // sample code.
-        Log.d(TAG, "In onPostProcessCompletion");
         if (responseObj instanceof UserInfo) {
-            Log.d(TAG, "got userinfo!!!!");
+            Log.d(TAG, "got userinfo");
             userInfo = (UserInfo) responseObj;
             Log.d(TAG, userInfo.toString());
             Log.d(TAG, userInfo.getSettings().toString());
         } else if (responseObj instanceof List) {
-            Log.d(TAG, "Got a bunch of reports!");
-            for (ReportData report : (ArrayList <ReportData>) responseObj) {
-                Log.d(TAG, report.toString());
+            Log.d(TAG, "Got a list of reports for this user.");
+
+            if(((List) responseObj).size() == 0) {
+                // No reports to show for the user.
+                //Point him to a different activity or a view etc.
+                //TODO: Pending.
+            } else {
+                //Reports received from the server is more than 1
+                Log.d(TAG,"Multiple reports received for this user from the server");
+                populateListViewElements((ArrayList<ReportData>) responseObj);
             }
         }
+    }
 
+    // this method will populate the reports data in the list view on the activity
+    private void populateListViewElements(ArrayList<ReportData> reportList) {
+        rowItems = new ArrayList<ListActivityRowClass>();
+
+        for (int i = 0; i < reportList.size(); i++) {
+            ListActivityRowClass item = new ListActivityRowClass(
+                    Integer.valueOf(reportList.get(i).getImages()),
+                    reportList.get(i).getDescription(),
+                    reportList.get(i).getStreetAddress(),
+                    reportList.get(i).getStatus()
+            );
+            rowItems.add(item);
+        }
+
+        listView = (ListView) findViewById(R.id.list);
+        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
+                R.layout.list_item, rowItems);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
     }
 }

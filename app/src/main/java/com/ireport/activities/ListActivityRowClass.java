@@ -7,8 +7,8 @@ package com.ireport.activities;
 public class ListActivityRowClass {
 
     private int imageId;
-    private String title;
-    private String desc;
+    private String description;
+    private String streetAddress;
     private String status;
 
     public String getStatus() {
@@ -21,8 +21,8 @@ public class ListActivityRowClass {
 
     public ListActivityRowClass(int imageId, String title, String desc, String status) {
         this.imageId = imageId;
-        this.title = title;
-        this.desc = desc;
+        this.description = title;
+        this.streetAddress = desc;
         this.status = status;
     }
     public int getImageId() {
@@ -31,21 +31,21 @@ public class ListActivityRowClass {
     public void setImageId(int imageId) {
         this.imageId = imageId;
     }
-    public String getDesc() {
-        return desc;
+    public String getStreetAddress() {
+        return streetAddress;
     }
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
-    public String getTitle() {
-        return title;
+    public String getDescription() {
+        return description;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescription(String description) {
+        this.description = description;
     }
     @Override
     public String toString() {
-        return title + "\n" + desc;
+        return description + "\n" + streetAddress;
     }
 }
 

@@ -11,30 +11,15 @@ import java.util.List;
  */
 
 public class ReportData {
-    //Images
-    private String images;
 
-    //UserInfo Location
+    private String images;
     private LocationDetails location;
     private String description;
-
-    //Area size
     private String size;
-
-    //Severity Level
     private String severityLevel;
-
-    private String reporteeID;      // the userID who reported it
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
+    private String reporteeID;
     private String status;
+    private String streetAddress;
 
     public ReportData() {
 
@@ -46,7 +31,8 @@ public class ReportData {
             String description,
             String size,
             String severityLevel,
-            LocationDetails location
+            LocationDetails location,
+            String streetAddress
     ) {
         this.reporteeID = email;
         this.images = images;
@@ -54,8 +40,24 @@ public class ReportData {
         this.size = size;
         this.severityLevel = severityLevel;
         this.location = location;
+        this.streetAddress = streetAddress;
     }
 
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getImages() {
         return images;
@@ -107,7 +109,12 @@ public class ReportData {
 
     public String toString() {
         String ans = "";
-        ans += this.reporteeID + " -> " + this.description + ", " + this.size + ", " + this.severityLevel + ", " + this.location;
+        ans += this.reporteeID + " -> " +
+                this.description + ", " +
+                this.size + ", " +
+                this.severityLevel + ", " +
+                this.location + "," +
+                this.streetAddress;
         return ans;
     }
 
