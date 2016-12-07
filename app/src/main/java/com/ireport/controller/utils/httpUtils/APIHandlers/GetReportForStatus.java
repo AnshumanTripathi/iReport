@@ -33,7 +33,7 @@ public class GetReportForStatus extends HttpBaseCommunicator {
 
     @Override
     protected String getRequestURL() throws IReportException {
-        return Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getReport";
+        return Constants.SERVER_URL + ":" + Constants.SERVER_PORT + "/getReports";
     }
 
     @Override
