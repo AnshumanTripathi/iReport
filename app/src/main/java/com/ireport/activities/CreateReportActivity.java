@@ -201,8 +201,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
                     //if street address is available, then only set the address
                     if(locationStreetAddress != null && locationStreetAddress.length() > 0) {
-                        mLocationText.setText(locationStreetAddress);
                         Log.d(TAG, "Address of coordinates" + locationStreetAddress);
+                        mLocationText.setText(locationStreetAddress);
                     }
                 }
             }
@@ -248,6 +248,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 {
                     Toast.makeText(
                             getBaseContext(),
+                            "Report Can not be created\n"+ Allerrors.toString(),
                             Toast.LENGTH_SHORT
                     ).show();
                 }
