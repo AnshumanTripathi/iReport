@@ -27,9 +27,11 @@ public class ViewReportActivity extends AppCompatActivity {
 
     AppContext ctx = AppContext.getInstance();
 
+
 //    public ViewReportActivity() {
 //        ctx.statusChangedByApp = false;
 //    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +148,7 @@ public class ViewReportActivity extends AppCompatActivity {
                 String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
                 Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
 
-                float distance = 9.5f;
+                float distance = 9.1f;
                 if(distance > 9.144) {
                     Log.v(TAG,"User not within range!!");
                     Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
@@ -165,8 +167,8 @@ public class ViewReportActivity extends AppCompatActivity {
 
 
                 } else {
-                    testReportData.setStatus(litterStatus);
                     litterStatus = newLitterStatus;
+                    testReportData.setStatus(litterStatus);
                     Log.v(TAG,"Updating status to " + litterStatus);
                 }
 
