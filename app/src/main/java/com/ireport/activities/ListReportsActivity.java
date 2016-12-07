@@ -3,20 +3,16 @@ package com.ireport.activities;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
-import com.ireport.controller.utils.Constants;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -133,12 +129,15 @@ public class ListReportsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
             if ( null != userInfo ) {
                 intent.putExtra("user_info", userInfo);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getBaseContext(), "Could not load user settings!", Toast.LENGTH_SHORT).show();
             }
-            startActivity(intent);
 
             return true;
         }
