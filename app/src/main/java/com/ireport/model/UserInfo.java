@@ -3,7 +3,6 @@ package com.ireport.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//import com.ireport.repository.MongoRepository;
 
 /**
  * Created by AnshumanTripathi on 11/24/16.
@@ -35,6 +34,10 @@ public class UserInfo implements Parcelable{
         this.firstName = firstName;
         this.lastName = lastName;
         this.homeAddress = homeAddress;
+    }
+
+    public UserInfo(String email){
+        this.email = email;
     }
 
     public boolean isOfficial() {
@@ -95,7 +98,11 @@ public class UserInfo implements Parcelable{
 
 
     public void resetInfo() {
-        //TODO:
+        this.screenName = "";
+        this.email = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.homeAddress = "";
     }
 
     public String toString() {

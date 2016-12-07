@@ -34,6 +34,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ireport.R;
+import com.ireport.model.AppContext;
+import com.ireport.model.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -202,11 +204,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                        //Go to new Activity
-                        Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
-                        intent.putExtra("Email", user.getEmail());
-                        startActivity(intent);
 
+                        AppContext.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
+
+                        Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
+                        startActivity(intent);
                         if (!task.isSuccessful()) {
                             //Signin Failed
                             Log.w(TAG, "signInWithCredential", task.getException());
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         try {
                                             System.out.println("Here: " + object.getString("email"));
                                             userEmail = object.getString("email");
+                                            AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
                                             updateUI();
                                         } catch (JSONException e) {
                                             e.printStackTrace();

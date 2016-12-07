@@ -1,9 +1,12 @@
 package com.ireport.activities;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
+import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
@@ -131,6 +134,12 @@ public class ListReportsActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_allreports) {
 
+        } else if (id == R.id.mSignOut){
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+            AppContext.getInstance().reset();
+            Intent intent = new Intent(ListReportsActivity.this, MainActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
