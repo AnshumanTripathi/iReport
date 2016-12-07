@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddUserHandler;
 import com.ireport.model.AppContext;
 import com.ireport.model.UserInfo;
 
@@ -42,7 +43,11 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener,
+        ICallbackActivity
+{
     private static String TAG = "MAIN_ACTIVITY";
     private static final int RC_SIGN_IN = 9001;
 
@@ -57,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     CallbackManager callbackManager;
 
     String userEmail;
+
+    AddUserHandler addUserHandler = null;
+    AppContext ctx = AppContext.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +213,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                        AppContext.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
+                        //set the current user email in context
+                        ctx.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
+
+                        //create the new user on server
+                        addUserHandler = new AddUserHandler(
+                                MainActivity.this,
+                                "Add new user",
+                                userEmail,
+                                false);
+                        addUserHandler.addNewUser(getApplicationContext());
 
                         Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
                         startActivity(intent);
@@ -238,7 +255,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                         try {
                                             System.out.println("Here: " + object.getString("email"));
                                             userEmail = object.getString("email");
+
+                                            //set the current user in app context
                                             AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
+
+                                            //create the new user on server
+                                            addUserHandler = new AddUserHandler(
+                                                    MainActivity.this,
+                                                    "Add new user",
+                                                    userEmail,
+                                                    false);
+                                            addUserHandler.addNewUser(getApplicationContext());
+
                                             updateUI();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -271,5 +299,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public void updateUI(){
         Intent intent = new Intent(this,ListReportsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
+        if(responseObj instanceof String) {
+            Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
+            if(responseObj.toString() == "200") {
+                Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
+            } else {
+                Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");
+            }
+        }
     }
 }
