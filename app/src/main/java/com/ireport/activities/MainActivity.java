@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         if(responseObj instanceof String) {
             Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
-            if(responseObj.toString() == "200" || responseObj.toString() == "501") {
+            if(responseObj.toString().equals("200") || responseObj.toString().equals("501")) {
                 Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
             } else {
                 Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");

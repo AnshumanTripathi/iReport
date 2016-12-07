@@ -58,44 +58,48 @@ public class GetReportForEmailId extends HttpBaseCommunicator {
         try {
 
             JSONObject json = new JSONObject(response);
+            String responseCode = json.getString("statusCode");
+            Log.d("GetReportForEmailID", responseCode);
 
-            JSONArray arrJson= json.getJSONArray("data");
-            String[] arr = new String[arrJson.length()];
+            if(responseCode.equals("200")) {
+                JSONArray arrJson = json.getJSONArray("data");
+                String[] arr = new String[arrJson.length()];
 
-            for(int i = 0; i < arrJson.length(); i++) {
-                arr[i] = arrJson.getString(i);
+                for (int i = 0; i < arrJson.length(); i++) {
+                    arr[i] = arrJson.getString(i);
 
-                JSONObject tempJson = new JSONObject(arr[i]);
-                ReportData rd = new ReportData();
+                    JSONObject tempJson = new JSONObject(arr[i]);
+                    ReportData rd = new ReportData();
 
-                String email = tempJson.getString("user_email");
-                rd.setReporteeID(email);
+                    String email = tempJson.getString("user_email");
+                    rd.setReporteeID(email);
 
-                String description = tempJson.getString("description");
-                rd.setDescription(description);
+                    String description = tempJson.getString("description");
+                    rd.setDescription(description);
 
-                String size = tempJson.getString("size");
-                rd.setSize(size);
+                    String size = tempJson.getString("size");
+                    rd.setSize(size);
 
-                String severity = tempJson.getString("severity_level");
-                rd.setSeverityLevel(severity);
+                    String severity = tempJson.getString("severity_level");
+                    rd.setSeverityLevel(severity);
 
-                String pic = tempJson.getString("pictures");
-                rd.setImages(pic);
+                    String pic = tempJson.getString("pictures");
+                    rd.setImages(pic);
 
-                String status = tempJson.getString("status");
-                rd.setStatus(status);
+                    String status = tempJson.getString("status");
+                    rd.setStatus(status);
 
-                if(tempJson.has("location")) {
-                    String location = tempJson.getString("location");
-                    JSONObject locJson = new JSONObject(location);
+                    if (tempJson.has("location")) {
+                        String location = tempJson.getString("location");
+                        JSONObject locJson = new JSONObject(location);
 
-                    String lat = locJson.getString("lat");
-                    String lng = locJson.getString("lng");
+                        String lat = locJson.getString("lat");
+                        String lng = locJson.getString("lng");
 
-                    rd.setLocation(new LocationDetails(Double.valueOf(lat), Double.valueOf(lng)));
+                        rd.setLocation(new LocationDetails(Double.valueOf(lat), Double.valueOf(lng)));
+                    }
+                    riData.add(rd);
                 }
-                riData.add(rd);
             }
 
         } catch (JSONException je) {

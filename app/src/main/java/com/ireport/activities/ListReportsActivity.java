@@ -190,10 +190,8 @@ public class ListReportsActivity extends AppCompatActivity
             Log.d(TAG, userInfo.toString());
             Log.d(TAG, userInfo.getSettings().toString());
         } else if (responseObj instanceof List) {
-            Log.d(TAG, "Got a list of reports for this user.");
-
             if(((List) responseObj).size() == 0) {
-                // No reports to show for the user.
+                System.out.println("No reports to show for the user.");
                 //Point him to a different activity or a view etc.
                 //TODO: Pending.
             } else {
