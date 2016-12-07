@@ -71,8 +71,7 @@ exports.getReports = function (req, res) {
     } else if (req.body.hasOwnProperty("location".toLowerCase())) {
         query = {location: req.body.location}
     }
-    console.log(query);
-    Report.find(query, function (err, report) {
+    Report.find(query).lean().exec(function (err, report) {
         if (err) {
             console.log("Error occured in fetching reports: " + err);
             res.send({
@@ -87,6 +86,23 @@ exports.getReports = function (req, res) {
             });
         } else {
             console.log(report);
+            for(var i = 0; i<report.length; i++) {
+                var d = new Date(report[i].timestamp),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear(),
+                    hour = '' + d.getHours(),
+                    minutes = ''+d.getMinutes();
+
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+                if (hour.length < 2) hour = '0'+ hour;
+                if (minutes.length < 2) minutes = '0' + minutes;
+
+                report[i].timestamp = [month,day,year].join("-");
+                report[i].timestamp += " ";
+                report[i].timestamp += [hour, minutes].join(":");
+            }
             res.send({
                 statusCode: 200,
                 data: report

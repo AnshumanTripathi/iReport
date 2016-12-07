@@ -100,13 +100,13 @@ exports.addUser = function (req, res) {
             if (err.code === 11000) {
                 console.log("Duplicate Property email!!");
                 res.send({
-                    statusCode: 500,
+                    statusCode: 501,
                     data: "Duplicate Property 'email' "
                 });
             } else {
                 console.log("Error occured in added: " + err);
                 res.send({
-                    statusCode: 400,
+                    statusCode: 500,
                     data: err
                 });
             }
