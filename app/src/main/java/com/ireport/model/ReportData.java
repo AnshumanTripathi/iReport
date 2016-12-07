@@ -20,6 +20,8 @@ public class ReportData {
     private String reporteeID;
     private String status;
     private String streetAddress;
+    private String reportId;
+    private String timestamp;
 
     public ReportData() {
 
@@ -32,7 +34,9 @@ public class ReportData {
             String size,
             String severityLevel,
             LocationDetails location,
-            String streetAddress
+            String streetAddress,
+            String reportid,
+            String timestamp
     ) {
         this.reporteeID = email;
         this.images = images;
@@ -41,6 +45,8 @@ public class ReportData {
         this.severityLevel = severityLevel;
         this.location = location;
         this.streetAddress = streetAddress;
+        this.reportId =  reportid;
+        this.timestamp =  timestamp;
     }
 
     public String getStreetAddress() {
@@ -105,6 +111,22 @@ public class ReportData {
 
     public void setReporteeID(String reporteeID) {
         this.reporteeID = reporteeID;
+    }
+
+    public String getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(String reportId) {
+        this.reportId = reportId;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String toString() {

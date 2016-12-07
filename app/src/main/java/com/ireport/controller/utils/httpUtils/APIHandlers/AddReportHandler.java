@@ -61,6 +61,7 @@ public class AddReportHandler extends HttpBaseCommunicator {
         params.put("size",repObj.getSize());
         params.put("severity_level",repObj.getSeverityLevel());
         params.put("location", repObj.getLocation().toString());
+        params.put("street_address", repObj.getStreetAddress());
         return params;
     }
 

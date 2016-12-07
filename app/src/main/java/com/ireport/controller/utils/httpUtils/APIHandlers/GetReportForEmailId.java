@@ -13,7 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,6 +90,15 @@ public class GetReportForEmailId extends HttpBaseCommunicator {
 
                     String status = tempJson.getString("status");
                     rd.setStatus(status);
+
+                    String reportId = tempJson.getString("_id");
+                    rd.setReportId(reportId);
+
+                    String streetAdd = tempJson.getString("street_address");
+                    rd.setStreetAddress(streetAdd);
+
+                    String timeStamp = tempJson.getString("timestamp");
+                    rd.setTimestamp(timeStamp);
 
                     if (tempJson.has("location")) {
                         String location = tempJson.getString("location");
