@@ -36,7 +36,7 @@
                 android:id="@+id/user_litter_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/litterDesc"
+                android:layout_below="@+id/litterDesc"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -65,7 +65,7 @@
                 android:id="@+id/user_litter_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/litter_date_time"
+                android:layout_below="@+id/litter_date_time"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -189,17 +189,17 @@
                 <RadioButton android:id="@+id/radio_present"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="Present"
+                             android:text="still_there"
                              android:onClick="onRadioButtonClicked"/>
                 <RadioButton android:id="@+id/radio_claimed"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="Claimed"
+                             android:text="removal_claimed"
                              android:onClick="onRadioButtonClicked"/>
                 <RadioButton android:id="@+id/radio_confirmed"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="Confirmed"
+                             android:text="removal_confirmed"
                              android:onClick="onRadioButtonClicked"/>
             </RadioGroup>
 
@@ -224,7 +224,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/enterLocation"
+                android:id="@+id/user_litter_location"
+                android:layout_below="@+id/litterLocation"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
