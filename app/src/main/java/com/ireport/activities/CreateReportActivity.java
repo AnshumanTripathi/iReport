@@ -1,5 +1,23 @@
 package com.ireport.activities;
 
+import com.ireport.R;
+import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.cameraUtils.CameraUtility;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
+import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
+import com.ireport.controller.utils.locationUtils.LocationUtils;
+import com.ireport.model.AppContext;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +36,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -62,7 +81,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     // For camera
     private String userChoosenTask;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private final ArrayList<String> imageStringArray = new ArrayList<String>();
+    private List<String> imageStringArray;
     private final ArrayList<Bitmap> ResponseimageArray = new ArrayList<Bitmap>();
     private final ArrayList<Bitmap> ShowImagesCaptured = new ArrayList<Bitmap>();
     private final int PICK_IMAGE_MULTIPLE =1;
@@ -71,7 +90,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     private Bitmap yourbitmap;
     private TextView numImagesTextView;
     private int numImages = 0;
-    private String images = "";
+
     // Report data
     private ReportData reportData;
     private StringBuilder Allerrors=new StringBuilder("");
@@ -88,6 +107,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
 
+        imageStringArray = new ArrayList<String>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         descriptionText = (EditText) findViewById(R.id.user_litter_desc);
@@ -152,7 +172,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                         radioGroupSeverity.getCheckedRadioButtonId())).
                         getText().
                         toString();
-
                 //set the severity of the litter in the report data object
                 reportData.setSeverityLevel(severity);
             }
@@ -206,14 +225,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 if(ValidateReportFields())
                 {
                     // put images together
-
-                    for (int i = 0; i < imageStringArray.size(); i++) {
-                        images += imageStringArray.get(i);
-                        images += ",";
-                    }
-                    if (images.length() > 1 && images.charAt(images.length()-1) == ',') {
-                        images.substring(0, images.length() - 1);
-                    }
+                    String images = TextUtils.join(",", imageStringArray);;
                     reportData.setImages(images);
 
                     //fill in the description
@@ -236,6 +248,22 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     Toast.makeText(getBaseContext(), "Report Can not be created", Toast.LENGTH_SHORT).show();
                 }
 
+                /*// put images together
+                Log.v("Images", imageStringArray.get(0));
+                Log.v("Images", "***********************************************");
+                Log.v("Images", imageStringArray.get(1));
+                ArrayList <String> x = new ArrayList<String>(2);
+                x.add("Hello");x.add("World");
+                String y = TextUtils.join(",", x);
+                Log.v("Images", y);
+
+                String mf = TextUtils.join(",", imageStringArray);
+
+                String allImages = TextUtils.join(",", imageStringArray);
+                reportData.setImages(allImages);
+                Log.v("Images", "Number of images is " + Integer.toString(imageStringArray.size()));
+                Log.v("Images", allImages);
+                */
             }
         });
     }

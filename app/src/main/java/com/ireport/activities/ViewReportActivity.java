@@ -169,20 +169,13 @@ public class ViewReportActivity extends AppCompatActivity {
             }
         });
 
-        //Set the location of the report
-
-
          mUpdateReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Update the report
-
             }
         });
-
     }
-
 
     public void onRadioButtonClickeradd(View view) {
         Toast.makeText(getBaseContext(), "User can't edit size/severity values!", Toast.LENGTH_SHORT).show();
