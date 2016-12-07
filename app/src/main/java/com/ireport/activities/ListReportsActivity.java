@@ -6,6 +6,7 @@ import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.AppContext;
+import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
@@ -82,13 +83,47 @@ public class ListReportsActivity extends AppCompatActivity
         //getUserForEmailID.getUserDataForEmail(getApplicationContext());
 
         // Load any reports
-        reportDataList = new ArrayList<>();
+        /* Sandhya : Creating Test Report
+        reportDataList = new ArrayList<ReportData>();
+        ReportData testReportData = new ReportData();
+        testReportData.setDescription("Cigarette Bulb");
+        testReportData.setImages("");
+        testReportData.setStreetAddress("Sunnyvale");
+        testReportData.setSeverityLevel("Urgent");
+        testReportData.setStatus("still_there");
+        LocationDetails testLocation = new LocationDetails();
+        testReportData.setLocation(testLocation);
+        testReportData.setSize("Small");
+        testReportData.setReporteeID("sandhyafeb1990@gmail.com");
+        reportDataList.add(testReportData);
+
+        ReportData newTestReportData = new ReportData();
+        newTestReportData.setDescription("Water Bottle");
+        newTestReportData.setImages("");
+        newTestReportData.setStreetAddress("Sunnyvale");
+        newTestReportData.setSeverityLevel("Urgent");
+        newTestReportData.setStatus("still_there");
+        LocationDetails newTtestLocation = new LocationDetails();
+        newTestReportData.setLocation(newTtestLocation);
+        newTestReportData.setSize("Small");
+        newTestReportData.setReporteeID("sandhyafeb1990@gmail.com");
+        reportDataList.add(newTestReportData);
+
+        for (int i=0; i < reportDataList.size(); i++) {
+            Log.d("Reports", reportDataList.get(i).getDescription());
+        }
+
+
+        populateListViewElements((ArrayList<ReportData>) reportDataList);
+        Sandhya : End Test */
+
+        /*Somya - Actual server call
         getCurrUserReports = new GetReportForEmailId(this,
                 "getAllReportsForUser",
                 currUserEmail
         );
         getCurrUserReports.getReportForEmailId(getApplicationContext());
-
+        */
 
     }
 
@@ -193,9 +228,7 @@ public class ListReportsActivity extends AppCompatActivity
             Log.d(TAG, "Got a list of reports for this user.");
 
             if(((List) responseObj).size() == 0) {
-                // No reports to show for the user.
-                //Point him to a different activity or a view etc.
-                //TODO: Pending.
+                Toast toast = Toast.makeText(getApplicationContext(),"No reports to be displayed!",Toast.LENGTH_SHORT);
             } else {
                 //Reports received from the server is more than 1
                 Log.d(TAG,"Multiple reports received for this user from the server");
@@ -208,13 +241,16 @@ public class ListReportsActivity extends AppCompatActivity
     private void populateListViewElements(ArrayList<ReportData> reportList) {
         rowItems = new ArrayList<ListActivityRowClass>();
 
+
         for (int i = 0; i < reportList.size(); i++) {
             ListActivityRowClass item = new ListActivityRowClass(
-                    Integer.valueOf(reportList.get(i).getImages()),
+                    Integer.valueOf(R.id.icon_only),
+                    //Integer.valueOf(reportList.get(i).getImages()),
                     reportList.get(i).getDescription(),
                     reportList.get(i).getStreetAddress(),
                     reportList.get(i).getStatus()
             );
+            Log.v(TAG,"Item description = " + item.getDescription());
             rowItems.add(item);
         }
 
