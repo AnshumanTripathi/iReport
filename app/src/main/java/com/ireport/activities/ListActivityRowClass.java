@@ -9,11 +9,21 @@ public class ListActivityRowClass {
     private int imageId;
     private String title;
     private String desc;
+    private String status;
 
-    public ListActivityRowClass(int imageId, String title, String desc) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public ListActivityRowClass(int imageId, String title, String desc, String status) {
         this.imageId = imageId;
         this.title = title;
         this.desc = desc;
+        this.status = status;
     }
     public int getImageId() {
         return imageId;

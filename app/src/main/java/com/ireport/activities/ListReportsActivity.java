@@ -1,9 +1,12 @@
 package com.ireport.activities;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
+import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
@@ -42,9 +45,12 @@ public class ListReportsActivity extends AppCompatActivity
     public static final String[] titles = new String[] { "Strawberry",
             "Banana", "Orange", "Mixed" , "one", "one more", "one more too", "two"};
 
+    public static final String[] status = new String[] { "111111111",
+            "22222222222", "33333333333", "44444444" , "555555555", "66666666", "7", "8"};
+
     public static final String[] descriptions = new String[] {
             "It is an aggregate accessory fruit",
-            "It is the largest herbaceous flowering plant", "Citrus Fruit",
+            "It is the", "Citrus Fruit",
             "Mixed Fruits","one", "one more", "one more too", "two" };
 
     public static final Integer[] images = { R.drawable.report_icon,
@@ -101,7 +107,8 @@ public class ListReportsActivity extends AppCompatActivity
             ListActivityRowClass item = new ListActivityRowClass(
                     images[i],
                     titles[i],
-                    descriptions[i]
+                    descriptions[i],
+                    status[i]
             );
             rowItems.add(item);
         }
@@ -187,6 +194,12 @@ public class ListReportsActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_allreports) {
 
+        } else if (id == R.id.mSignOut){
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+            AppContext.getInstance().reset();
+            Intent intent = new Intent(ListReportsActivity.this, MainActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

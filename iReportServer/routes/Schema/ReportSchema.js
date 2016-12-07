@@ -17,7 +17,8 @@ var report = new schema({
     "user_email": {type: String, required: true},
     "user_screen_name": {type: String},
     "status": {type: String, required: true},
-    "isAnonymous": {type: Boolean}
+    "isAnonymous": {type: Boolean},
+    "street_address": {type: String, required: true}
 },{
     collection: "report"
 });

@@ -28,4 +28,14 @@
         android:paddingLeft="10dp"
         android:textColor="#3399FF"
         android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:paddingLeft="10dp"
+        android:textColor="#3399FF"
+        android:textSize="14dp"
+        android:layout_toEndOf="@+id/desc" />
 </RelativeLayout>

@@ -9,7 +9,7 @@ public class AppContext {
     public static UserInfo currentLoggedInUser;
     private static LocationDetails currentLocation;
     //private static ReportData currentR
-    private static AppContext instance;
+    private static AppContext instance = null;
 
     public static LocationDetails getCurrentLocation() {
         return currentLocation;
@@ -19,6 +19,7 @@ public class AppContext {
         AppContext.currentLocation = currentLocation;
     }
 
+    private AppContext() {}
 
     public void reset() {
         currentLoggedInUser.resetInfo();
@@ -26,10 +27,18 @@ public class AppContext {
 
 
     public static AppContext getInstance() {
-        return new AppContext();
+        if(instance == null){
+            return new AppContext();
+        }else{
+            return instance;
+        }
     }
 
-    public static void setInstance(AppContext instance) {
-        AppContext.instance = instance;
+    public UserInfo getCurrentLoggedInUser() {
+        return currentLoggedInUser;
+    }
+
+    public static void setCurrentLoggedInUser(UserInfo newCurrentLoggedInUser) {
+        currentLoggedInUser = newCurrentLoggedInUser;
     }
 }
