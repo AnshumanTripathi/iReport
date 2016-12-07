@@ -27,12 +27,6 @@ public class ViewReportActivity extends AppCompatActivity {
 
     AppContext ctx = AppContext.getInstance();
 
-
-//    public ViewReportActivity() {
-//        ctx.statusChangedByApp = false;
-//    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(TAG, "in view report activity");
