@@ -14,9 +14,9 @@
     tools:context="com.ireport.activities.ListReportsActivity"
     tools:showIn="@layout/app_bar_list_reports">
 
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/goToMap"
-        android:text="Go To Map"/>
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

@@ -19,18 +19,46 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class ListReportsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity {
+        implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity,
+        AdapterView.OnItemClickListener
+{
 
     private static String TAG = "ListReportsActivity";
     private UserInfo userInfo;
     List<ReportData> reportDataList;
     GetAllReportsHandler getAllReportsHandler = null;
     GetUserForEmailID getUserForEmailID = null;
+
+    /*********************************List Report Activity Code: Somya*****************************/
+    public static final String[] titles = new String[] { "Strawberry",
+            "Banana", "Orange", "Mixed" , "one", "one more", "one more too", "two"};
+
+    public static final String[] descriptions = new String[] {
+            "It is an aggregate accessory fruit",
+            "It is the largest herbaceous flowering plant", "Citrus Fruit",
+            "Mixed Fruits","one", "one more", "one more too", "two" };
+
+    public static final Integer[] images = { R.drawable.report_icon,
+            R.drawable.report_icon, 
+            R.drawable.report_icon,
+            R.drawable.report_icon,
+            R.drawable.report_icon,
+            R.drawable.report_icon,
+            R.drawable.report_icon,
+            R.drawable.report_icon };
+
+    ListView listView;
+    List<ListActivityRowClass> rowItems;
+    /**********************************************************************************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +95,35 @@ public class ListReportsActivity extends AppCompatActivity
         getAllReportsHandler = new GetAllReportsHandler(this, "getAllReportsForUser");
         getAllReportsHandler.getAllReportsData(getApplicationContext());
 
+        /*****************Code by Somya********************/
+        rowItems = new ArrayList<ListActivityRowClass>();
+        for (int i = 0; i < titles.length; i++) {
+            ListActivityRowClass item = new ListActivityRowClass(
+                    images[i],
+                    titles[i],
+                    descriptions[i]
+            );
+            rowItems.add(item);
+        }
+
+        listView = (ListView) findViewById(R.id.list);
+        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
+                R.layout.list_item, rowItems);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
+        /*******************************************************/
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position,
+                            long id) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Item " + (position + 1) + ": " + rowItems.get(position),
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+    }
+
 
     @Override
     public void onBackPressed() {
