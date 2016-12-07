@@ -1,22 +1,5 @@
 package com.ireport.activities;
 
-import com.ireport.R;
-import com.ireport.controller.utils.Constants;
-import com.ireport.controller.utils.cameraUtils.CameraUtility;
-import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
-import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
-import com.ireport.controller.utils.locationUtils.LocationUtils;
-import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
-import com.ireport.model.ReportData;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -50,11 +33,29 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ireport.R;
+import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.cameraUtils.CameraUtility;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
+import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
+import com.ireport.controller.utils.locationUtils.LocationUtils;
+import com.ireport.model.AppContext;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class CreateReportActivity extends AppCompatActivity implements ICallbackActivity {
 
     private String TAG = "CreateReportActivity";
     private EditText descriptionText;
     private TextView mLocationText;
+    private TextView ErrorMessage;
     private Button mUploadImagesButton, saveButton, locationButton;
     private RadioGroup radioGroupSize, radioGroupSeverity;
 
@@ -70,8 +71,10 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     private Bitmap yourbitmap;
     private TextView numImagesTextView;
     private int numImages = 0;
+    private String images = "";
     // Report data
     private ReportData reportData;
+    private StringBuilder Allerrors=new StringBuilder("");
 
     //Location variables
     private static final int ACCESS_COARSE_LOCATION = 1;
@@ -90,6 +93,12 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
         lnrImages=(LinearLayout)findViewById(R.id.lnrImages);
+        ErrorMessage=(TextView) findViewById(R.id.error_message);
+
+        saveButton = (Button) findViewById(R.id.create_report_button);
+        numImagesTextView = (TextView) findViewById(R.id.number_of_images);
+
+        locationButton = (Button) findViewById(R.id.enterLocation);
 
         //create a new object for report data
         reportData = new ReportData();
@@ -105,9 +114,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         });
 
-        locationButton = (Button) findViewById(R.id.enterLocation);
 
-
+        radioGroupSize.clearCheck();
         //read the litter size from the add report page
         radioGroupSize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +130,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         });
 
+       radioGroupSeverity.clearCheck();
         //read the litter severity from the add report page
         radioGroupSeverity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,9 +175,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         });
 
-        numImagesTextView = (TextView) findViewById(R.id.number_of_images);
-        numImagesTextView.setText(Integer.toString(numImages) + " images added to report");
-        saveButton = (Button) findViewById(R.id.create_report_button);
+
+        //numImagesTextView.setText(Integer.toString(numImages) + " images added to report");
+
 
         //save button is create new report button
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +186,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
                 // create a new report object and send to the server
 
+                //first clear the Error text
+                ErrorMessage.setText("");
                 //set the location
                 if (ctx.getCurrentLocation() != null) {
                     reportData.setLocation(ctx.getCurrentLocation());
@@ -186,7 +197,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 }
 
                 // put images together
-                String images = "";
+
                 for (int i = 0; i < imageStringArray.size(); i++) {
                     images += imageStringArray.get(i);
                     images += ",";
@@ -197,20 +208,61 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 reportData.setImages(images);
 
                 //fill in the description
-                reportData.setDescription(descriptionText.getText().toString());
 
-                uih = new AddReportHandler(
-                    CreateReportActivity.this, "create_report_activity", reportData);
-                Log.d(TAG, "Sending: " + reportData.toString());
-                uih.addNewReport(getApplicationContext());
 
-                Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
+               // Log.d("Description is", descriptionText.getText().toString());
+                if(ValidateReportFields())
+                {
+                    if(descriptionText.getText().toString().length()!=0) {
+                        reportData.setDescription(descriptionText.getText().toString());
+                    }
+                    uih = new AddReportHandler(
+                            CreateReportActivity.this, "create_report_activity", reportData);
+                    Log.d(TAG, "Sending: " + reportData.toString());
+                    uih.addNewReport(getApplicationContext());
 
-                //Go back to parent activity
-                Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
-                startActivity(upIntent);
+                    Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
+                    //Go back to parent activity
+                    Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
+                    startActivity(upIntent);
+                }
+                else
+                {
+                    ErrorMessage.setText(Allerrors.toString());
+                    Toast.makeText(getBaseContext(), "Report Can not be created", Toast.LENGTH_SHORT).show();
+                }
+
+
+
             }
         });
+    }
+
+    public boolean ValidateReportFields()
+    {
+
+        if(reportData.getDescription()==null)
+        {
+            Log.d("Description is", descriptionText.getText().toString());
+            Allerrors.append("Description is mandatory\n");
+        }
+        if(reportData.getSize()==null)
+        {
+            Allerrors.append("Please select size\n");
+        }
+        if(reportData.getSeverityLevel()==null)
+        {
+            Allerrors.append("Please select Severity Level\n");
+        }
+        if(reportData.getImages().equals(""))
+        {
+            Allerrors.append("Atleast one Image is necessary\n");
+        }
+
+        if(Allerrors.length()==0)
+            return true;
+        return false;
+
     }
 
     @Override
