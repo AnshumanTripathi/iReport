@@ -88,6 +88,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         descriptionText = (EditText) findViewById(R.id.user_litter_desc);
         radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
@@ -114,7 +115,14 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         });
 
+        //Set current location
+        SetLocation();
 
+        //Reset radio group of size
+        int selectedid = radioGroupSize.getCheckedRadioButtonId();
+        if (selectedid > 0) {
+            radioGroupSize.clearCheck();
+        }
         radioGroupSize.clearCheck();
         //read the litter size from the add report page
         radioGroupSize.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +138,11 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             }
         });
 
+        //Reset radio group of Severity
+        int selectedid1 = radioGroupSeverity.getCheckedRadioButtonId();
+        if (selectedid1 > 0) {
+            radioGroupSeverity.clearCheck();
+        }
        radioGroupSeverity.clearCheck();
         //read the litter severity from the add report page
         radioGroupSeverity.setOnClickListener(new View.OnClickListener() {
@@ -183,36 +196,27 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // create a new report object and send to the server
 
                 //first clear the Error text
                 ErrorMessage.setText("");
-                //set the location
-                if (ctx.getCurrentLocation() != null) {
-                    reportData.setLocation(ctx.getCurrentLocation());
-                } else {
-                    reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
-                            Constants.DEF_LNG));
-                }
-
-                // put images together
-
-                for (int i = 0; i < imageStringArray.size(); i++) {
-                    images += imageStringArray.get(i);
-                    images += ",";
-                }
-                if (images.length() > 1 && images.charAt(images.length()-1) == ',') {
-                    images.substring(0, images.length() - 1);
-                }
-                reportData.setImages(images);
-
-                //fill in the description
-
+                Allerrors.delete(0,Allerrors.toString().length());
 
                // Log.d("Description is", descriptionText.getText().toString());
                 if(ValidateReportFields())
                 {
+                    // put images together
+
+                    for (int i = 0; i < imageStringArray.size(); i++) {
+                        images += imageStringArray.get(i);
+                        images += ",";
+                    }
+                    if (images.length() > 1 && images.charAt(images.length()-1) == ',') {
+                        images.substring(0, images.length() - 1);
+                    }
+                    reportData.setImages(images);
+
+                    //fill in the description
                     if(descriptionText.getText().toString().length()!=0) {
                         reportData.setDescription(descriptionText.getText().toString());
                     }
@@ -232,8 +236,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     Toast.makeText(getBaseContext(), "Report Can not be created", Toast.LENGTH_SHORT).show();
                 }
 
-
-
             }
         });
     }
@@ -241,9 +243,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     public boolean ValidateReportFields()
     {
 
-        if(reportData.getDescription()==null)
+        if(descriptionText.getText().toString().equals(""))
         {
-            Log.d("Description is", descriptionText.getText().toString());
+            //Log.d("Description is", descriptionText.getText().toString());
             Allerrors.append("Description is mandatory\n");
         }
         if(reportData.getSize()==null)
@@ -254,7 +256,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         {
             Allerrors.append("Please select Severity Level\n");
         }
-        if(reportData.getImages().equals(""))
+        if(imageStringArray.size()==0)
         {
             Allerrors.append("Atleast one Image is necessary\n");
         }
@@ -262,6 +264,18 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         if(Allerrors.length()==0)
             return true;
         return false;
+
+    }
+
+    public void SetLocation()
+    {
+        //set the location
+        if (ctx.getCurrentLocation() != null) {
+            reportData.setLocation(ctx.getCurrentLocation());
+        } else {
+            reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
+                    Constants.DEF_LNG));
+        }
 
     }
 
