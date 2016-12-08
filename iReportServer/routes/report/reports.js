@@ -6,9 +6,10 @@ var User = require('../schema/UserSchema');
 var email = require('../email_notify');
 
 exports.addReport = function (req, res) {
-    var report = new Report(req.body);
+    var query = req.body;
+    query['status'] =  'still_there';
+    var report = new Report(query);
     var jsonResponse;
-    report.set('status', 'still_there');
     console.log(report);
     User.findOne({"email": report.user_email}).lean().exec(function (err, user) {
         if (err) {
@@ -57,7 +58,8 @@ exports.addReport = function (req, res) {
                     to: user.email,
                     subject: "iReport New Report",
                     text: 'New Report is added',
-                    html: '<h2>Hello from iReport!</h2><br><p>New report is added by ' + user.email + '<br>Log into iReport app to see updates</p>'
+                    html: '<h2>Hello from iReport!</h2><br><p>New report is added by '
+                    + user.email + '<br>Log into iReport app to see updates</p>'
                 });
             }
         }

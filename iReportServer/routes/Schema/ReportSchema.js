@@ -6,10 +6,7 @@ var schema = mongoose.Schema;
 
 var report = new schema({
     "pictures": {type: String, required: true},
-    "location": {
-        lat: Number,
-        lng: Number
-    },
+    "location": {type: String},
     "description": {type: String, required: true},
     "size": {type: String, required: true},
     "severity_level": {type: String, required: true},
