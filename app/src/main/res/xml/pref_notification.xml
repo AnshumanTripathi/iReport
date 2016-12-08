@@ -9,7 +9,7 @@
     <SwitchPreference
         android:defaultValue="true"
         android:key="notifications_status_change"
-        android:title="Receive Notifications upon Status Change"/>
+        android:title="Receive Status Change Notification"/>
     <SwitchPreference
         android:defaultValue="false"
         android:key="notifications_report_anonymously"

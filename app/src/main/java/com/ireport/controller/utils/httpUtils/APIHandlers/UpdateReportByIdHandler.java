@@ -46,6 +46,7 @@ public class UpdateReportByIdHandler extends HttpBaseCommunicator {
     protected void handleResponse(String response) throws IReportException {
         try {
             JSONObject json = new JSONObject(response);
+            Log.d("Response: ",json.toString());
             String statusCode = json.getString("statusCode");
 
             Log.d("UpdateReportByIdHandler", statusCode);

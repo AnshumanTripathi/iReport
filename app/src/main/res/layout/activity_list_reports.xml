@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -23,7 +24,9 @@
         app:headerLayout="@layout/nav_header_list_reports"
         app:menu="@menu/activity_list_reports_drawer"/>
 
+
 </android.support.v4.widget.DrawerLayout>
+
 
 
 
