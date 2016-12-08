@@ -126,7 +126,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         reportData = new ReportData();
 
         // always set emailid
-        reportData.setReporteeID(ctx.getCurrentLoggedInUser().getEmail());
+        reportData.setReporteeID(AppContext.getInstance().getCurrentLoggedInUser().getEmail());
 
         mUploadImagesButton = (Button) findViewById(R.id.add_images_button);
         mUploadImagesButton.setOnClickListener(new View.OnClickListener() {

@@ -52,14 +52,13 @@ public class LocationUtils {
         Log.d("LOCATION_UTILS:","LAT:"+latitude+", LNG:"+longitude);
         Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
         String retAddress = null;
-
         List<Address> addresses = null;
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
             if (addresses != null && addresses.size() > 0) {
                 Address returnedAddress = addresses.get(0);
-                retAddress = returnedAddress.getAddressLine(0).toString();
+                retAddress = returnedAddress.getAddressLine(0);
                 Log.d("Address is :", retAddress);
             } else {
                 Log.d("No address", "No Address returned!");
