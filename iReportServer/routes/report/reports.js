@@ -3,6 +3,7 @@
  */
 var Report = require('../schema/ReportSchema');
 var User = require('../schema/UserSchema');
+var email = require('../emailNotify');
 
 exports.addReport = function (req, res) {
     var report = new Report(req.body);
@@ -55,6 +56,15 @@ exports.addReport = function (req, res) {
                 statusCode: 200,
                 data: "Report Added"
             };
+
+            if(!user.settings.anonymous) {
+                email.sendEmail({
+                    to: user.email,
+                    subject: "iReport New Report",
+                    text: 'New Report is added',
+                    html: '<h2>Hello from iReport!</h2><br><p>New report is added by ' + user.email + '<br>Log into iReport app to see updates</p>'
+                });
+            }
         }
         res.send(jsonResponse);
     });
@@ -139,6 +149,33 @@ exports.getUserReportLocation = function (req,res) {
             };
         }
 
+        res.send(jsonResponse);
+    });
+};
+
+exports.getReportById = function (req,res) {
+    var jsonResponse = {};
+    console.log(req.body.id);
+    Report.findById(req.body.id,function (err,report) {
+        if(err){
+            console.log("Error occured in fetching report: "+err);
+            jsonResponse = {
+              statusCode: 500,
+                data:err
+            };
+        }else if(report == null){
+            console.log("No report found!");
+            jsonResponse = {
+                statusCode: 400,
+                data:err
+            };
+        }else{
+            console.log(report);
+            jsonResponse = {
+                statusCode:200,
+                data:report
+            };
+        }
         res.send(jsonResponse);
     });
 };
