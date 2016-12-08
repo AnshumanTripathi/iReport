@@ -1,17 +1,5 @@
 package com.ireport.activities;
 
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
-import com.ireport.model.AppContext;
-import com.ireport.model.ReportData;
-import com.ireport.model.UserInfo;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +19,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
+import com.ireport.model.AppContext;
+import com.ireport.model.ReportData;
+import com.ireport.model.UserInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListReportsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity,

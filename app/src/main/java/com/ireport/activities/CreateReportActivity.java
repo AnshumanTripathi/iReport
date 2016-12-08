@@ -1,23 +1,5 @@
 package com.ireport.activities;
 
-import com.ireport.R;
-import com.ireport.controller.utils.Constants;
-import com.ireport.controller.utils.cameraUtils.CameraUtility;
-import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
-import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
-import com.ireport.controller.utils.locationUtils.LocationUtils;
-import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
-import com.ireport.model.ReportData;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -43,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,6 +51,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreateReportActivity extends AppCompatActivity implements ICallbackActivity {
 
@@ -106,7 +90,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
-
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         imageStringArray = new ArrayList<String>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
