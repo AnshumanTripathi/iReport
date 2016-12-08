@@ -86,6 +86,7 @@ public class ListReportsActivity extends AppCompatActivity
             getCurrUserReports.getReportForEmailId(getApplicationContext());
         }
 
+
 //    findViewById(R.id.goToMaps).setOnClickListener(new View.OnClickListener() {
 //        @Override
 //        public void onClick(View v) {
