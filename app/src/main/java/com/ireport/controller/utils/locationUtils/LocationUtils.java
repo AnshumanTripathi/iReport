@@ -48,13 +48,14 @@ public class LocationUtils {
     /*
     For ctx pass application context
      */
-    public String getAddress(Context ctx, double lat,double long1) {
+    public String getAddress(Context ctx, double latitude,double longitude) {
+        Log.d("LOCATION_UTILS:","LAT:"+latitude+", LNG:"+longitude);
         Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
         String retAddress = null;
 
         List<Address> addresses = null;
         try {
-            addresses = geocoder.getFromLocation(lat, long1, 1);
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
             if (addresses != null && addresses.size() > 0) {
                 Address returnedAddress = addresses.get(0);

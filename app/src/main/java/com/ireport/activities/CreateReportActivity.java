@@ -191,7 +191,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 if(ctx.getCurrentLocation() != null) {
 
                     double curLat = ctx.getCurrentLocation().getLatitude();
-                    double curLng = ctx.getCurrentLocation().getLatitude();
+                    double curLng = ctx.getCurrentLocation().getLongitude();
 
                     String locationStreetAddress = LU.getAddress(
                             getApplicationContext(),
