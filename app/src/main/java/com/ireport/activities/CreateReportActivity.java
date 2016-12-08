@@ -115,7 +115,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
         lnrImages=(LinearLayout)findViewById(R.id.lnrImages);
         ErrorMessage=(TextView) findViewById(R.id.error_message);
-        mLocationText = (TextView) findViewById(R.id.enterLocation);
+        mLocationText = (TextView) findViewById(R.id.streetAdd);
 
         saveButton = (Button) findViewById(R.id.create_report_button);
         numImagesTextView = (TextView) findViewById(R.id.number_of_images);
@@ -135,9 +135,6 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 selectImage();
             }
         });
-
-        //Set current location
-        SetLocation();
 
         //Reset radio group of size
         int selectedid = radioGroupSize.getCheckedRadioButtonId();
@@ -191,7 +188,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 if(ctx.getCurrentLocation() != null) {
 
                     double curLat = ctx.getCurrentLocation().getLatitude();
-                    double curLng = ctx.getCurrentLocation().getLatitude();
+                    double curLng = ctx.getCurrentLocation().getLongitude();
+                    reportData.setLocation(new LocationDetails(curLat, curLng));
 
                     String locationStreetAddress = LU.getAddress(
                             getApplicationContext(),
@@ -204,14 +202,25 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                         reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
                     } else{
                         if(locationStreetAddress.length() > 0) {
-                            Log.d(TAG, "Address of coordinates" + locationStreetAddress);
+                            Log.d(TAG, "Address of coordinates:" + locationStreetAddress);
                             reportData.setStreetAddress(locationStreetAddress);
-                            mLocationText.setText(locationStreetAddress);
                         } else {
                             reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
                         }
                     }
+                } else {
+                    // if the current location is null, then fill the defaults from constants
+                    Log.d(TAG,"No Location available, " +
+                            "setting defaults for lat, lng and street add");
+                    reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
+                            Constants.DEF_LNG));
+                    reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
                 }
+
+                //After setting the street data to the context, to either current or default
+                //values, make sure to set that value on the ui as well.
+                mLocationText.setText(reportData.getStreetAddress());
+
             }
         });
 
@@ -284,24 +293,12 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             Allerrors.append("Atleast one Image is necessary\n");
         }
         if(reportdata.getStreetAddress() == null || reportdata.getLocation() == null) {
-            Allerrors.append("Location is missing, check gps settings.\n");
+            Allerrors.append("Add location to the report\n");
         }
 
         if(Allerrors.length() == 0)
             return true;
         return false;
-    }
-
-    public void SetLocation()
-    {
-        //set the location
-        if (ctx.getCurrentLocation() != null) {
-            reportData.setLocation(ctx.getCurrentLocation());
-        } else {
-            reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
-                    Constants.DEF_LNG));
-            reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
-        }
     }
 
     @Override
