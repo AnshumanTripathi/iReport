@@ -5,9 +5,10 @@ package com.ireport.controller.utils;
  */
 
 public class Constants {
-    final public static String SERVER_URL = "http://192.168.19.1";
+//    final public static String SERVER_URL = "http://192.168.19.1";
     //final public static String SERVER_URL = "http://10.250.222.100";
     //final public static String SERVER_URL = "http://192.168.0.108";
+    final public static String SERVER_URL = "http://10.250.131.223";
     final public static String SERVER_PORT = "3000";
 
     // email id: dont harcode

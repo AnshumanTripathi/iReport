@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements
 
                                             //set the current user in app context
                                             AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
+                                            Log.v("User Logged In: ",AppContext.currentLoggedInUser.getEmail());
 
                                             //create the new user on server
                                             addUserHandler = new AddUserHandler(

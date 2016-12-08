@@ -2,6 +2,7 @@ package com.ireport.activities;
 
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateUserInfoHandler;
+import com.ireport.model.AppContext;
 import com.ireport.model.UserInfo;
 
 import android.content.Context;
@@ -18,7 +19,7 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
     private EditText screenNameEditText, firstNameEditText, lastNameEditText, homeAddressEditText;
     private Button saveButton;
     private static String TAG = "ViewProfileActivity";
-    private UserInfo userInfo;
+    private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
     UpdateUserInfoHandler updateUserInfoHandler = null;
 
     @Override
@@ -28,8 +29,6 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
         getSupportActionBar().setTitle("Your Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent i = getIntent();
-        userInfo = i.getParcelableExtra("user_info");
         Log.d(TAG, "Got userinfo: " + userInfo.toString());
 
         // initialize all the edit texts and buttons

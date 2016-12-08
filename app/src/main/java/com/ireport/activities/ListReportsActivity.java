@@ -6,7 +6,6 @@ import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -42,8 +44,6 @@ public class ListReportsActivity extends AppCompatActivity
 
     GetReportForEmailId getCurrUserReports = null;
     GetUserForEmailID getUserForEmailID = null;
-
-    AppContext ctx = AppContext.getInstance();
 
     /*********************************List Report Activity Code: Somya*****************************/
     ListView listView;
@@ -77,7 +77,7 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        String currUserEmail = ctx.getCurrentLoggedInUser().getEmail();
+        String currUserEmail = AppContext.getInstance().getCurrentLoggedInUser().getEmail();
         Log.d(TAG,currUserEmail);
         //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
         //getUserForEmailID.getUserDataForEmail(getApplicationContext());
@@ -117,13 +117,20 @@ public class ListReportsActivity extends AppCompatActivity
         populateListViewElements((ArrayList<ReportData>) reportDataList);
         Sandhya : End Test */
 
-        /*Somya - Actual server call
+        //Somya - Actual server call
         getCurrUserReports = new GetReportForEmailId(this,
                 "getAllReportsForUser",
                 currUserEmail
         );
         getCurrUserReports.getReportForEmailId(getApplicationContext());
-        */
+
+//    findViewById(R.id.goToMaps).setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent = new Intent(ListReportsActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        }
+//    });
 
     }
 
@@ -187,10 +194,14 @@ public class ListReportsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_view_profile) {
-            Intent intent = new Intent(this,ViewProfileActivity.class);
-            if ( null != userInfo)
+            Intent intent = new Intent(this, ViewProfileActivity.class);
+            if (null != userInfo){
                 intent.putExtra("user_info", userInfo);
-            startActivity(intent);
+                startActivity(intent);
+            }else {
+                Toast.makeText(getBaseContext(), "Could not load user information!", Toast.LENGTH_SHORT).show();
+            }
+
         } else if (id == R.id.nav_notifcations) {
             Intent intent = new Intent(this, ViewNotificationsActivity.class);
             if ( null != userInfo)
@@ -230,10 +241,10 @@ public class ListReportsActivity extends AppCompatActivity
                 //Point him to a different activity or a view etc.
                 //TODO: Pending.
                 
-                Toast toast = Toast.makeText(
+                Toast.makeText(
                         getApplicationContext(),
                         "No reports to be displayed!",
-                        Toast.LENGTH_SHORT);
+                        Toast.LENGTH_SHORT).show();
             } else {
                 //Reports received from the server is more than 1
                 Log.d(TAG,"Multiple reports received for this user from the server");
@@ -249,8 +260,7 @@ public class ListReportsActivity extends AppCompatActivity
 
         for (int i = 0; i < reportList.size(); i++) {
             ListActivityRowClass item = new ListActivityRowClass(
-                    Integer.valueOf(R.id.icon_only),
-                    //Integer.valueOf(reportList.get(i).getImages()),
+                    getImage(reportList.get(i).getImages()),
                     reportList.get(i).getDescription(),
                     reportList.get(i).getStreetAddress(),
                     reportList.get(i).getStatus()
@@ -265,4 +275,14 @@ public class ListReportsActivity extends AppCompatActivity
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
+    private Bitmap getImage(String imageString)
+    {
+        String ResponseImageArrayString[] = imageString.split(",");
+        byte[] decodedString = Base64.decode(ResponseImageArrayString[0].getBytes(), Base64.DEFAULT);
+        Bitmap Responseimage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return Responseimage;
+    }
+
+
+
 }
