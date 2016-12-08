@@ -73,6 +73,10 @@ public class GetReportForEmailId extends HttpBaseCommunicator {
                     JSONObject tempJson = new JSONObject(arr[i]);
                     ReportData rd = new ReportData();
 
+                    String id = tempJson.getString("_id");
+                    rd.setReportId(id);
+                    Log.d("GetReportID received: ",id);
+
                     String email = tempJson.getString("user_email");
                     rd.setReporteeID(email);
 

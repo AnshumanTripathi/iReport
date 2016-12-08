@@ -13,6 +13,8 @@ public class ListActivityRowClass {
     private String streetAddress;
     private String status;
 
+    private String id;
+
     public String getStatus() {
         return status;
     }
@@ -21,11 +23,12 @@ public class ListActivityRowClass {
         this.status = status;
     }
 
-    public ListActivityRowClass(Bitmap thumbnail, String title, String desc, String status) {
+    public ListActivityRowClass(Bitmap thumbnail, String title, String desc, String status,String id) {
         this.thumbnail = thumbnail;
         this.description = title;
         this.streetAddress = desc;
         this.status = status;
+        this.id = id;
     }
     public Bitmap getImageId() {
         return thumbnail;
@@ -49,5 +52,14 @@ public class ListActivityRowClass {
     public String toString() {
         return description + "\n" + streetAddress;
     }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
 }
 

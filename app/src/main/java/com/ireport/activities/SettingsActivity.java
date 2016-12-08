@@ -12,6 +12,7 @@ import android.util.Log;
 import com.ireport.R;
 import com.ireport.controller.utils.Constants;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
+import com.ireport.model.AppContext;
 import com.ireport.model.Settings;
 import com.ireport.model.UserInfo;
 
@@ -33,7 +34,7 @@ public class SettingsActivity extends PreferenceActivity implements
         addPreferencesFromResource(R.xml.pref_notification);
 
         Intent i = getIntent();
-        UserInfo userInfo = i.getParcelableExtra("user_info");
+        UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
         Log.d(TAG, "Got userinfo: " + userInfo.toString());
 
         emailPref = (SwitchPreference) findPreference(emailStr);
