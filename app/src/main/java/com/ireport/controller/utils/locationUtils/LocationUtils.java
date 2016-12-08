@@ -48,17 +48,22 @@ public class LocationUtils {
     /*
     For ctx pass application context
      */
-    public String getAddress(Context ctx, double lat,double long1) {
+    public String getAddress(Context ctx, double long1,double lat) {
         Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
         String retAddress = null;
 
+        long1 =  -121.885472;
+        lat = 37.3346316;
         List<Address> addresses = null;
         try {
-            addresses = geocoder.getFromLocation(lat, long1, 1);
+            addresses = geocoder.getFromLocation(lat, long1, 5);
 
+            for(int i=0;i<addresses.size();i++){
+                Log.d("Address",addresses.get(i).toString());
+            }
             if (addresses != null && addresses.size() > 0) {
                 Address returnedAddress = addresses.get(0);
-                retAddress = returnedAddress.getAddressLine(0).toString();
+                retAddress = returnedAddress.getAddressLine(0);
                 Log.d("Address is :", retAddress);
             } else {
                 Log.d("No address", "No Address returned!");

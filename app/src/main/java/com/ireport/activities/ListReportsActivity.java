@@ -77,7 +77,7 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        String currUserEmail = AppContext.getInstance().getCurrentLoggedInUser().getEmail();
+        String currUserEmail = "ash.ketchum@gmail.com";
         Log.d(TAG,currUserEmail);
         //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
         //getUserForEmailID.getUserDataForEmail(getApplicationContext());
