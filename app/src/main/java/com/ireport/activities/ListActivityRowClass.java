@@ -10,7 +10,16 @@ public class ListActivityRowClass {
 
     private Bitmap thumbnail;
     private String description;
-    private String streetAddress;
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    private String dateTime;
     private String status;
 
     private String id;
@@ -26,7 +35,7 @@ public class ListActivityRowClass {
     public ListActivityRowClass(Bitmap thumbnail, String title, String desc, String status,String id) {
         this.thumbnail = thumbnail;
         this.description = title;
-        this.streetAddress = desc;
+        this.dateTime = desc;
         this.status = status;
         this.id = id;
     }
@@ -36,12 +45,8 @@ public class ListActivityRowClass {
     public void setImageId(Bitmap thumbnail) {
         this.thumbnail = thumbnail;
     }
-    public String getStreetAddress() {
-        return streetAddress;
-    }
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
+
+
     public String getDescription() {
         return description;
     }
@@ -50,7 +55,7 @@ public class ListActivityRowClass {
     }
     @Override
     public String toString() {
-        return description + "\n" + streetAddress;
+        return getDescription() + "\n" + getDateTime();
     }
     public String getId() {
         return id;
