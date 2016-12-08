@@ -7,8 +7,9 @@
                                             android:layout_marginTop="@dimen/activity_horizontal_margin"
                                             android:padding="@dimen/activity_horizontal_margin"
                                             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                                            tools:showIn="@layout/activity_create_report">
-
+                                            tools:showIn="@layout/activity_create_report"
+    >
+    <!--android:background="@android:color/black"-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,18 +31,32 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Description"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"/>
+
+
+            <!--<EditText-->
+                <!--android:inputType="textMultiLine" &lt;!&ndash; Multiline input &ndash;&gt;-->
+            <!--android:lines="8" &lt;!&ndash; Total Lines prior display &ndash;&gt;-->
+            <!--android:minLines="6" &lt;!&ndash; Minimum lines &ndash;&gt;-->
+            <!--android:gravity="top|left" &lt;!&ndash; Cursor Position &ndash;&gt;-->
+            <!--android:maxLines="10" &lt;!&ndash; Maximum Lines &ndash;&gt;-->
+            <!--android:layout_height="wrap_content" &lt;!&ndash; Height determined by content &ndash;&gt;-->
+            <!--android:layout_width="fill_parent" &lt;!&ndash; Fill entire width &ndash;&gt;-->
+            <!--android:scrollbars="vertical" &lt;!&ndash; Vertical Scroll Bar &ndash;&gt;-->
+            <!--/>-->
 
             <EditText
                 android:id="@+id/user_litter_desc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/litterDesc"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="8dp"
                 android:hint="Enter your description here"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
+                android:textColor="@android:color/black"
+                android:background="@drawable/rounded_edittext" />
 
 
         </RelativeLayout>
@@ -60,34 +75,41 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Size "
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"/>
 
              <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/litterSize"
                 android:id="@+id/radio_group_size"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                 android:textColor="@color/colorPrimaryDark">
                 <RadioButton android:id="@+id/radio_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="small"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:text="Small"
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/colorPrimaryDark"
+                    />
                 <RadioButton android:id="@+id/radio_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="medium"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:text="Medium"
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/colorPrimaryDark"/>
                  <RadioButton android:id="@+id/radio_large"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:text="large"
-                     android:onClick="onRadioButtonClicked"/>
+                     android:text="Large"
+                     android:onClick="onRadioButtonClicked"
+                     android:textColor="@color/colorPrimaryDark"/>
                  <RadioButton android:id="@+id/radio_xl"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:text="xl"
-                     android:onClick="onRadioButtonClicked"/>
+                     android:text="XL"
+                     android:onClick="onRadioButtonClicked"
+                     android:textColor="@color/colorPrimaryDark"/>
             </RadioGroup>
 
         </RelativeLayout>
@@ -108,29 +130,34 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Severity"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"/>
 
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/radio_group_severity"
                 android:layout_below="@+id/litterSeverity"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:buttonTint="@android:color/white">
                 <RadioButton android:id="@+id/radio_severity_minor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Minor"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/colorPrimaryDark"/>
                 <RadioButton android:id="@+id/radio_severity_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Medium"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/colorPrimaryDark"/>
                 <RadioButton android:id="@+id/radio_severity_urgent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Urgent"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:onClick="onRadioButtonClicked"
+                    android:textColor="@color/colorPrimaryDark"/>
             </RadioGroup>
 
         </RelativeLayout>
@@ -149,7 +176,8 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Location"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"/>
 
             <TextView
                 android:id="@+id/streetAdd"
@@ -160,7 +188,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Enter your location"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
+                android:textColor="@color/colorPrimaryDark"/>
 
             <Button
                 android:id="@+id/enterLocation"
@@ -192,7 +220,8 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Add Images"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"/>
 
 
             <Button
@@ -201,10 +230,11 @@
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="30dp"
                 android:background="@drawable/ic_menu_camera"
+                android:tint="@android:color/white"
                 android:checked="true"
-                android:padding="6dp"
+                android:padding="8dp"
                 android:textOff=""
                 android:textOn="" />
 
@@ -214,7 +244,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/number_of_images"
-            android:layout_above="@+id/lnrImages"/>
+            android:layout_above="@+id/lnrImages"
+            android:layout_marginLeft="20dp"/>
+
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -227,30 +260,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:showDividers="middle">
 
             </LinearLayout>
 
         </ScrollView>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/error_message"
             android:textColor="@color/colorAccent"
             android:layout_above="@+id/create_report_button"/>
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="925dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/activity_horizontal_margin"
+            >
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="148dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_centerInParent="false"
                 android:id="@+id/create_report_button"
-                android:text="Create" />
+                android:text="Create"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|center_horizontal|center" />
+            <!--android:layout_marginBottom="@dimen/activity_horizontal_margin"-->
+            <!--android:layout_marginTop="@dimen/activity_horizontal_margin"-->
 
         </LinearLayout>
     </LinearLayout>
