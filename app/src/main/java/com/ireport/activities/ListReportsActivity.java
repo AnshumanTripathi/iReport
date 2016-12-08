@@ -103,10 +103,6 @@ public class ListReportsActivity extends AppCompatActivity
         Intent intent = new Intent(this,ViewReportActivity.class);
         intent.putExtra("report_id_in_mongo", rowItems.get(position).getId());
         Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
-        // TEST CODE, SANDHYA
-        intent.putExtra("images", reportDataList.get(position).getImages());
-        intent.putExtra("street_address", reportDataList.get(position).getStreetAddress());
-        // END TEST CODE
         startActivity(intent);
 
     }

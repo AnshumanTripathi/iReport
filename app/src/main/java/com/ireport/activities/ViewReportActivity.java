@@ -20,13 +20,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.vision.text.Text;
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
 import com.ireport.model.AppContext;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
 
 import java.util.ArrayList;
 
-public class ViewReportActivity extends AppCompatActivity {
+public class ViewReportActivity extends AppCompatActivity implements ICallbackActivity {
     public static String TAG = "ViewReportActivity";
     Geocoder geocoder;
 
@@ -36,8 +39,15 @@ public class ViewReportActivity extends AppCompatActivity {
     private RadioGroup radioGroupStatus;
     private LinearLayout mImageLayout;
 
+    private RadioGroup.OnCheckedChangeListener onCheckedChangeListener;
+
     // for status logic
+    private ReportData reportData;
     private String litterStatus;
+
+    // handlers
+    private UpdateReportByIdHandler updateReportByIdHandler;
+    private GetReportByIdHandler getReportByIdHandler;
 
     AppContext ctx = AppContext.getInstance();
 
@@ -47,13 +57,13 @@ public class ViewReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Detailed Report");
+
         String itemIdiInMongo = getIntent().getStringExtra("report_id_in_mongo");
         Log.d(TAG, "Item's mongo id is: " + itemIdiInMongo);
-
-        //TEst code, sandhya
-        String images = getIntent().getStringExtra("images");
-        String street_address = getIntent().getStringExtra("street_address");
-        // END TEST
+        getReportByIdHandler = new GetReportByIdHandler(this, "view_report_activity", itemIdiInMongo);
+        getReportByIdHandler.getReportForReportId(getApplicationContext());
 
 
         //Set all assets
@@ -71,24 +81,82 @@ public class ViewReportActivity extends AppCompatActivity {
         mImageLayout = (LinearLayout)findViewById(R.id.image_layout);
 
 
-        //Sandhya : Test with sample input - Needs to be commented/cleaned out
-        final ReportData testReportData = new ReportData();
-        testReportData.setDescription("Cigarette Bulb");
-        testReportData.setTimestamp("my timestamp");
-        testReportData.setImages("sampleimage");
-        testReportData.setSeverityLevel("Urgent");
-        testReportData.setStatus("still_there");
-        LocationDetails testLocation = new LocationDetails();
-        testLocation.setLatitude(37.37310915);
-        testLocation.setLongitude(-122.06109646);
-        testReportData.setLocation(testLocation);
-        testReportData.setStreetAddress(street_address);
-        testReportData.setSize("Small");
-        testReportData.setReporteeID("sandhyafeb1990@gmail.com");
-        testReportData.setImages(images);
-        // End test
+        onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                /* Get current location
+                Location currLocation = new Location();
+                Location reportLocation = new Location();
+
+                CurrentLocationUtil.getCurrentLocation(ViewReportActivity.this, ctx);
+
+                //set the latitude and longitude
+                if(ctx.getCurrentLocation() != null) {
+                    currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
+                    currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
+                }
+                //Get report location from street address
 
 
+                2.Check if it is <30ft
+                float distance = currLocation.distanceTo(reportLocation);
+                */
+
+
+                // checkedId is the RadioButton selected
+                String oldLitterStatus = litterStatus;
+                String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
+                Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
+
+                float distance = 9f;
+                if(distance > 9.144) {
+                    Log.v(TAG,"User not within range!!");
+                    Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
+                    radioGroupStatus.setOnCheckedChangeListener(null);
+                    if(oldLitterStatus.equals("still_there")) {
+                        Log.v(TAG,"still_there im here");
+                        radioGroupStatus.check(R.id.radio_present);
+                    } else if (oldLitterStatus.equals("removal_claimed")) {
+                        Log.v(TAG,"removal_claimed im here");
+                        radioGroupStatus.check(R.id.radio_claimed);
+                    } else if (oldLitterStatus.equals("removal_confirmed")) {
+                        Log.v(TAG,"removal_confirmed im here");
+                        radioGroupStatus.check(R.id.radio_confirmed);
+                    }
+                    radioGroupStatus.setOnCheckedChangeListener(this);
+                } else {
+                    litterStatus = newLitterStatus;
+                    reportData.setStatus(litterStatus);
+                    Log.v(TAG,"Updating status to " + litterStatus);
+                }
+            }
+        };
+    }
+
+    private ArrayList<Bitmap> getImage(String imageString) {
+        String ResponseImageArrayString[] = imageString.split(",");
+        ArrayList<Bitmap> responseImages = new ArrayList<>();
+        for (int i=0; i<ResponseImageArrayString.length; i++) {
+            byte[] decodedString = Base64.decode(ResponseImageArrayString[i].getBytes(), Base64.DEFAULT);
+            Bitmap responseimage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            responseImages.add(responseimage);
+        }
+        Log.v(TAG, "Returning " + Integer.toString(responseImages.size()) + " images");
+        return responseImages;
+    }
+
+
+    @Override
+    public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
+        Log.d("VIEWING", "We have something");
+        if (responseObj instanceof ReportData) {
+            Log.d("VIEWING", "We have a report!!!!");
+            updatePageWithNewData((ReportData) responseObj);
+        }
+    }
+
+    public void updatePageWithNewData(ReportData testReportData) {
+        reportData = testReportData;
         // Load description, datetime, screenname, email, size, severity and location
         mDescriptionTextView.setText(testReportData.getDescription());
         mDateTimeTextView.setText(testReportData.getTimestamp());
@@ -101,7 +169,9 @@ public class ViewReportActivity extends AppCompatActivity {
         mUpdateReportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Update the report
+                updateReportByIdHandler = new UpdateReportByIdHandler(ViewReportActivity.this,
+                        "view_report_activity", reportData.getReportId(), reportData.getStatus());
+                updateReportByIdHandler.updateReportForReportId(getApplicationContext());
             }
         });
 
@@ -141,69 +211,7 @@ public class ViewReportActivity extends AppCompatActivity {
             Log.v(TAG, "Invalid status found!");
         }
 
-        radioGroupStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                /* Get current location
-                Location currLocation = new Location();
-                Location reportLocation = new Location();
+        radioGroupStatus.setOnCheckedChangeListener(onCheckedChangeListener);
 
-                CurrentLocationUtil.getCurrentLocation(ViewReportActivity.this, ctx);
-
-                //set the latitude and longitude
-                if(ctx.getCurrentLocation() != null) {
-                    currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
-                    currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
-                }
-                //Get report location from street address
-
-
-                2.Check if it is <30ft
-                float distance = currLocation.distanceTo(reportLocation);
-                */
-
-
-                // checkedId is the RadioButton selected
-                String oldLitterStatus = litterStatus;
-                String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
-                Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
-
-                float distance = 9.5f;
-                if(distance > 9.144) {
-                    Log.v(TAG,"User not within range!!");
-                    Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
-                    radioGroupStatus.setOnCheckedChangeListener(null);
-                    if(oldLitterStatus.equals("still_there")) {
-                        Log.v(TAG,"still_there im here");
-                        radioGroupStatus.check(R.id.radio_present);
-                    } else if (oldLitterStatus.equals("removal_claimed")) {
-                        Log.v(TAG,"removal_claimed im here");
-                        radioGroupStatus.check(R.id.radio_claimed);
-                    } else if (oldLitterStatus.equals("removal_confirmed")) {
-                        Log.v(TAG,"removal_confirmed im here");
-                        radioGroupStatus.check(R.id.radio_confirmed);
-                    }
-                    radioGroupStatus.setOnCheckedChangeListener(this);
-                } else {
-                    litterStatus = newLitterStatus;
-                    testReportData.setStatus(litterStatus);
-                    Log.v(TAG,"Updating status to " + litterStatus);
-                }
-            }
-        });
     }
-
-    private ArrayList<Bitmap> getImage(String imageString) {
-        String ResponseImageArrayString[] = imageString.split(",");
-        ArrayList<Bitmap> responseImages = new ArrayList<>();
-        for (int i=0; i<ResponseImageArrayString.length; i++) {
-            byte[] decodedString = Base64.decode(ResponseImageArrayString[i].getBytes(), Base64.DEFAULT);
-            Bitmap responseimage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            responseImages.add(responseimage);
-        }
-        Log.v(TAG, "Returning " + Integer.toString(responseImages.size()) + " images");
-        return responseImages;
-    }
-
-
 }
