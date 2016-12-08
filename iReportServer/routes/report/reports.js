@@ -71,6 +71,7 @@ exports.addReport = function (req, res) {
 exports.getReports = function (req, res) {
     var query;
     console.log(req.body);
+    var jsonResponse = {};
     if (req.body.hasOwnProperty("status".toLowerCase())) {
         query = {status: req.body.status};
     } else if (req.body.hasOwnProperty("email".toLowerCase())) {
@@ -81,16 +82,16 @@ exports.getReports = function (req, res) {
     Report.find(query).lean().exec(function (err, report) {
         if (err) {
             console.log("Error occured in fetching reports: " + err);
-            res.send({
+            jsonResponse = {
                 statusCode: 500,
                 data: err
-            });
+            };
         } else if (report.length < 1) {
             console.log("No reports found!");
-            res.send({
+            jsonResponse = {
                 statusCode: 400,
                 data: "No reports in Database"
-            });
+            };
         } else {
             console.log(report);
             for (var i = 0; i < report.length; i++) {
@@ -110,11 +111,13 @@ exports.getReports = function (req, res) {
                 report[i].timestamp += " ";
                 report[i].timestamp += [hour, minutes].join(":");
             }
-            res.send({
+            jsonResponse = {
                 statusCode: 200,
                 data: report
-            });
+            };
         }
+
+        res.send(jsonResponse);
     });
 };
 
@@ -187,26 +190,27 @@ exports.updateReportStatus = function (req, res) {
     Report.findById(query, function (err, report) {
         if (err) {
             console.log("Error Occured: " + err);
-            res.send({
+
+            jsonResponse = {
                 statusCode: 500,
                 data: err
-            });
+            };
         } else if (report == null) {
             console.log("No report found");
-            res.send({
+            jsonResponse = {
                 statusCode: 400,
                 data: err
-            });
+            };
         } else {
             console.log("Report found");
             console.log(report);
             report.status = updateStatus;
             report.save(function (err) {
                 if (err) {
-                    res.send({
+                    jsonResponse = {
                         statusCode: 500,
                         data: err
-                    });
+                    };
                 }
             });
 
@@ -219,10 +223,10 @@ exports.updateReportStatus = function (req, res) {
                     });
                 } else if (user == null) {
                     console.log("No user found!");
-                    res.send({
+                    jsonResponse = {
                         statusCode: 400,
                         data: "No user Found in DB"
-                    });
+                    };
                 } else {
                     if (!user.settings.anonymous && user.settings.email_confirm) {
                         email.sendEmail({
@@ -231,13 +235,13 @@ exports.updateReportStatus = function (req, res) {
                             html: "<h2>Your iReport has been updated to " + updateStatus +
                             "<br/>Log in iReport app to see updates</h2>"
                         });
-                        res.send({
+                        jsonResponse = {
                             statusCode: 200,
                             data: "Report Updated!"
-                        });
+                        };
                     }
-
                 }
+                res.send(jsonResponse);
             });
         }
     });
