@@ -123,13 +123,10 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
                 String oldLitterStatus = litterStatus;
                 String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
                 Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
-
-<<<<<<< HEAD
                 float distance = 9f;
-                if(distance > 9.144) {
-=======
+
                 if(distance > 9.144f) {
->>>>>>> 2b2059c... Add update report without location
+//>>>>>>> 2b2059c... Add update report without location
                     Log.v(TAG,"User not within range!!");
                     Log.v(TAG,"Distance = " + distance);
                     Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
