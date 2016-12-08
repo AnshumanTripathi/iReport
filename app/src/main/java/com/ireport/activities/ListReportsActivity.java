@@ -43,8 +43,6 @@ public class ListReportsActivity extends AppCompatActivity
     GetReportForEmailId getCurrUserReports = null;
     GetUserForEmailID getUserForEmailID = null;
 
-    AppContext ctx = AppContext.getInstance();
-
     /*********************************List Report Activity Code: Somya*****************************/
     ListView listView;
     List<ListActivityRowClass> rowItems;
@@ -77,7 +75,7 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        String currUserEmail = ctx.getCurrentLoggedInUser().getEmail();
+        String currUserEmail = AppContext.getInstance().getCurrentLoggedInUser().getEmail();
         Log.d(TAG,currUserEmail);
         //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
         //getUserForEmailID.getUserDataForEmail(getApplicationContext());
@@ -124,6 +122,14 @@ public class ListReportsActivity extends AppCompatActivity
         );
         getCurrUserReports.getReportForEmailId(getApplicationContext());
         */
+
+//    findViewById(R.id.goToMaps).setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent = new Intent(ListReportsActivity.this, MapsActivity.class);
+//            startActivity(intent);
+//        }
+//    });
 
     }
 
@@ -230,10 +236,10 @@ public class ListReportsActivity extends AppCompatActivity
                 //Point him to a different activity or a view etc.
                 //TODO: Pending.
                 
-                Toast toast = Toast.makeText(
+                Toast.makeText(
                         getApplicationContext(),
                         "No reports to be displayed!",
-                        Toast.LENGTH_SHORT);
+                        Toast.LENGTH_SHORT).show();
             } else {
                 //Reports received from the server is more than 1
                 Log.d(TAG,"Multiple reports received for this user from the server");
