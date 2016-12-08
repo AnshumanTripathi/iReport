@@ -57,8 +57,10 @@ public class SettingsActivity extends PreferenceActivity implements
                 sharedPreferences.getBoolean(anonStr, false)
             );
             Log.d(TAG, settings.toString());
+            UserInfo user_info = AppContext.getInstance().getCurrentLoggedInUser();
+            user_info.setSettings(settings);
             updateSettingsHandler = new UpdateSettingsHandler
-                    (this, "settings_activity", Constants.SANDHYA_EMAIL, settings);
+                    (this, "settings_activity", user_info.getEmail(), settings);
             updateSettingsHandler.updateSettingForUser(getApplicationContext());
         }
     }
@@ -102,6 +104,4 @@ public class SettingsActivity extends PreferenceActivity implements
             Log.d(TAG, userInfo.getSettings().toString());
         }
     }
-
-
 }

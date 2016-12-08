@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * Created by Somya on 12/4/2016.
  */
-
 public class AddUserHandler extends HttpBaseCommunicator {
 
     private ICallbackActivity activity_;
