@@ -200,9 +200,16 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     );
 
                     //if street address is available, then only set the address
-                    if(locationStreetAddress != null && locationStreetAddress.length() > 0) {
-                        Log.d(TAG, "Address of coordinates" + locationStreetAddress);
-                        mLocationText.setText(locationStreetAddress);
+                    if(locationStreetAddress == null) {
+                        reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
+                    } else{
+                        if(locationStreetAddress.length() > 0) {
+                            Log.d(TAG, "Address of coordinates" + locationStreetAddress);
+                            reportData.setStreetAddress(locationStreetAddress);
+                            mLocationText.setText(locationStreetAddress);
+                        } else {
+                            reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
+                        }
                     }
                 }
             }
@@ -276,6 +283,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         {
             Allerrors.append("Atleast one Image is necessary\n");
         }
+        if(reportdata.getStreetAddress() == null || reportdata.getLocation() == null) {
+            Allerrors.append("Location is missing, check gps settings.\n");
+        }
 
         if(Allerrors.length() == 0)
             return true;
@@ -290,6 +300,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         } else {
             reportData.setLocation(new LocationDetails(Constants.DEF_LAT,
                     Constants.DEF_LNG));
+            reportData.setStreetAddress(Constants.DEF_STREET_ADDRESS);
         }
     }
 
