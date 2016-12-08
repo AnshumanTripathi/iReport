@@ -90,13 +90,19 @@ public class GetUserForEmailID extends HttpBaseCommunicator {
             Log.d("SETTINGS",settings);
 
             String email_confirm = settingJson.getString("email_confirm");
-            settingObj.setAllowEmailConfirmation(Boolean.parseBoolean(email_confirm));
+            if (!email_confirm.isEmpty()) {
+                settingObj.setAllowEmailConfirmation(Boolean.parseBoolean(email_confirm));
+            }
 
             String email_notify = settingJson.getString("email_notify");
-            settingObj.setAllowEmailNotification(Boolean.parseBoolean(email_notify));
+            if (!email_notify.isEmpty()) {
+                settingObj.setAllowEmailNotification(Boolean.parseBoolean(email_notify));
+            }
 
             String anonymous = settingJson.getString("anonymous");
-            settingObj.setAnonymous(Boolean.parseBoolean(anonymous));
+            if (!anonymous.isEmpty()) {
+                settingObj.setAnonymous(Boolean.parseBoolean(anonymous));
+            }
 
             uiObj.setSettings(settingObj);
 

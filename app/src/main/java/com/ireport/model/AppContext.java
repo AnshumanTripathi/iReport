@@ -25,7 +25,6 @@ public class AppContext {
         currentLoggedInUser.resetInfo();
     }
 
-
     public static AppContext getInstance() {
         if(instance == null){
             return new AppContext();
@@ -36,6 +35,10 @@ public class AppContext {
 
     public UserInfo getCurrentLoggedInUser() {
         return currentLoggedInUser;
+    }
+
+    public void setUserInfo(UserInfo info) {
+        AppContext.currentLoggedInUser = info;
     }
 
     public static void setCurrentLoggedInUser(UserInfo newCurrentLoggedInUser) {

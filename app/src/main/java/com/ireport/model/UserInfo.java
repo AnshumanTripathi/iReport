@@ -19,7 +19,7 @@ public class UserInfo implements Parcelable{
     private String homeAddress;
 
     //UserInfo Settings
-    private Settings settings;
+    private Settings settings = new Settings();
 
     public UserInfo() {
     }
@@ -104,6 +104,7 @@ public class UserInfo implements Parcelable{
         this.firstName = "";
         this.lastName = "";
         this.homeAddress = "";
+        this.settings.reset();
     }
 
     public String toString() {

@@ -35,7 +35,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.AddUserHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateUserInfoHandler;
 import com.ireport.model.AppContext;
+import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
 import org.json.JSONException;
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     String userEmail;
 
     AddUserHandler addUserHandler = null;
+    GetUserForEmailID getUserInfo = null;
     AppContext ctx = AppContext.getInstance();
 
     @Override
@@ -75,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements
         callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_main);
+
+        //test <code></code>
+        UpdateReportByIdHandler gid = new UpdateReportByIdHandler(this,
+                "reportId","5848a1e0c479e405d06496ca","still_there");
+        gid.updateReportForReportId(getApplicationContext());
 
         //Special Facebook Login Button
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -143,17 +154,10 @@ public class MainActivity extends AppCompatActivity implements
                 //create the new user on server
                 addUserHandler = new AddUserHandler(
                         MainActivity.this,
-                        "Add new user",
+                        "add_new_user",
                         userEmail,
                         false);
                 addUserHandler.addNewUser(getApplicationContext());
-
-                //direct the user to list reports activity
-                Intent intent = new Intent(
-                        MainActivity.this,
-                        ListReportsActivity.class
-                );
-                startActivity(intent);
 
                 updateUI();
             }
@@ -247,14 +251,10 @@ public class MainActivity extends AppCompatActivity implements
                         //create the new user on server
                         addUserHandler = new AddUserHandler(
                                 MainActivity.this,
-                                "Add new user",
+                                "add_new_user",
                                 userEmail,
                                 isOfficial);
                         addUserHandler.addNewUser(getApplicationContext());
-
-                        //direct the user to list reports activity now
-                        Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
-                        startActivity(intent);
 
                         if (!task.isSuccessful()) {
                             //Signin Failed
@@ -301,17 +301,11 @@ public class MainActivity extends AppCompatActivity implements
                                             //create the new user on server
                                             addUserHandler = new AddUserHandler(
                                                     MainActivity.this,
-                                                    "Add new user",
+                                                    "add_new_user",
                                                     userEmail,
                                                     false);
                                             addUserHandler.addNewUser(getApplicationContext());
 
-                                            //direct the user to list reports activity
-                                            Intent intent = new Intent(
-                                                    MainActivity.this,
-                                                    ListReportsActivity.class
-                                            );
-                                            startActivity(intent);
 
                                             updateUI();
                                         } catch (JSONException e) {
@@ -348,12 +342,35 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
-        if(responseObj instanceof String) {
-            Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
-            if(responseObj.toString().equals("200") || responseObj.toString().equals("501")) {
-                Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
-            } else {
-                Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");
+        switch (identifier) {
+            case "add_new_user": {
+                if(responseObj instanceof String) {
+                    Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
+                    if(responseObj.toString().equals("200") || responseObj.toString().equals("501")) {
+                        // get user settings now
+                        getUserInfo = new GetUserForEmailID(
+                                this,
+                                "get_user_details",
+                                this.ctx.getCurrentLoggedInUser().getEmail()
+                        );
+                        getUserInfo.getUserDataForEmail(getApplicationContext());
+                        Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
+                    } else {
+                        Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");
+                    }
+                }
+                break;
+            }
+            case "get_user_details": {
+                if (responseObj != null && responseObj instanceof UserInfo) {
+                    this.ctx.setUserInfo((UserInfo)responseObj);
+                }
+                //direct the user to list reports activity
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        ListReportsActivity.class
+                );
+                startActivity(intent);
             }
         }
     }

@@ -18,7 +18,9 @@ public class Settings {
     }
 
     public Settings() {
-
+        this.isAnonymous = false;
+        this.isAllowEmailConfirmation = true;
+        this.isAllowEmailNotification = true;
     }
 
     public boolean isAllowEmailConfirmation() {
@@ -43,6 +45,12 @@ public class Settings {
 
     public void setAnonymous(boolean anonymous) {
         isAnonymous = anonymous;
+    }
+
+    public void reset() {
+        this.isAllowEmailNotification = true;
+        this.isAllowEmailConfirmation = true;
+        this.isAnonymous = false;
     }
 
     public String toString() {
