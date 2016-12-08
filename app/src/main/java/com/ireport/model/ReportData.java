@@ -12,16 +12,16 @@ import java.util.List;
 
 public class ReportData {
 
-    private String images;
+    private String images = "";
     private LocationDetails location;
-    private String description;
-    private String size;
-    private String severityLevel;
-    private String reporteeID;
-    private String status;
-    private String streetAddress;
-    private String reportId;
-    private String timestamp;
+    private String description = "";
+    private String size = "";
+    private String severityLevel = "";
+    private String reporteeID = "";
+    private String status = "";
+    private String streetAddress = "";
+    private String reportId = "";
+    private String timestamp = "";
 
     public ReportData() {
 

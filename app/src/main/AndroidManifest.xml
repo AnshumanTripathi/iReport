@@ -67,7 +67,8 @@
         </activity>
         <activity android:name=".activities.CustomPhotoGalleryActivity"
             android:label="Select from custom" />
-        <activity android:name=".activities.ViewReportActivity"/>
+        <activity android:name=".activities.ViewReportActivity"
+            android:parentActivityName=".activities.ListReportsActivity"/>
 
         <activity android:name=".activities.MapsActivity">
         </activity>

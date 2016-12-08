@@ -6,8 +6,8 @@ package com.ireport.model;
 
 public class LocationDetails {
 
-    private double latitude;
-    private double longitude;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     public LocationDetails() {
 

@@ -1,17 +1,5 @@
 package com.ireport.activities;
 
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
-import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
-import com.ireport.model.AppContext;
-import com.ireport.model.ReportData;
-import com.ireport.model.UserInfo;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,13 +12,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
+import com.ireport.model.AppContext;
+import com.ireport.model.ReportData;
+import com.ireport.model.UserInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListReportsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity,
@@ -43,7 +42,7 @@ public class ListReportsActivity extends AppCompatActivity
     List<ReportData> reportDataList;
 
     GetReportForEmailId getCurrUserReports = null;
-    GetUserForEmailID getUserForEmailID = null;
+    GetAllReportsHandler getAllReportsHandler = null;
 
     /*********************************List Report Activity Code: Somya*****************************/
     ListView listView;
@@ -56,6 +55,7 @@ public class ListReportsActivity extends AppCompatActivity
         Log.d(TAG, "First thing EVER!!");
         setContentView(R.layout.activity_list_reports);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbar.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -68,17 +68,23 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        String currUserEmail = AppContext.getInstance().getCurrentLoggedInUser().getEmail();
-        Log.d(TAG,currUserEmail);
-        //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
-        //getUserForEmailID.getUserDataForEmail(getApplicationContext());
-        
-        //Somya - Actual server call
-        getCurrUserReports = new GetReportForEmailId(this,
-                "getAllReportsForUser",
-                currUserEmail
-        );
-        getCurrUserReports.getReportForEmailId(getApplicationContext());
+        UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
+        if (currUser.isOfficial()) {
+            System.out.println("in official workflow");
+            getAllReportsHandler = new GetAllReportsHandler(
+                    this,
+                    "getAllReports"
+            );
+            getAllReportsHandler.getAllReportsData(getApplicationContext());
+        } else {
+            String currUserEmail = currUser.getEmail();
+            Log.d(TAG,currUserEmail);
+            getCurrUserReports = new GetReportForEmailId(this,
+                    "getAllReportsForUser",
+                    currUserEmail
+            );
+            getCurrUserReports.getReportForEmailId(getApplicationContext());
+        }
 
 //    findViewById(R.id.goToMaps).setOnClickListener(new View.OnClickListener() {
 //        @Override
@@ -103,10 +109,6 @@ public class ListReportsActivity extends AppCompatActivity
         Intent intent = new Intent(this,ViewReportActivity.class);
         intent.putExtra("report_id_in_mongo", rowItems.get(position).getId());
         Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
-        // TEST CODE, SANDHYA
-        intent.putExtra("images", reportDataList.get(position).getImages());
-        intent.putExtra("street_address", reportDataList.get(position).getStreetAddress());
-        // END TEST CODE
         startActivity(intent);
 
     }

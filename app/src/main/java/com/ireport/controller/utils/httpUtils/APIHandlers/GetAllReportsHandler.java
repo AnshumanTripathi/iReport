@@ -85,8 +85,10 @@ public class GetAllReportsHandler extends HttpBaseCommunicator {
                 String reportId = tempJson.getString("_id");
                 rd.setReportId(reportId);
 
-                String streetAdd = tempJson.getString("street_address");
-                rd.setStreetAddress(streetAdd);
+                if (tempJson.has("street_address")) {
+                    String streetAdd = tempJson.getString("street_address");
+                    rd.setStreetAddress(streetAdd);
+                }
 
                 String timeStamp = tempJson.getString("timestamp");
                 rd.setTimestamp(timeStamp);

@@ -30,4 +30,5 @@ app/local.properties
 app/gradle/wrapper/gradle-wrapper.jar
 app/gradle/wrapper/gradle-wrapper.properties
 app/google-services.json
-app/src/debug
+app/src/debug/
+iReportServer/routes/Credentials.js
