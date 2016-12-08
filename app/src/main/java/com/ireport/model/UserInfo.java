@@ -38,6 +38,7 @@ public class UserInfo implements Parcelable{
 
     public UserInfo(String email){
         this.email = email;
+        this.screenName = email;
     }
 
     public boolean isOfficial() {
@@ -108,11 +109,18 @@ public class UserInfo implements Parcelable{
     public String toString() {
         String ans = "";
         ans += getEmail() + " -> <";
-        ans += getScreenName() + ", ";
-        ans += getFirstName() + ", ";
-        ans += getLastName() + ", ";
-        ans += getHomeAddress() + ">, <";
-        ans += getSettings().toString() + ">";
+
+        if(getScreenName()!=null)
+            ans += getScreenName() + ", ";
+        if(getFirstName()!=null)
+            ans += getFirstName() + ", ";
+        if(getLastName()!= null)
+            ans += getLastName() + ", ";
+        if(getHomeAddress()!=null)
+            ans += getHomeAddress() + ">, <";
+        if(getSettings()!=null)
+            ans += getSettings().toString() + ">";
+
         return ans;
     }
 

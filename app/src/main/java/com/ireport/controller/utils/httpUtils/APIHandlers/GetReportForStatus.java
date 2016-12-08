@@ -81,6 +81,15 @@ public class GetReportForStatus extends HttpBaseCommunicator {
                 String status = tempJson.getString("status");
                 rd.setStatus(status);
 
+                String reportId = tempJson.getString("_id");
+                rd.setReportId(reportId);
+
+                String streetAdd = tempJson.getString("street_address");
+                rd.setStreetAddress(streetAdd);
+
+                String timeStamp = tempJson.getString("timestamp");
+                rd.setTimestamp(timeStamp);
+
                 if(tempJson.has("location")) {
                     String location = tempJson.getString("location");
                     JSONObject locJson = new JSONObject(location);
