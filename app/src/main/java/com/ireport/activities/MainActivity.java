@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements
 
 
         mAuth = FirebaseAuth.getInstance();
-
         AppEventsLogger.activateApp(MainActivity.this);
 
         //Google Login Button
@@ -133,9 +132,7 @@ public class MainActivity extends AppCompatActivity implements
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Log.d(TAG, "Email: " + user.getEmail());
-                    Intent intent = new Intent(MainActivity.this,ListReportsActivity.class);
-                    AppContext.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
-                    startActivity(intent);
+                    handleUserSignIn(user.getEmail());
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
@@ -145,24 +142,8 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userEmail = "somyaaggarwal@ymail.com";
-                System.out.println("User email: "+userEmail);
-
-                UserInfo userInfo = new UserInfo(userEmail);
-//                userInfo.setOfficial(true);
-
-                //set the current user in app context
-                AppContext.setCurrentLoggedInUser(userInfo);
-
-                //create the new user on server
-                addUserHandler = new AddUserHandler(
-                        MainActivity.this,
-                        "add_new_user",
-                        userEmail,
-                        userInfo.isOfficial());
-                addUserHandler.addNewUser(getApplicationContext());
-
-                updateUI();
+                userEmail = "somyaaggarwal@gmail.com";  // just for testing
+                handleUserSignIn(userEmail);
             }
         });
 
@@ -242,22 +223,10 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         String user_email = user.getEmail();
+                        handleUserSignIn(user_email);
 
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                         Log.d(TAG,"Email for fb sign in:" + user_email);
-
-                        boolean isOfficial = checkIfOfficial(user_email);
-
-                        //set the current user email in context
-                        ctx.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
-
-                        //create the new user on server
-                        addUserHandler = new AddUserHandler(
-                                MainActivity.this,
-                                "add_new_user",
-                                userEmail,
-                                isOfficial);
-                        addUserHandler.addNewUser(getApplicationContext());
 
                         if (!task.isSuccessful()) {
                             //Signin Failed
@@ -270,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private boolean checkIfOfficial(String user_email) {
-        boolean isOfficial = false;
         if(user_email.endsWith("gmail.com")) {
             return true;
         } else
@@ -296,21 +264,7 @@ public class MainActivity extends AppCompatActivity implements
                                         try {
                                             userEmail = object.getString("email");
                                             System.out.println("User email: "+userEmail);
-
-                                            //set the current user in app context
-                                            AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
-                                            Log.v("User Logged In: ",AppContext.currentLoggedInUser.getEmail());
-
-                                            //create the new user on server
-                                            addUserHandler = new AddUserHandler(
-                                                    MainActivity.this,
-                                                    "add_new_user",
-                                                    userEmail,
-                                                    false);
-                                            addUserHandler.addNewUser(getApplicationContext());
-
-
-                                            updateUI();
+                                            handleUserSignIn(userEmail);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -338,9 +292,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    public void updateUI(){
-        Intent intent = new Intent(this,ListReportsActivity.class);
-        startActivity(intent);
+    private void handleUserSignIn(String userEmail) {
+        UserInfo newUser = new UserInfo(userEmail);
+        newUser.setOfficial(this.checkIfOfficial(userEmail));
+        //set the current user in app context
+        AppContext.setCurrentLoggedInUser(newUser);
+        //create the new user on server
+        addUserHandler = new AddUserHandler(
+                MainActivity.this,
+                "add_new_user",
+                userEmail,
+                newUser.isOfficial());
+        addUserHandler.addNewUser(getApplicationContext());
     }
 
     @Override
