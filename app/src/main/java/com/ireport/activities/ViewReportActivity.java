@@ -9,7 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,6 +34,7 @@ public class ViewReportActivity extends AppCompatActivity {
             mSizeTextView, mSeverityTextView, mLocationTextView;
     private Button mUpdateReportBtn;
     private RadioGroup radioGroupStatus;
+    private LinearLayout mImageLayout;
 
     // for status logic
     private String litterStatus;
@@ -48,8 +52,6 @@ public class ViewReportActivity extends AppCompatActivity {
 
         //TEst code, sandhya
         String images = getIntent().getStringExtra("images");
-        String location_lat = getIntent().getStringExtra("location_lat");
-        String location_long = getIntent().getStringExtra("location_long");
         String street_address = getIntent().getStringExtra("street_address");
         // END TEST
 
@@ -65,6 +67,8 @@ public class ViewReportActivity extends AppCompatActivity {
 
         radioGroupStatus = (RadioGroup) findViewById(R.id.radio_group_status);
         mUpdateReportBtn = (Button) findViewById(R.id.update_report_button);
+
+        mImageLayout = (LinearLayout)findViewById(R.id.image_layout);
 
 
         //Sandhya : Test with sample input - Needs to be commented/cleaned out
@@ -104,8 +108,29 @@ public class ViewReportActivity extends AppCompatActivity {
         // Decode images
         ArrayList<Bitmap> imageList = getImage(testReportData.getImages());
         Log.v(TAG, "Totally " + imageList.size() + " images");
-        litterStatus = testReportData.getStatus();
+
+        /////////////////////////////////////////////
+        //Show images taken from camera in linear layout
+
+        if(imageList.size() > 0) {
+            mImageLayout.removeAllViews();
+            for (int i = 0; i < imageList.size(); i++) {
+                Bitmap yourbitmap = imageList.get(i);
+                ImageView imageView = new ImageView(this);
+                imageView.setImageBitmap(yourbitmap);
+                imageView.setAdjustViewBounds(true);
+                ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(mImageLayout.getLayoutParams());
+                params.setMargins(10, 10, 10, 10);
+                imageView.setPadding(10, 10, 10, 10);
+                mImageLayout.addView(imageView, params);
+            }
+        }
+        /////////////////////////////////////////////
+
+
+
         //Status
+        litterStatus = testReportData.getStatus();
         if(litterStatus.equals("still_there")) {
             radioGroupStatus.check(R.id.radio_present);
         } else if (litterStatus.equals("removal_claimed")) {
