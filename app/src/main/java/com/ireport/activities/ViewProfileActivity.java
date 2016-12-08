@@ -67,6 +67,11 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
 
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
-
+        //direct the user to list reports activity
+        Intent intent = new Intent(
+                ViewProfileActivity.this,
+                ListReportsActivity.class
+        );
+        startActivity(intent);
     }
 }
