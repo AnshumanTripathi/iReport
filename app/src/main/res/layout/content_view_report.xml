@@ -28,7 +28,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:text="Description"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#212121" />
+            android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/litterDescTV"
@@ -38,7 +38,8 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="#FF3F54BC" />
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/rounded_edittext"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -55,7 +56,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Date and Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/litterDateTimeTV"
@@ -65,7 +66,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="#FF3F54BC" />
+                android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -82,7 +83,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Screen Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/screenNameTV"
@@ -92,7 +93,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="#FF3F54BC" />
+                android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -109,7 +110,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Email"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/emailTV"
@@ -119,7 +120,7 @@
                 android:layout_below="@+id/tvid3"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="#FF3F54BC" />
+                android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -136,7 +137,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Size"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
             <TextView
                 android:id="@+id/litterSizeTV"
                 android:layout_width="wrap_content"
@@ -145,7 +146,7 @@
                 android:layout_below="@+id/tvid2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="#FF3F54BC"/>
+                android:textColor="@color/colorPrimary"/>
 
         </RelativeLayout>
 
@@ -163,7 +164,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:text="Severity"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#212121" />
+            android:textColor="@color/colorPrimaryDark" />
 
 
         <TextView
@@ -174,7 +175,7 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="italic|bold"
-            android:textColor="#FF3F54BC" />
+            android:textColor="@color/colorPrimary" />
 
         </RelativeLayout>
 
@@ -192,26 +193,35 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Status"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/radio_group_status"
                         android:layout_below="@+id/litterStatus"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                android:textColor="@color/colorPrimary"
+                android:scaleX="0.95"
+                android:scaleY="0.95">
                 <RadioButton android:id="@+id/radio_present"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="still_there"/>
+                             android:text="still_there"
+                    android:textColor="@color/colorPrimary"
+                    />
                 <RadioButton android:id="@+id/radio_claimed"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="removal_claimed"/>
+                             android:text="removal_claimed"
+                    android:textColor="@color/colorPrimary"
+                    />
                 <RadioButton android:id="@+id/radio_confirmed"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="removal_confirmed"/>
+                             android:text="removal_confirmed"
+                    android:textColor="@color/colorPrimary"
+                    />
             </RadioGroup>
 
         </RelativeLayout>
@@ -230,7 +240,7 @@
                 android:text="Location"
                 android:id="@+id/tvid1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
 
 
             <TextView
@@ -241,7 +251,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="#FF3F54BC" />
+                android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
 
@@ -258,7 +268,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Images"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="@color/colorPrimaryDark" />
 
         </RelativeLayout>
 
