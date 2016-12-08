@@ -262,21 +262,6 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:id="@+id/update_report_button"
-                android:text="Update"/>
-
-        </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/scroll1"
@@ -294,5 +279,4 @@
         </ScrollView>
 
     </LinearLayout>
-
 </android.support.v4.widget.NestedScrollView>
