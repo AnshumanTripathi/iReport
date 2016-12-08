@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
 import com.ireport.model.AppContext;
@@ -43,7 +44,7 @@ public class ListReportsActivity extends AppCompatActivity
     List<ReportData> reportDataList;
 
     GetReportForEmailId getCurrUserReports = null;
-    GetUserForEmailID getUserForEmailID = null;
+    GetAllReportsHandler getAllReportsHandler = null;
 
     /*********************************List Report Activity Code: Somya*****************************/
     ListView listView;
@@ -68,17 +69,23 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        String currUserEmail = AppContext.getInstance().getCurrentLoggedInUser().getEmail();
-        Log.d(TAG,currUserEmail);
-        //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
-        //getUserForEmailID.getUserDataForEmail(getApplicationContext());
-        
-        //Somya - Actual server call
-        getCurrUserReports = new GetReportForEmailId(this,
-                "getAllReportsForUser",
-                currUserEmail
-        );
-        getCurrUserReports.getReportForEmailId(getApplicationContext());
+        UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
+        if (currUser.isOfficial()) {
+            System.out.println("in official workflow");
+            getAllReportsHandler = new GetAllReportsHandler(
+                    this,
+                    "getAllReports"
+            );
+            getAllReportsHandler.getAllReportsData(getApplicationContext());
+        } else {
+            String currUserEmail = currUser.getEmail();
+            Log.d(TAG,currUserEmail);
+            getCurrUserReports = new GetReportForEmailId(this,
+                    "getAllReportsForUser",
+                    currUserEmail
+            );
+            getCurrUserReports.getReportForEmailId(getApplicationContext());
+        }
 
 //    findViewById(R.id.goToMaps).setOnClickListener(new View.OnClickListener() {
 //        @Override

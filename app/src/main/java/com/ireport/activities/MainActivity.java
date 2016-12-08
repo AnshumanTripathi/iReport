@@ -148,15 +148,18 @@ public class MainActivity extends AppCompatActivity implements
                 userEmail = "somyaaggarwal@ymail.com";
                 System.out.println("User email: "+userEmail);
 
+                UserInfo userInfo = new UserInfo(userEmail);
+//                userInfo.setOfficial(true);
+
                 //set the current user in app context
-                AppContext.setCurrentLoggedInUser(new UserInfo(userEmail));
+                AppContext.setCurrentLoggedInUser(userInfo);
 
                 //create the new user on server
                 addUserHandler = new AddUserHandler(
                         MainActivity.this,
                         "add_new_user",
                         userEmail,
-                        false);
+                        userInfo.isOfficial());
                 addUserHandler.addNewUser(getApplicationContext());
 
                 updateUI();
@@ -347,13 +350,23 @@ public class MainActivity extends AppCompatActivity implements
                 if(responseObj instanceof String) {
                     Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
                     if(responseObj.toString().equals("200") || responseObj.toString().equals("501")) {
-                        // get user settings now
-                        getUserInfo = new GetUserForEmailID(
-                                this,
-                                "get_user_details",
-                                this.ctx.getCurrentLoggedInUser().getEmail()
-                        );
-                        getUserInfo.getUserDataForEmail(getApplicationContext());
+                        if (this.ctx.getCurrentLoggedInUser().isOfficial()) {
+                            //direct the user to list reports activity
+                            Intent intent = new Intent(
+                                    MainActivity.this,
+                                    ListReportsActivity.class
+                            );
+                            startActivity(intent);
+                        } else{
+                            // get user settings now
+                            getUserInfo = new GetUserForEmailID(
+                                    this,
+                                    "get_user_details",
+                                    this.ctx.getCurrentLoggedInUser().getEmail()
+                            );
+
+                            getUserInfo.getUserDataForEmail(getApplicationContext());
+                        }
                         Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
                     } else {
                         Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");
