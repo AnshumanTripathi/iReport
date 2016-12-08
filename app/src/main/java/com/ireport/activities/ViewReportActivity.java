@@ -88,12 +88,28 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
                 Location currLocation = new Location();
                 Location reportLocation = new Location();
 
+<<<<<<< HEAD
                 CurrentLocationUtil.getCurrentLocation(ViewReportActivity.this, ctx);
 
                 //set the latitude and longitude
                 if(ctx.getCurrentLocation() != null) {
                     currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
                     currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
+=======
+                float distance = 10f;
+
+                if(ctx.getCurrentLocation() == null) {
+                    Toast.makeText(getBaseContext(), "Could not get the user's current location", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (reportLocation.equals(null)) {
+                    Toast.makeText(getBaseContext(), "Could not get report location", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
+                    currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
+                    distance = currLocation.distanceTo(reportLocation);
+                    Log.v(TAG,"Setting distance to " + distance);
+>>>>>>> 2b2059c... Add update report without location
                 }
                 //Get report location from street address
 
@@ -108,9 +124,14 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
                 String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
                 Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
 
+<<<<<<< HEAD
                 float distance = 9f;
                 if(distance > 9.144) {
+=======
+                if(distance > 9.144f) {
+>>>>>>> 2b2059c... Add update report without location
                     Log.v(TAG,"User not within range!!");
+                    Log.v(TAG,"Distance = " + distance);
                     Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
                     radioGroupStatus.setOnCheckedChangeListener(null);
                     if(oldLitterStatus.equals("still_there")) {
