@@ -228,6 +228,8 @@ exports.updateReportStatus = function (req, res) {
                         data: "No user Found in DB"
                     };
                 } else {
+                    console.log(user);
+                    console.log("Sending Email");
                     if (!user.settings.anonymous && user.settings.email_confirm) {
                         email.sendEmail({
                             to: user.email,
@@ -245,4 +247,8 @@ exports.updateReportStatus = function (req, res) {
             });
         }
     });
+    // res.send({
+    //     statusCode: 200,
+    //     data: "Response"
+    // });
 };

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +29,7 @@ import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,14 +88,26 @@ public class ListReportsActivity extends AppCompatActivity
             getCurrUserReports.getReportForEmailId(getApplicationContext());
         }
 
-
-//    findViewById(R.id.goToMaps).setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            Intent intent = new Intent(ListReportsActivity.this, MapsActivity.class);
-//            startActivity(intent);
-//        }
-//    });
+        findViewById(R.id.fab_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListReportsActivity.this,MapsActivity.class);
+                ArrayList<String> idList = new ArrayList<>();
+                ArrayList<String> latList = new ArrayList<>();
+                ArrayList<String> lngList = new ArrayList<>();
+                for(int i=0;i<reportDataList.size();i++){
+                    if(reportDataList.get(i).getLocation() != null && reportDataList.get(i).getLocation() != null) {
+                        idList.add(reportDataList.get(i).getReportId());
+                        latList.add(String.valueOf(reportDataList.get(i).getLocation().getLatitude()));
+                        lngList.add(String.valueOf(reportDataList.get(i).getLocation().getLongitude()));
+                    }
+                }
+                intent.putStringArrayListExtra("idList",idList);
+                intent.putStringArrayListExtra("latList",latList);
+                intent.putStringArrayListExtra("lngList",lngList);
+                startActivity(intent);
+            }
+        });
 
     }
 

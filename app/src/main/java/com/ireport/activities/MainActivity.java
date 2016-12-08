@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
 
         //Special Facebook Login Button
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        loginButton.setReadPermissions(Arrays.asList("email"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         };
+
+        mAuth.addAuthStateListener(mAuthListener);
 
         findViewById(R.id.emailLogin).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements
                         handleUserSignIn(user_email);
 
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                        Log.d(TAG,"Email for fb sign in:" + user_email);
+                        Log.d(TAG,"Email for Google sign in:" + user_email);
 
                         if (!task.isSuccessful()) {
                             //Signin Failed

@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Geocoder;
+
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -23,6 +26,7 @@ import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
+import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
 import com.ireport.model.AppContext;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
@@ -84,39 +88,33 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                /* Get current location
-                Location currLocation = new Location();
-                Location reportLocation = new Location();
+//                Get current location
+                Location currLocation = new Location("");
+                Location reportLocation = new Location("");
 
-<<<<<<< HEAD
-                CurrentLocationUtil.getCurrentLocation(ViewReportActivity.this, ctx);
 
-                //set the latitude and longitude
-                if(ctx.getCurrentLocation() != null) {
-                    currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
-                    currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
-=======
-                float distance = 10f;
+                Float distance = 0f;
 
                 if(ctx.getCurrentLocation() == null) {
-                    Toast.makeText(getBaseContext(), "Could not get the user's current location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Could not get the user's current location. Retrying....", Toast.LENGTH_SHORT).show();
+                    CurrentLocationUtil.getCurrentLocation(ViewReportActivity.this,ctx);
                     return;
                 } else if (reportLocation.equals(null)) {
                     Toast.makeText(getBaseContext(), "Could not get report location", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
+                    float[] dist = new float[1];
                     currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
                     currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
-                    distance = currLocation.distanceTo(reportLocation);
+                    reportLocation.setLatitude(reportData.getLocation().getLatitude());
+                    reportLocation.setLongitude(reportData.getLocation().getLongitude());
+
+                    distance = currLocation.distanceTo(reportLocation) * 0.328084f;
                     Log.v(TAG,"Setting distance to " + distance);
->>>>>>> 2b2059c... Add update report without location
+
                 }
-                //Get report location from street address
 
 
-                2.Check if it is <30ft
-                float distance = currLocation.distanceTo(reportLocation);
-                */
 
 
                 // checkedId is the RadioButton selected
@@ -124,9 +122,8 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
                 String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
                 Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
 
-                float distance = 0f;
 
-                if(distance > 9.144f) {
+                if(distance > 30f) {
                     Log.v(TAG,"User not within range!!");
                     Log.v(TAG,"Distance = " + distance);
                     Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
