@@ -51,11 +51,30 @@ public class SettingsActivity extends PreferenceActivity implements
         if (key.equals(emailStr) || key.equals(notificationStr) || key.equals(anonStr)) {
             Preference pref = findPreference(key);
             Log.d(TAG, key + " " + Boolean.toString(sharedPreferences.getBoolean(key, false)));
+
+            boolean is_email_on = sharedPreferences.getBoolean(emailStr, false);
+            boolean is_notif_on = sharedPreferences.getBoolean(notificationStr, false);
+            boolean is_anonymous = sharedPreferences.getBoolean(anonStr, false);
+
+            if (is_anonymous) {
+                // we need to uncheck all other preferences when anonymous is checked
+                sharedPreferences.edit().putBoolean(emailStr, false);
+                sharedPreferences.edit().putBoolean(notificationStr, false);
+                emailPref.setChecked(false);
+                notificationsPref.setChecked(false);
+                is_email_on = false;
+                is_notif_on = false;
+            } else if (is_email_on || is_notif_on) {
+                is_anonymous = false;
+                anonPref.setChecked(false);
+                sharedPreferences.edit().putBoolean(anonStr, false);
+            }
             Settings settings = new Settings(
-                sharedPreferences.getBoolean(emailStr, false),
-                sharedPreferences.getBoolean(notificationStr, false),
-                sharedPreferences.getBoolean(anonStr, false)
+                    is_email_on,
+                    is_notif_on,
+                    is_anonymous
             );
+
             Log.d(TAG, settings.toString());
             UserInfo user_info = AppContext.getInstance().getCurrentLoggedInUser();
             user_info.setSettings(settings);
