@@ -1,12 +1,14 @@
 package com.ireport.activities;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Somya on 12/6/2016.
  */
 
 public class ListActivityRowClass {
 
-    private int imageId;
+    private Bitmap thumbnail;
     private String description;
     private String streetAddress;
     private String status;
@@ -19,17 +21,17 @@ public class ListActivityRowClass {
         this.status = status;
     }
 
-    public ListActivityRowClass(int imageId, String title, String desc, String status) {
-        this.imageId = imageId;
+    public ListActivityRowClass(Bitmap thumbnail, String title, String desc, String status) {
+        this.thumbnail = thumbnail;
         this.description = title;
         this.streetAddress = desc;
         this.status = status;
     }
-    public int getImageId() {
-        return imageId;
+    public Bitmap getImageId() {
+        return thumbnail;
     }
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImageId(Bitmap thumbnail) {
+        this.thumbnail = thumbnail;
     }
     public String getStreetAddress() {
         return streetAddress;
