@@ -122,6 +122,9 @@ public class MainActivity extends AppCompatActivity implements
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Log.d(TAG, "Email: " + user.getEmail());
+                    Intent intent = new Intent(MainActivity.this,ListReportsActivity.class);
+                    AppContext.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
+                    startActivity(intent);
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }

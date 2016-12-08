@@ -38,7 +38,7 @@ public class ListReportsActivity extends AppCompatActivity
 {
 
     private static String TAG = "ListReportsActivity";
-    private UserInfo userInfo;
+    private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
 
     List<ReportData> reportDataList;
 
@@ -77,7 +77,7 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
-        String currUserEmail = "ash.ketchum@gmail.com";
+        String currUserEmail = AppContext.getInstance().getCurrentLoggedInUser().getEmail();
         Log.d(TAG,currUserEmail);
         //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
         //getUserForEmailID.getUserDataForEmail(getApplicationContext());
@@ -138,8 +138,9 @@ public class ListReportsActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         Toast toast = Toast.makeText(getApplicationContext(),
-                "Item " + (position + 1) + ": " + rowItems.get(position),
+                "Item " + (position) + ": " + rowItems.get(position),
                 Toast.LENGTH_SHORT);
+        Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
         toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
     }
@@ -175,7 +176,7 @@ public class ListReportsActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
             if ( null != userInfo ) {
-                intent.putExtra("user_info", userInfo);
+//                intent.putExtra("user_info", userInfo);
                 startActivity(intent);
             } else {
                 Toast.makeText(getBaseContext(), "Could not load user settings!", Toast.LENGTH_SHORT).show();
@@ -196,7 +197,7 @@ public class ListReportsActivity extends AppCompatActivity
         if (id == R.id.nav_view_profile) {
             Intent intent = new Intent(this, ViewProfileActivity.class);
             if (null != userInfo){
-                intent.putExtra("user_info", userInfo);
+//                intent.putExtra("user_info", userInfo);
                 startActivity(intent);
             }else {
                 Toast.makeText(getBaseContext(), "Could not load user information!", Toast.LENGTH_SHORT).show();
@@ -205,12 +206,12 @@ public class ListReportsActivity extends AppCompatActivity
         } else if (id == R.id.nav_notifcations) {
             Intent intent = new Intent(this, ViewNotificationsActivity.class);
             if ( null != userInfo)
-                intent.putExtra("user_info", userInfo);
+//                intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
             if ( null != userInfo)
-                intent.putExtra("user_info", userInfo);
+//                intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_allreports) {
 
@@ -263,9 +264,11 @@ public class ListReportsActivity extends AppCompatActivity
                     getImage(reportList.get(i).getImages()),
                     reportList.get(i).getDescription(),
                     reportList.get(i).getStreetAddress(),
-                    reportList.get(i).getStatus()
+                    reportList.get(i).getStatus(),
+                    reportList.get(i).getReportId()
             );
             Log.v(TAG,"Item description = " + item.getDescription());
+            Log.v(TAG,"Item id = " + item.getId());
             rowItems.add(item);
         }
 
