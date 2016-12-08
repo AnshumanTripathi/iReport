@@ -45,6 +45,7 @@ app.post('/addReport',report.addReport);
 app.post('/getReports',report.getReports);
 app.post('/getUserReportLocation',report.getUserReportLocation);
 app.post('/getReportById',report.getReportById);
+app.post('/updateReportStatus',report.updateReportStatus);
 
 //TestAPIs
 app.post('/testPic',function (req,res) {

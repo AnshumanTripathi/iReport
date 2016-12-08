@@ -52,7 +52,7 @@ exports.addReport = function (req, res) {
                 data: "Report Added"
             };
 
-            if (!user.settings.anonymous) {
+            if (!user.settings.anonymous && user.settings.email_notify) {
                 email.sendEmail({
                     to: user.email,
                     subject: "iReport New Report",
@@ -172,5 +172,71 @@ exports.getReportById = function (req, res) {
             };
         }
         res.send(jsonResponse);
+    });
+};
+
+exports.updateReportStatus = function (req, res) {
+    var query = req.body.id,
+        updateStatus = req.body.status,
+        jsonResponse = {};
+
+    console.log("Query Id: " + query);
+    console.log("Status to update: " + updateStatus);
+    Report.findById(query, function (err, report) {
+        if (err) {
+            console.log("Error Occured: " + err);
+            res.send({
+                statusCode: 500,
+                data: err
+            });
+        } else if (report == null) {
+            console.log("No report found");
+            res.send({
+                statusCode: 400,
+                data: err
+            });
+        } else {
+            console.log("Report found");
+            console.log(report);
+            report.status = updateStatus;
+            report.save(function (err) {
+                if (err) {
+                    res.send({
+                        statusCode: 500,
+                        data: err
+                    });
+                }
+            });
+
+            User.findOne({"email": report.user_email}, function (err, user) {
+                if (err) {
+                    console.log("Error occured in finding user: " + err);
+                    res.send({
+                        statusCode: 500,
+                        data: err
+                    });
+                } else if (user == null) {
+                    console.log("No user found!");
+                    res.send({
+                        statusCode: 400,
+                        data: "No user Found in DB"
+                    });
+                } else {
+                    if (!user.settings.anonymous && user.settings.email_confirm) {
+                        email.sendEmail({
+                            to: user.email,
+                            subject: "iReport Updated!",
+                            html: "<h2>Your iReport has been updated to " + updateStatus +
+                            "<br/>Log in iReport app to see updates</h2>"
+                        });
+                        res.send({
+                            statusCode: 200,
+                            data: "Report Updated!"
+                        });
+                    }
+
+                }
+            });
+        }
     });
 };
