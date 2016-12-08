@@ -29,3 +29,5 @@ app/gradlew.bat
 app/local.properties
 app/gradle/wrapper/gradle-wrapper.jar
 app/gradle/wrapper/gradle-wrapper.properties
+app/google-services.json
+app/src/debug/
