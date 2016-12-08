@@ -1,5 +1,9 @@
 package com.ireport.activities;
 
+import com.ireport.R;
+
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,10 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.ireport.R;
-
-import java.util.List;
 
 /**
  * Created by Somya on 12/6/2016.
@@ -53,7 +53,7 @@ public class CustomListViewAdapter extends ArrayAdapter<ListActivityRowClass> {
 
         holder.txtDesc.setText(rowItem.getStreetAddress());
         holder.txtTitle.setText(rowItem.getDescription());
-        //holder.imageView.setImageResource(rowItem.getImageId());
+        holder.imageView.setImageBitmap(rowItem.getImageId());
         holder.status.setText(rowItem.getStatus());
 
         return convertView;

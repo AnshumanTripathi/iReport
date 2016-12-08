@@ -1,6 +1,7 @@
 package com.ireport.controller.utils.httpUtils.APIHandlers;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ireport.activities.ICallbackActivity;
 import com.ireport.controller.IReportException;
@@ -62,6 +63,7 @@ public class AddReportHandler extends HttpBaseCommunicator {
         params.put("severity_level",repObj.getSeverityLevel());
         params.put("location", repObj.getLocation().toString());
         params.put("street_address", repObj.getStreetAddress());
+        Log.d("Params:",params.toString());
         return params;
     }
 
