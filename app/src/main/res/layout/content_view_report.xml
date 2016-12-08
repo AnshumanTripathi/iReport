@@ -7,7 +7,7 @@
                                             android:layout_marginTop="@dimen/activity_horizontal_margin"
                                             android:padding="@dimen/activity_horizontal_margin"
                                             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                                            tools:showIn="@layout/activity_create_report">
+                                            tools:showIn="@layout/activity_view_report">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,29 +21,26 @@
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin">
 
-
+            <TextView
+            android:id="@+id/tvid6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="Description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#212121" />
 
             <TextView
-                android:id="@+id/litterDesc"
+                android:id="@+id/litterDescTV"
+                android:layout_below="@+id/tvid6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:text="Description"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
-
-            <TextView
-                android:id="@+id/user_litter_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/litterDesc"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
-
-
+                android:textStyle="italic|bold"
+                android:textColor="#FF3F54BC" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,9 +48,8 @@
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin">
 
-
             <TextView
-                android:id="@+id/litter_date_time"
+                android:id="@+id/tvid5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -62,16 +58,14 @@
                 android:textColor="#212121" />
 
             <TextView
-                android:id="@+id/user_litter_date_time"
+                android:id="@+id/litterDateTimeTV"
+                android:layout_below="@+id/tvid5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/litter_date_time"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
-
-
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="italic|bold"
+                android:textColor="#FF3F54BC" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -82,41 +76,76 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:id="@+id/litterSize"
+                android:id="@+id/tvid4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:text="Size "
+                android:text="Screen Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/litterSize"
-                        android:id="@+id/radio_group_size"
-                        android:orientation="horizontal">
-                <RadioButton android:id="@+id/radio_small"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="small"
-                             android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_medium"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="medium"
-                             android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_large"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="large"
-                             android:onClick="onRadioButtonClicked"/>
-                <RadioButton android:id="@+id/radio_xl"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="xl"
-                             android:onClick="onRadioButtonClicked"/>
-            </RadioGroup>
+            <TextView
+                android:id="@+id/screenNameTV"
+                android:layout_below="@+id/tvid4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="italic|bold"
+                android:textColor="#FF3F54BC" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tvid3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="Email"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/emailTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_below="@+id/tvid3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="italic|bold"
+                android:textColor="#FF3F54BC" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tvid2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="Size"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+            <TextView
+                android:id="@+id/litterSizeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_below="@+id/tvid2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="italic|bold"
+                android:textColor="#FF3F54BC"/>
 
         </RelativeLayout>
 
@@ -127,10 +156,8 @@
         android:clickable="true"
         android:padding="@dimen/activity_horizontal_margin">
 
-
-
         <TextView
-            android:id="@+id/litterSeverity"
+            android:id="@+id/tvid7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -138,38 +165,25 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#212121" />
 
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radio_group_severity"
-                    android:layout_below="@+id/litterSeverity"
-                    android:orientation="horizontal">
-            <RadioButton android:id="@+id/radio_severity_minor"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Minor"
-                         android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/radio_severity_medium"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Medium"
-                         android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/radio_severity_urgent"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Urgent"
-                         android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/litterSeverityTV"
+            android:layout_below="@+id/tvid7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="italic|bold"
+            android:textColor="#FF3F54BC" />
+
+        </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin">
-
-
 
             <TextView
                 android:id="@+id/litterStatus"
@@ -210,44 +224,41 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:id="@+id/litterLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="Location"
+                android:id="@+id/tvid1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
 
+
             <TextView
+                android:id="@+id/litterLocationTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/user_litter_location"
-                android:layout_below="@+id/litterLocation"
+                android:layout_below="@+id/tvid1"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="#727272" />
-
-
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="italic|bold"
+                android:textColor="#FF3F54BC" />
         </RelativeLayout>
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin">
-
-
-
             <TextView
                 android:id="@+id/litterGallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:text="Add Images"
+                android:text="Images"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#212121" />
-
 
         </RelativeLayout>
 
@@ -265,6 +276,23 @@
                 android:text="Update"/>
 
         </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/scroll1"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:showDividers="middle">
+
+            </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

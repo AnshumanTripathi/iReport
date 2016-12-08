@@ -234,7 +234,12 @@ public class MainActivity extends AppCompatActivity implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        String user_email = user.getEmail();
+
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+                        Log.d(TAG,"Email for fb sign in:" + user_email);
+
+                        boolean isOfficial = checkIfOfficial(user_email);
 
                         //set the current user email in context
                         ctx.setCurrentLoggedInUser(new UserInfo(user.getEmail()));
@@ -244,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements
                                 MainActivity.this,
                                 "Add new user",
                                 userEmail,
-                                false);
+                                isOfficial);
                         addUserHandler.addNewUser(getApplicationContext());
 
                         //direct the user to list reports activity now
@@ -259,6 +264,14 @@ public class MainActivity extends AppCompatActivity implements
                         }
                     }
                 });
+    }
+
+    private boolean checkIfOfficial(String user_email) {
+        boolean isOfficial = false;
+        if(user_email.endsWith("gmail.com")) {
+            return true;
+        } else
+            return false;
     }
 
 

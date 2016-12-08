@@ -241,8 +241,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                     Toast.makeText(getBaseContext(), "Report Created!", Toast.LENGTH_SHORT).show();
 
                     //Go back to parent activity
-                    Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
-                    startActivity(upIntent);
+                    //Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
+                    //startActivity(upIntent);
                 }
                 else
                 {
@@ -328,7 +328,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     //read the response back from the add report server call and make sure it is uploaded successfully.
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
-
+        //Go back to parent activity
+        Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
+        startActivity(upIntent);
     }
 
     /*

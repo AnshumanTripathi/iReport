@@ -1,29 +1,43 @@
 package com.ireport.activities;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.vision.text.Text;
 import com.ireport.R;
 import com.ireport.model.AppContext;
 import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
 
+import java.util.ArrayList;
+
 public class ViewReportActivity extends AppCompatActivity {
     public static String TAG = "ViewReportActivity";
     Geocoder geocoder;
-    private TextView mDescriptionTextView,mLocationTextView;
-    private TextView mDate;
+
+    private TextView mDescriptionTextView,mDateTimeTextView, mScreenNameTextView, mEmailTextView,
+            mSizeTextView, mSeverityTextView, mLocationTextView;
     private Button mUpdateReportBtn;
-    private RadioGroup radioGroupSize, radioGroupSeverity,radioGroupStatus;
-    String litterStatus = "",litterSize = "", litterSeverity="";
+    private RadioGroup radioGroupStatus;
+    private LinearLayout mImageLayout;
+
+    // for status logic
+    private String litterStatus;
 
     AppContext ctx = AppContext.getInstance();
 
@@ -33,77 +47,90 @@ public class ViewReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        String itemIdiInMongo = getIntent().getStringExtra("report_id_in_mongo");
+        Log.d(TAG, "Item's mongo id is: " + itemIdiInMongo);
+
+        //TEst code, sandhya
+        String images = getIntent().getStringExtra("images");
+        String street_address = getIntent().getStringExtra("street_address");
+        // END TEST
+
 
         //Set all assets
-        mDescriptionTextView = (TextView) findViewById(R.id.user_litter_desc);
-        mLocationTextView = (TextView) findViewById(R.id.user_litter_location);
-        radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
-        radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
+        mDescriptionTextView = (TextView) findViewById(R.id.litterDescTV);
+        mDateTimeTextView = (TextView) findViewById(R.id.litterDateTimeTV);
+        mScreenNameTextView = (TextView) findViewById(R.id.screenNameTV);
+        mEmailTextView = (TextView) findViewById(R.id.emailTV);
+        mSizeTextView = (TextView) findViewById(R.id.litterSizeTV);
+        mSeverityTextView = (TextView) findViewById(R.id.litterSeverityTV);
+        mLocationTextView = (TextView) findViewById(R.id.litterLocationTV);
+
         radioGroupStatus = (RadioGroup) findViewById(R.id.radio_group_status);
-        mDate = (TextView) findViewById(R.id.user_litter_date_time);
         mUpdateReportBtn = (Button) findViewById(R.id.update_report_button);
+
+        mImageLayout = (LinearLayout)findViewById(R.id.image_layout);
 
 
         //Sandhya : Test with sample input - Needs to be commented/cleaned out
         final ReportData testReportData = new ReportData();
         testReportData.setDescription("Cigarette Bulb");
+        testReportData.setTimestamp("my timestamp");
         testReportData.setImages("sampleimage");
         testReportData.setSeverityLevel("Urgent");
         testReportData.setStatus("still_there");
-        final LocationDetails testLocation = new LocationDetails();
+        LocationDetails testLocation = new LocationDetails();
+        testLocation.setLatitude(37.37310915);
+        testLocation.setLongitude(-122.06109646);
         testReportData.setLocation(testLocation);
+        testReportData.setStreetAddress(street_address);
         testReportData.setSize("Small");
         testReportData.setReporteeID("sandhyafeb1990@gmail.com");
+        testReportData.setImages(images);
+        // End test
 
 
-        //Get report details from report data object
-
-        //Get report data from the server
-
-        //Set the description and date,time
-        Log.v(TAG, "Test report description is " + testReportData.getDescription());
+        // Load description, datetime, screenname, email, size, severity and location
         mDescriptionTextView.setText(testReportData.getDescription());
+        mDateTimeTextView.setText(testReportData.getTimestamp());
+        mScreenNameTextView.setText(testReportData.getReporteeID());
+        mEmailTextView.setText(testReportData.getReporteeID());
+        mSizeTextView.setText(testReportData.getSize());
+        mSeverityTextView.setText(testReportData.getSeverityLevel());
+        mLocationTextView.setText(testReportData.getStreetAddress());
 
-        mDate.setText("blah blah");
+        mUpdateReportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Update the report
+            }
+        });
 
-        mLocationTextView.setText("Street address comes here!");
-        //mDate.setText(String.valueOf(System.currentTimeMillis()));
+        // Decode images
+        ArrayList<Bitmap> imageList = getImage(testReportData.getImages());
+        Log.v(TAG, "Totally " + imageList.size() + " images");
 
+        /////////////////////////////////////////////
+        //Show images taken from camera in linear layout
 
-        //Set the appropriate buttons to be checked - size,severity,status
-        Log.v(TAG, "Litter Size " + testReportData.getSize());
-        Log.v(TAG, "Litter severity " + testReportData.getSeverityLevel());
-
-        litterSize = testReportData.getSize();
-        litterSeverity = testReportData.getSeverityLevel();
-        litterStatus = testReportData.getStatus();
-
-        //Size
-        if (litterSize.equals("Small") || litterSize.equals("small")) {
-            radioGroupSize.check(R.id.radio_small);
-        } else if (litterSize.equals("Medium") || litterSize.equals("medium")) {
-            radioGroupSize.check(R.id.radio_medium);
-        } else if (litterSize.equals("Large") || litterSize.equals("large")) {
-            radioGroupSize.check(R.id.radio_large);
-        } else if (litterSize.equals("xl")) {
-            radioGroupSize.check(R.id.radio_xl);
-        } else {
-            Log.v(TAG, "Unable to check the radio button to small");
+        if(imageList.size() > 0) {
+            mImageLayout.removeAllViews();
+            for (int i = 0; i < imageList.size(); i++) {
+                Bitmap yourbitmap = imageList.get(i);
+                ImageView imageView = new ImageView(this);
+                imageView.setImageBitmap(yourbitmap);
+                imageView.setAdjustViewBounds(true);
+                ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(mImageLayout.getLayoutParams());
+                params.setMargins(10, 10, 10, 10);
+                imageView.setPadding(10, 10, 10, 10);
+                mImageLayout.addView(imageView, params);
+            }
         }
+        /////////////////////////////////////////////
 
 
-        //Severity
-        if (litterSeverity.equals("Minor") || litterSeverity.equals("minor")) {
-            radioGroupSeverity.check(R.id.radio_severity_minor);
-        } else if (litterSeverity.equals("Medium") || litterSeverity.equals("medium")) {
-            radioGroupSeverity.check(R.id.radio_severity_medium);
-        } else if (litterSeverity.equals("Urgent") || litterSeverity.equals("urgent")) {
-            radioGroupSeverity.check(R.id.radio_severity_urgent);
-        } else {
-            Log.v(TAG, "Unable to check the radio button to small");
-        }
 
         //Status
+        litterStatus = testReportData.getStatus();
         if(litterStatus.equals("still_there")) {
             radioGroupStatus.check(R.id.radio_present);
         } else if (litterStatus.equals("removal_claimed")) {
@@ -111,13 +138,12 @@ public class ViewReportActivity extends AppCompatActivity {
         } else if(litterStatus.equals("removal_confirmed")) {
             radioGroupStatus.check(R.id.radio_confirmed);
         } else {
-            Log.v(TAG,"Invalid status found!");
+            Log.v(TAG, "Invalid status found!");
         }
 
         radioGroupStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 /* Get current location
                 Location currLocation = new Location();
                 Location reportLocation = new Location();
@@ -142,7 +168,7 @@ public class ViewReportActivity extends AppCompatActivity {
                 String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.getCheckedRadioButtonId())).getText().toString();
                 Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
 
-                float distance = 9.1f;
+                float distance = 9.5f;
                 if(distance > 9.144) {
                     Log.v(TAG,"User not within range!!");
                     Toast.makeText(getBaseContext(), "User must be within 30ft of radius from the posted location!", Toast.LENGTH_SHORT).show();
@@ -158,27 +184,26 @@ public class ViewReportActivity extends AppCompatActivity {
                         radioGroupStatus.check(R.id.radio_confirmed);
                     }
                     radioGroupStatus.setOnCheckedChangeListener(this);
-
-
                 } else {
                     litterStatus = newLitterStatus;
                     testReportData.setStatus(litterStatus);
                     Log.v(TAG,"Updating status to " + litterStatus);
                 }
-
-            }
-        });
-
-         mUpdateReportBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Update the report
             }
         });
     }
 
-    public void onRadioButtonClickeradd(View view) {
-        Toast.makeText(getBaseContext(), "User can't edit size/severity values!", Toast.LENGTH_SHORT).show();
+    private ArrayList<Bitmap> getImage(String imageString) {
+        String ResponseImageArrayString[] = imageString.split(",");
+        ArrayList<Bitmap> responseImages = new ArrayList<>();
+        for (int i=0; i<ResponseImageArrayString.length; i++) {
+            byte[] decodedString = Base64.decode(ResponseImageArrayString[i].getBytes(), Base64.DEFAULT);
+            Bitmap responseimage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            responseImages.add(responseimage);
+        }
+        Log.v(TAG, "Returning " + Integer.toString(responseImages.size()) + " images");
+        return responseImages;
     }
+
 
 }

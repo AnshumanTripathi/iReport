@@ -58,15 +58,6 @@ public class ListReportsActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /* Sandhya - Testing View Report Activity*/
-
-        /*/Send a report object with app context
-
-
-        Intent intent = new Intent(this,ViewReportActivity.class);
-        startActivity(intent);
-        */
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -81,42 +72,7 @@ public class ListReportsActivity extends AppCompatActivity
         Log.d(TAG,currUserEmail);
         //getUserForEmailID = new GetUserForEmailID(this, "getUser", currUserEmail);
         //getUserForEmailID.getUserDataForEmail(getApplicationContext());
-
-        // Load any reports
-        /* Sandhya : Creating Test Report
-        reportDataList = new ArrayList<ReportData>();
-        ReportData testReportData = new ReportData();
-        testReportData.setDescription("Cigarette Bulb");
-        testReportData.setImages("");
-        testReportData.setStreetAddress("Sunnyvale");
-        testReportData.setSeverityLevel("Urgent");
-        testReportData.setStatus("still_there");
-        LocationDetails testLocation = new LocationDetails();
-        testReportData.setLocation(testLocation);
-        testReportData.setSize("Small");
-        testReportData.setReporteeID("sandhyafeb1990@gmail.com");
-        reportDataList.add(testReportData);
-
-        ReportData newTestReportData = new ReportData();
-        newTestReportData.setDescription("Water Bottle");
-        newTestReportData.setImages("");
-        newTestReportData.setStreetAddress("Sunnyvale");
-        newTestReportData.setSeverityLevel("Urgent");
-        newTestReportData.setStatus("still_there");
-        LocationDetails newTtestLocation = new LocationDetails();
-        newTestReportData.setLocation(newTtestLocation);
-        newTestReportData.setSize("Small");
-        newTestReportData.setReporteeID("sandhyafeb1990@gmail.com");
-        reportDataList.add(newTestReportData);
-
-        for (int i=0; i < reportDataList.size(); i++) {
-            Log.d("Reports", reportDataList.get(i).getDescription());
-        }
-
-
-        populateListViewElements((ArrayList<ReportData>) reportDataList);
-        Sandhya : End Test */
-
+        
         //Somya - Actual server call
         getCurrUserReports = new GetReportForEmailId(this,
                 "getAllReportsForUser",
@@ -137,12 +93,22 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-        Toast toast = Toast.makeText(getApplicationContext(),
+ /*       Toast toast = Toast.makeText(getApplicationContext(),
                 "Item " + (position) + ": " + rowItems.get(position),
                 Toast.LENGTH_SHORT);
-        Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
+
         toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
+*/
+        Intent intent = new Intent(this,ViewReportActivity.class);
+        intent.putExtra("report_id_in_mongo", rowItems.get(position).getId());
+        Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
+        // TEST CODE, SANDHYA
+        intent.putExtra("images", reportDataList.get(position).getImages());
+        intent.putExtra("street_address", reportDataList.get(position).getStreetAddress());
+        // END TEST CODE
+        startActivity(intent);
+
     }
 
 
@@ -256,6 +222,7 @@ public class ListReportsActivity extends AppCompatActivity
 
     // this method will populate the reports data in the list view on the activity
     private void populateListViewElements(ArrayList<ReportData> reportList) {
+        reportDataList = reportList;
         rowItems = new ArrayList<ListActivityRowClass>();
 
 
@@ -263,7 +230,7 @@ public class ListReportsActivity extends AppCompatActivity
             ListActivityRowClass item = new ListActivityRowClass(
                     getImage(reportList.get(i).getImages()),
                     reportList.get(i).getDescription(),
-                    reportList.get(i).getStreetAddress(),
+                    reportList.get(i).getTimestamp(),
                     reportList.get(i).getStatus(),
                     reportList.get(i).getReportId()
             );
@@ -278,8 +245,8 @@ public class ListReportsActivity extends AppCompatActivity
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
-    private Bitmap getImage(String imageString)
-    {
+
+    private Bitmap getImage(String imageString) {
         String ResponseImageArrayString[] = imageString.split(",");
         byte[] decodedString = Base64.decode(ResponseImageArrayString[0].getBytes(), Base64.DEFAULT);
         Bitmap Responseimage = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);

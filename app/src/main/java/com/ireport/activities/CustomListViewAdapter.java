@@ -51,7 +51,7 @@ public class CustomListViewAdapter extends ArrayAdapter<ListActivityRowClass> {
         } else
             holder = (ViewHolder) convertView.getTag();
 
-        holder.txtDesc.setText(rowItem.getStreetAddress());
+        holder.txtDesc.setText(rowItem.getDateTime());
         holder.txtTitle.setText(rowItem.getDescription());
         holder.imageView.setImageBitmap(rowItem.getImageId());
         holder.status.setText(rowItem.getStatus());
