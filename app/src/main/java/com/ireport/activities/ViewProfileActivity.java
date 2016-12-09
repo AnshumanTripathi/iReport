@@ -9,10 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class ViewProfileActivity extends AppCompatActivity implements ICallbackActivity {
 
@@ -26,6 +28,9 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.profileToolbar);
+        setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Your Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,6 +73,7 @@ public class ViewProfileActivity extends AppCompatActivity implements ICallbackA
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         //direct the user to list reports activity
+        Toast.makeText(ViewProfileActivity.this,"Profile details updated!",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(
                 ViewProfileActivity.this,
                 ListReportsActivity.class

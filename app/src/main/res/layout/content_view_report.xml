@@ -38,8 +38,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="italic|bold"
-                android:textColor="@color/colorPrimary"
-                android:background="@drawable/rounded_edittext"/>
+                android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
         <RelativeLayout

@@ -3,12 +3,15 @@ package com.ireport.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Geocoder;
 
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +42,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
 
     private TextView mDescriptionTextView,mDateTimeTextView, mScreenNameTextView, mEmailTextView,
             mSizeTextView, mSeverityTextView, mLocationTextView;
-    private Button mUpdateReportBtn;
+    private FloatingActionButton mUpdateReportBtn;
     private RadioGroup radioGroupStatus;
     private LinearLayout mImageLayout;
 
@@ -61,6 +64,9 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.viewReportToolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.BLACK);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Detailed Report");
 
@@ -80,7 +86,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         mLocationTextView = (TextView) findViewById(R.id.litterLocationTV);
 
         radioGroupStatus = (RadioGroup) findViewById(R.id.radio_group_status);
-        mUpdateReportBtn = (Button) findViewById(R.id.update_report_button);
+        mUpdateReportBtn = (FloatingActionButton) findViewById(R.id.update_report_button);
 
         mImageLayout = (LinearLayout)findViewById(R.id.image_layout);
 

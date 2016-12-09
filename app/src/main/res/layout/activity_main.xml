@@ -49,28 +49,5 @@
             tools:background="@color/colorAccent"
             android:textColor="@android:color/white"
             android:background="@color/colorAccent" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:id="@+id/signUp"
-            android:text="@string/signUp"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@android:color/holo_purple"
-            android:elevation="24dp"
-            tools:textColor="@android:color/background_light"
-            tools:backgroundTint="@android:color/holo_purple" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:id="@+id/forgotPassword"
-            android:text="@string/forgotPassword"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@android:color/holo_green_dark"
-            android:elevation="24dp"
-            tools:textColor="@android:color/background_light" />
     </LinearLayout>
 </LinearLayout>

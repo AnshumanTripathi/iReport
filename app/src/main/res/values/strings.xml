@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IReport</string>
+    <string name="app_name">iReport</string>
     <string name="screenName">Screen Name</string>
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
@@ -7,7 +7,7 @@
     <string name="address">Address</string>
     <string name="submit">Submit</string>
     <string name="fb_login_protocol_scheme">fb1634052013566657</string>
-    <string name="title_activity_list_reports">ListReports</string>
+    <string name="title_activity_list_reports">List Reports</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

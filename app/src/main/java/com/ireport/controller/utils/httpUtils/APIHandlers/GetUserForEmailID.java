@@ -70,17 +70,30 @@ public class GetUserForEmailID extends HttpBaseCommunicator {
 
             JSONObject udata = new JSONObject(data);
 
-            String first_name = udata.getString("first_name");
-            uiObj.setFirstName(first_name);
+            if(udata.has("first_name")) {
+                String first_name = udata.getString("first_name");
+                uiObj.setFirstName(first_name);
+            }else{
+                uiObj.setFirstName("");
+            }
+
 
             String email = udata.getString("email");
             uiObj.setEmail(email);
 
-            String last_name = udata.getString("last_name");
-            uiObj.setLastName(last_name);
+            if(udata.has("last_name")) {
+                String last_name = udata.getString("last_name");
+                uiObj.setLastName(last_name);
+            }else{
+                uiObj.setLastName("");
+            }
 
-            String home_address = udata.getString("home_address");
-            uiObj.setHomeAddress(home_address);
+            if(udata.has("home_address")) {
+                String home_address = udata.getString("home_address");
+                uiObj.setHomeAddress(home_address);
+            }else{
+                uiObj.setHomeAddress("");
+            }
 
             String screen_name = udata.getString("screen_name");
             uiObj.setScreenName(screen_name);

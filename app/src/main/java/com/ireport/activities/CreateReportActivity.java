@@ -94,6 +94,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         imageStringArray = new ArrayList<String>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         descriptionText = (EditText) findViewById(R.id.user_litter_desc);
         radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);

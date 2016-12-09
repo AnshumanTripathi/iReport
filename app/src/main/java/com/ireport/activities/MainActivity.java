@@ -149,22 +149,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        findViewById(R.id.signUp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.forgotPassword).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListReportsActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override

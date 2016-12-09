@@ -5,6 +5,7 @@
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true">
 
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -17,17 +18,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            android:background="@mipmap/ic_reporttrash"
+            android:background="@color/colorPrimary"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/viewReportToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 android:minHeight="?android:attr/actionBarSize"
+                app:titleTextColor="@android:color/black"
+                android:title="Detailed Report"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
@@ -49,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@android:drawable/ic_menu_save"
         app:backgroundTint="@android:color/holo_purple"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"

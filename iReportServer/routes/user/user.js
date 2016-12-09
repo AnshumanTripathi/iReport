@@ -186,8 +186,8 @@ exports.updateUserInfo = function (req, res) {
                         data: "User info Updated"
                     };
                 }
+                res.send(jsonResponse);
             });
         }
-        res.send(jsonResponse);
     });
 };
