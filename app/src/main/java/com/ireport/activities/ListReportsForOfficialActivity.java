@@ -1,22 +1,5 @@
 package com.ireport.activities;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
 import com.ireport.model.AppContext;
@@ -26,8 +9,28 @@ import com.ireport.model.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 public class ListReportsForOfficialActivity extends AppCompatActivity
-        implements ICallbackActivity, AdapterView.OnItemClickListener {
+        implements ICallbackActivity, AdapterView.OnItemClickListener,SearchView.OnQueryTextListener {
 
     private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
     private static final String TAG = "ListReportOfficial";
@@ -36,6 +39,8 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     List<ReportData> reportDataList;
     ListView listView;
     List<ListActivityRowClass> rowItems;
+    private SearchView searchView;
+    private MenuItem searchMenuItem;
 
     TextView noReportsMsg;
 
@@ -53,6 +58,32 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
         Log.d(TAG, "in official workflow");
         getAllReportsHandler = new GetAllReportsHandler(this, "getAllReports");
         getAllReportsHandler.getAllReportsData(getApplicationContext());
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+
+        /*
+        SearchManager searchManager = (SearchManager)
+                getSystemService(Context.SEARCH_SERVICE);
+        searchMenuItem = menu.findItem(R.id.search_by_email);
+        Log.d("CRAP", Integer.toString(R.id.search_by_email));
+        Log.d("CRAP", searchMenuItem.toString());
+        searchView = (SearchView) searchMenuItem.getActionView();
+
+        searchView.setSearchableInfo(searchManager.
+                getSearchableInfo(getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG,"Trying to search");
+            }
+        });
+        */
+        return true;
     }
 
     @Override
@@ -130,6 +161,16 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
         startActivity(intent);
         */
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return true;
     }
 
 
