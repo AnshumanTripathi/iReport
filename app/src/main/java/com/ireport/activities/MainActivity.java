@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userEmail = "dummy1@email.com";  // just for testing
+                userEmail = "aggarwal.somya@gmail.com";  // just for testing
                 handleUserSignIn(userEmail);
             }
         });
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements
                             //direct the user to list reports activity
                             Intent intent = new Intent(
                                     MainActivity.this,
-                                    ListReportsActivity.class
+                                    ListReportsForOfficialActivity.class
                             );
                             startActivity(intent);
                         } else{
