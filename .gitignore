@@ -32,3 +32,4 @@ app/gradle/wrapper/gradle-wrapper.properties
 app/google-services.json
 app/src/debug/
 iReportServer/routes/Credentials.js
+/app/src/main/java/com/ireport/controller/utils/Constants.java
