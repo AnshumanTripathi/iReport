@@ -117,10 +117,13 @@ public class UserInfo implements Parcelable{
             ans += getFirstName() + ", ";
         if(getLastName()!= null)
             ans += getLastName() + ", ";
+        ans += Boolean.toString(isOfficial()) + ", ";
         if(getHomeAddress()!=null)
             ans += getHomeAddress() + ">, <";
+
         if(getSettings()!=null)
             ans += getSettings().toString() + ">";
+
 
         return ans;
     }
