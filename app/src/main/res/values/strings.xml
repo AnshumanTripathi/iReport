@@ -226,4 +226,6 @@
     <string name="name">ListViewBaseAdapter</string>
     <string name="image">Thumbnail</string>
 
+    <string name="noReportMsg">No reports to show. \n Add a new report</string>
+    <string name="noReportMsgOfficial">No reports to show.</string>
 </resources>

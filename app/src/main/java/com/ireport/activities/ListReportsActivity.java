@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -55,13 +56,14 @@ public class ListReportsActivity extends AppCompatActivity
     List<ListActivityRowClass> rowItems;
     /**********************************************************************************************/
 
+    TextView noReportsMsg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "First thing EVER!!");
         setContentView(R.layout.activity_list_reports);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -158,12 +160,9 @@ public class ListReportsActivity extends AppCompatActivity
         Log.d(TAG, "opetionsitemselected");
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this,SettingsActivity.class);
             if ( null != userInfo ) {
-//                intent.putExtra("user_info", userInfo);
                 startActivity(intent);
             } else {
                 Toast.makeText(getBaseContext(), "Could not load user settings!", Toast.LENGTH_SHORT).show();
@@ -184,7 +183,6 @@ public class ListReportsActivity extends AppCompatActivity
         if (id == R.id.nav_view_profile) {
             Intent intent = new Intent(this, ViewProfileActivity.class);
             if (null != userInfo){
-//                intent.putExtra("user_info", userInfo);
                 startActivity(intent);
             }else {
                 Toast.makeText(getBaseContext(), "Could not load user information!", Toast.LENGTH_SHORT).show();
@@ -193,12 +191,10 @@ public class ListReportsActivity extends AppCompatActivity
         } else if (id == R.id.nav_notifcations) {
             Intent intent = new Intent(this, ViewNotificationsActivity.class);
             if ( null != userInfo)
-//                intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
             if ( null != userInfo)
-//                intent.putExtra("user_info", userInfo);
             startActivity(intent);
         } else if (id == R.id.nav_allreports) {
 
@@ -226,13 +222,13 @@ public class ListReportsActivity extends AppCompatActivity
         } else if (responseObj instanceof List) {
             if(((List) responseObj).size() == 0) {
                 System.out.println("No reports to show for the user.");
-                //Point him to a different activity or a view etc.
-                //TODO: Pending.
-                
-                Toast.makeText(
-                        getApplicationContext(),
-                        "No reports to be displayed!",
-                        Toast.LENGTH_SHORT).show();
+
+                //Show him the msg
+                noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
+                noReportsMsg.setVisibility(View.VISIBLE);
+
+                //Hide the fab button too
+                findViewById(R.id.fab_button).setVisibility(View.GONE);
             } else {
                 //Reports received from the server is more than 1
                 Log.d(TAG,"Multiple reports received for this user from the server");
