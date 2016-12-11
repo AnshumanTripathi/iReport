@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         //test <code></code>
-        UpdateReportByIdHandler gid = new UpdateReportByIdHandler(this,
-                "reportId","5848a1e0c479e405d06496ca","still_there");
-        gid.updateReportForReportId(getApplicationContext());
+        //UpdateReportByIdHandler gid = new UpdateReportByIdHandler(this,
+        //        "reportId","5848a1e0c479e405d06496ca","still_there");
+        //gid.updateReportForReportId(getApplicationContext());
 
         //Special Facebook Login Button
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
