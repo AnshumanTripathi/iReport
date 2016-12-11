@@ -286,13 +286,17 @@ exports.filterReports = function (req, res) {
             }
         } else {
             var filterReports = [];
-            var requestStatus = req.body.query_status;
-            var temp = requestStatus.split(",");
-            for (var i = 0; i < userReport.length; i++) {
-                if (!temp.indexOf(userReport[i].status)) {
-                    console.log(userReport[i]);
-                    filterReports.push(userReport[i]);
+            if (req.body.hasOwnProperty('query_status')) {
+                var requestStatus = req.body.query_status;
+                var temp = requestStatus.split(",");
+                for (var i = 0; i < userReport.length; i++) {
+                    if (!temp.indexOf(userReport[i].status)) {
+                        console.log(userReport[i]);
+                        filterReports.push(userReport[i]);
+                    }
                 }
+            }else{
+                filterReports = userReport;
             }
             jsonResponse = {
                 statusCode: 200,
