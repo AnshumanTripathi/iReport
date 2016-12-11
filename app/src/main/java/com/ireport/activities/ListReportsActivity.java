@@ -58,6 +58,13 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (userInfo.isOfficial()) {
+            Log.d(TAG, "Redirecting to official report list");
+            Intent intent = new Intent(ListReportsActivity.this, ListReportsForOfficialActivity.class);
+            startActivity(intent);
+            return;
+        }
+        Log.d(TAG, "In list reports for non-officals activity");
         Log.d(TAG, "First thing EVER!!");
         setContentView(R.layout.activity_list_reports);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,22 +82,14 @@ public class ListReportsActivity extends AppCompatActivity
 
         // load profile details from the server
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
-        if (currUser.isOfficial()) {
-            System.out.println("in official workflow");
-            getAllReportsHandler = new GetAllReportsHandler(
-                    this,
-                    "getAllReports"
-            );
-            getAllReportsHandler.getAllReportsData(getApplicationContext());
-        } else {
-            String currUserEmail = currUser.getEmail();
-            Log.d(TAG,currUserEmail);
-            getCurrUserReports = new GetReportForEmailId(this,
-                    "getAllReportsForUser",
-                    currUserEmail
-            );
-            getCurrUserReports.getReportForEmailId(getApplicationContext());
-        }
+        String currUserEmail = currUser.getEmail();
+        Log.d(TAG,currUserEmail);
+        getCurrUserReports = new GetReportForEmailId(this,
+                "getAllReportsForUser",
+                currUserEmail
+        );
+        getCurrUserReports.getReportForEmailId(getApplicationContext());
+
 
         findViewById(R.id.fab_button).setOnClickListener(new View.OnClickListener() {
             @Override
