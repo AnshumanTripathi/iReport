@@ -1,7 +1,11 @@
 package com.ireport.activities;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForStatus;
 import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
@@ -9,11 +13,15 @@ import com.ireport.model.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -30,16 +38,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ListReportsForOfficialActivity extends AppCompatActivity
-        implements ICallbackActivity, AdapterView.OnItemClickListener,SearchView.OnQueryTextListener {
+        implements ICallbackActivity, AdapterView.OnItemClickListener {
 
     private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
     private static final String TAG = "ListReportOfficial";
     GetAllReportsHandler getAllReportsHandler = null;
+    GetReportForStatus getAllReportByStatusHandler = null;
+    GetReportForEmailId getAllReportByEmailIdHandler = null;
 
     List<ReportData> reportDataList;
     ListView listView;
     List<ListActivityRowClass> rowItems;
-    private SearchView searchView;
     private MenuItem searchMenuItem;
 
     TextView noReportsMsg;
@@ -52,40 +61,97 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("List Reports: Official");
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // load profile details from the server
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
         Log.d(TAG, "in official workflow");
-        getAllReportsHandler = new GetAllReportsHandler(this, "getAllReports");
+        getAllReportsHandler = new GetAllReportsHandler(this, "get_all_reports");
         getAllReportsHandler.getAllReportsData(getApplicationContext());
+
+        // Get the intent, verify the action and get the query
+        handleIntent(getIntent());
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        Log.d(TAG, "In handle intent");
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG,"Trying to search for " + query);
+            doMySearch(query);
+            //use the query to search your data somehow
+        }
+    }
+
+    private void doMySearch(String emailId) {
+        Log.d(TAG,"Email id to be searched for" + emailId);
+        getAllReportByEmailIdHandler = new GetReportForEmailId(this,"getAllReportsByEmail",emailId);
+        getAllReportByEmailIdHandler.getReportForEmailId(getApplicationContext());
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
 
-        /*
-        SearchManager searchManager = (SearchManager)
-                getSystemService(Context.SEARCH_SERVICE);
         searchMenuItem = menu.findItem(R.id.search_by_email);
-        Log.d("CRAP", Integer.toString(R.id.search_by_email));
-        Log.d("CRAP", searchMenuItem.toString());
-        searchView = (SearchView) searchMenuItem.getActionView();
-
-        searchView.setSearchableInfo(searchManager.
-                getSearchableInfo(getComponentName()));
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
-        searchView.setOnClickListener(new View.OnClickListener() {
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
-            public void onClick(View v) {
-                Log.v(TAG,"Trying to search");
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when collapsed
+                Log.d("SEARCH", "in collapse");
+                Log.d("SEARCH", Integer.toString(AppContext.getInstance().getCurrentUserReportsToShow().size()));
+                populateListViewElements(AppContext.getInstance().getCurrentUserReportsToShow());
+                return true;  // Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                Log.d("SEARCH", "in expand");
+                return true;
             }
         });
+
+        /*
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_by_email).getActionView();
+        //SearchView signOut = (SearchView) menu.findItem(R.id.action_signout).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
         */
         return true;
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_by_email:
+                Log.d(TAG,"Selected search_by_email");
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                SearchView searchView = (SearchView) item.getActionView();
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                searchView.setIconifiedByDefault(false);
+                handleIntent(getIntent());
+                return true;
+            case R.id.action_signout :
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                AppContext.getInstance().reset();
+                Intent intent = new Intent(ListReportsForOfficialActivity.this, MainActivity.class);
+                startActivity(intent);
+            case R.id.search_by_status :
+                Log.d(TAG,"trying to search by status");
+                return true;
+            default:
+                Log.d(TAG, "some crap");
+                return false;
+        }
+    }
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
 
@@ -105,6 +171,10 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
             } else {
                 //Reports received from the server is more than 1
                 Log.d(TAG,"Multiple reports received for this user from the server");
+                Log.d(TAG, "Identifier: " + identifier);
+                if (identifier.equals("get_all_reports")) {
+                    AppContext.getInstance().setCurrentUserReportsToShow((ArrayList<ReportData>) responseObj);
+                }
                 populateListViewElements((ArrayList<ReportData>) responseObj);
             }
         }
@@ -164,14 +234,14 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "In resume");
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        return true;
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "In pause");
     }
-
-
 }

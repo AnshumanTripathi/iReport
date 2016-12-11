@@ -1,9 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/search_by_email"
-          android:title="Search"
-          android:icon="@mipmap/ic_search"
-          app:showAsAction="collapseActionView|ifRoom"
-          android:actionViewClass="android.widget.SearchView" />
+xmlns:com.brianco.andypedia="http://schemas.android.com/apk/res-auto" >
+
+<item android:id="@+id/search_by_email"
+    android:title="Search by mail"
+    com.brianco.andypedia:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+    com.brianco.andypedia:showAsAction="always|collapseActionView"
+    com.brianco.andypedia:actionViewClass="android.support.v7.widget.SearchView" />
+<item android:id="@+id/search_by_status"
+    android:title=""
+    android:icon="@drawable/toggle_selector"
+    com.brianco.andypedia:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+    com.brianco.andypedia:showAsAction="always|collapseActionView"
+    com.brianco.andypedia:actionViewClass="android.support.v7.widget.SearchView" />
+<item
+    android:id="@+id/action_signout"
+    android:orderInCategory="100"
+    com.brianco.andypedia:showAsAction="never"
+    android:title="Sign out"/>
+
 </menu>
