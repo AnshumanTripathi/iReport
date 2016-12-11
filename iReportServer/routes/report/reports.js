@@ -270,39 +270,65 @@ exports.updateReportStatus = function (req, res) {
 exports.filterReports = function (req, res) {
     var queryEmail = req.body.query_email;
     var jsonResponse = {};
-    console.log(req.body);
-    Report.find({"user_email": queryEmail}, function (err, userReport) {
-        if (err) {
-            console.log("Some Error Occured: " + err);
-            jsonResponse = {
-                statusCode: 500,
-                data: err
-            };
-        } else if (userReport.length < 1) {
-            console.log("No report found from user");
-            jsonResponse = {
-                statusCode: 400,
-                data: "No User found"
-            }
-        } else {
-            var filterReports = [];
-            if (req.body.hasOwnProperty('query_status')) {
-                var requestStatus = req.body.query_status;
-                var temp = requestStatus.split(",");
-                for (var i = 0; i < userReport.length; i++) {
-                    if (!temp.indexOf(userReport[i].status)) {
-                        console.log(userReport[i]);
-                        filterReports.push(userReport[i]);
-                    }
+    if (!req.body.hasOwnProperty('query_email')) {
+        var queryStatus = req.body.query_status.split(",");
+        Report.find({}).where("status").in(queryStatus).exec(function (err, reports) {
+            if (err) {
+                console.log("Some Error Occured: " + err);
+                jsonResponse = {
+                    statusCode: 500,
+                    data: err
+                };
+            } else if (reports.length < 1) {
+                console.log("No report found from user");
+                jsonResponse = {
+                    statusCode: 400,
+                    data: "No User found"
                 }
-            }else{
-                filterReports = userReport;
+            } else {
+                jsonResponse = {
+                    statusCode: 200,
+                    data: reports
+                };
             }
-            jsonResponse = {
-                statusCode: 200,
-                data: filterReports
-            };
-        }
-        res.send(jsonResponse);
-    });
+            res.send(jsonResponse);
+        });
+
+    } else {
+        console.log(req.body);
+        Report.find({"user_email": queryEmail}, function (err, userReport) {
+            if (err) {
+                console.log("Some Error Occured: " + err);
+                jsonResponse = {
+                    statusCode: 500,
+                    data: err
+                };
+            } else if (userReport.length < 1) {
+                console.log("No report found from user");
+                jsonResponse = {
+                    statusCode: 400,
+                    data: "No User found"
+                }
+            } else {
+                var filterReports = [];
+                if (req.body.hasOwnProperty('query_status')) {
+                    var requestStatus = req.body.query_status;
+                    var temp = requestStatus.split(",");
+                    for (var i = 0; i < userReport.length; i++) {
+                        if (!temp.indexOf(userReport[i].status)) {
+                            console.log(userReport[i]);
+                            filterReports.push(userReport[i]);
+                        }
+                    }
+                } else {
+                    filterReports = userReport;
+                }
+                jsonResponse = {
+                    statusCode: 200,
+                    data: filterReports
+                };
+            }
+            res.send(jsonResponse);
+        });
+    }
 };
