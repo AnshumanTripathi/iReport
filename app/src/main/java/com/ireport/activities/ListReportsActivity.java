@@ -61,6 +61,13 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (userInfo.isOfficial()) {
+            Log.d(TAG, "Redirecting to official report list");
+            Intent intent = new Intent(ListReportsActivity.this, ListReportsForOfficialActivity.class);
+            startActivity(intent);
+            return;
+        }
+        Log.d(TAG, "In list reports for non-officals activity");
         setContentView(R.layout.activity_list_reports);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
