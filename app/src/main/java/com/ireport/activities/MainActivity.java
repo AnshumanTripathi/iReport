@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements
                             //direct the user to list reports activity
                             Intent intent = new Intent(
                                     MainActivity.this,
-                                    ListReportsForOfficialActivity.class
+                                    ListReportsActivity.class
                             );
                             startActivity(intent);
                         } else{
