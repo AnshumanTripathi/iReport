@@ -29,5 +29,14 @@
         android:layout_gravity="bottom|end"
         app:backgroundTint="@android:color/darker_gray" />
 
+    <TextView
+        android:text="@string/noReportMsgOfficial"
+        android:layout_width="325dp"
+        android:layout_height="273dp"
+        android:id="@+id/noReportsMsg"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:visibility="gone"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

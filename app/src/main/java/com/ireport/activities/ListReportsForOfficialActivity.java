@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ireport.R;
@@ -35,6 +36,8 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     List<ReportData> reportDataList;
     ListView listView;
     List<ListActivityRowClass> rowItems;
+
+    TextView noReportsMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +63,14 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
             Log.d(TAG, "got userinfo - for official: " + userInfo.toString());
         } else if (responseObj instanceof List) {
             if(((List) responseObj).size() == 0) {
-                Log.d(TAG, "No reports to show for this official.");
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Your city is litter-free :-)",
-                        Toast.LENGTH_SHORT).show();
+                System.out.println("No reports to show for the official.");
+
+                //Show him the msg
+                noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
+                noReportsMsg.setVisibility(View.VISIBLE);
+
+                //Hide the fab button too
+                findViewById(R.id.fab_button).setVisibility(View.GONE);
             } else {
                 //Reports received from the server is more than 1
                 Log.d(TAG,"Multiple reports received for this user from the server");
