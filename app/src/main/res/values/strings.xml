@@ -205,7 +205,7 @@
     <!-- ***********************Defined By Anshuman********************* -->
 
     <string name="title_activity_maps">Map</string>
-    <string name="facebook_app_id">395019697311167</string>
+    <string name="facebook_app_id">*fb app id*</string>
     <string name="homeText">Login Here</string>
     <string name="title_activity_google_sign_in_activty">GoogleSignInActivty</string>
     <string name="signIn">Sign In</string>
@@ -217,7 +217,7 @@
     <string name="passwordHint">********</string>
     <string name="forgotPassword">Forgot Password</string>
     <string name="resetPassword">Reset Password</string>
-    <string name ="resetPasswordConfirm">Reset Password Email Sent!</string>
+    <string name="resetPasswordConfirm">Reset Password Email Sent!</string>
 
     <!--  *******************************************************   -->
 
@@ -225,6 +225,7 @@
     <string name="hello">Hello World, ImageTextListViewActivity!</string>
     <string name="name">ListViewBaseAdapter</string>
     <string name="image">Thumbnail</string>
+    <string name="title_activity_list_reports_for_official">ListReportsForOfficialActivity</string>
 
     <string name="noReportMsg">No reports to show. \n Add a new report</string>
     <string name="noReportMsgOfficial">No reports to show.</string>

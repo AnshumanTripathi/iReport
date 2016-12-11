@@ -77,22 +77,14 @@ public class ListReportsActivity extends AppCompatActivity
 
         // load profile details from the server
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
-        if (currUser.isOfficial()) {
-            System.out.println("in official workflow");
-            getAllReportsHandler = new GetAllReportsHandler(
-                    this,
-                    "getAllReports"
-            );
-            getAllReportsHandler.getAllReportsData(getApplicationContext());
-        } else {
-            String currUserEmail = currUser.getEmail();
-            Log.d(TAG,currUserEmail);
-            getCurrUserReports = new GetReportForEmailId(this,
-                    "getAllReportsForUser",
-                    currUserEmail
-            );
-            getCurrUserReports.getReportForEmailId(getApplicationContext());
-        }
+        String currUserEmail = currUser.getEmail();
+        Log.d(TAG,currUserEmail);
+        getCurrUserReports = new GetReportForEmailId(this,
+                "getAllReportsForUser",
+                currUserEmail
+        );
+        getCurrUserReports.getReportForEmailId(getApplicationContext());
+
 
         findViewById(R.id.fab_button).setOnClickListener(new View.OnClickListener() {
             @Override
