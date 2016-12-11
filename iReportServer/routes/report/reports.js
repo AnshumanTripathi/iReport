@@ -157,7 +157,7 @@ exports.getUserReportLocation = function (req, res) {
 exports.getReportById = function (req, res) {
     var jsonResponse = {};
     console.log(req.body.id);
-    Report.findById(req.body.id, function (err, report) {
+    Report.findById(req.body.id).lean().exec(function (err, report) {
         if (err) {
             console.log("Error occured in fetching report: " + err);
             jsonResponse = {
@@ -172,28 +172,28 @@ exports.getReportById = function (req, res) {
             };
         } else {
             console.log(report);
-            for (var i = 0; i < report.length; i++) {
-                var d = new Date(report[i].timestamp),
-                    month = '' + (d.getMonth() + 1),
-                    day = '' + d.getDate(),
-                    year = d.getFullYear(),
-                    hour = '' + d.getHours(),
-                    minutes = '' + d.getMinutes();
 
-                if (month.length < 2) month = '0' + month;
-                if (day.length < 2) day = '0' + day;
-                if (hour.length < 2) hour = '0' + hour;
-                if (minutes.length < 2) minutes = '0' + minutes;
+            var d = new Date(report.timestamp),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear(),
+                hour = '' + d.getHours(),
+                minutes = '' + d.getMinutes();
 
-                report[i].timestamp = [month, day, year].join("-");
-                report[i].timestamp += " ";
-                report[i].timestamp += [hour, minutes].join(":");
-            }
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            if (hour.length < 2) hour = '0' + hour;
+            if (minutes.length < 2) minutes = '0' + minutes;
+
+            report.timestamp = [month, day, year].join("-");
+            report.timestamp += " ";
+            report.timestamp += [hour, minutes].join(":");
             jsonResponse = {
                 statusCode: 200,
                 data: report
             };
         }
+
         res.send(jsonResponse);
     });
 };
