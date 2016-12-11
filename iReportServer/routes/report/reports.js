@@ -7,7 +7,7 @@ var email = require('../email_notify');
 
 exports.addReport = function (req, res) {
     var query = req.body;
-    query['status'] =  'still_there';
+    query['status'] = 'still_there';
     var report = new Report(query);
     var jsonResponse;
     console.log(report);
@@ -79,6 +79,7 @@ exports.getReports = function (req, res) {
     } else if (req.body.hasOwnProperty("location".toLowerCase())) {
         query = {location: req.body.location}
     }
+    console.log(query);
     Report.find(query).lean().exec(function (err, report) {
         if (err) {
             console.log("Error occured in fetching reports: " + err);
@@ -156,7 +157,7 @@ exports.getUserReportLocation = function (req, res) {
 exports.getReportById = function (req, res) {
     var jsonResponse = {};
     console.log(req.body.id);
-    Report.findById(req.body.id, function (err, report) {
+    Report.findById(req.body.id).lean().exec(function (err, report) {
         if (err) {
             console.log("Error occured in fetching report: " + err);
             jsonResponse = {
@@ -171,11 +172,28 @@ exports.getReportById = function (req, res) {
             };
         } else {
             console.log(report);
+
+            var d = new Date(report.timestamp),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear(),
+                hour = '' + d.getHours(),
+                minutes = '' + d.getMinutes();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+            if (hour.length < 2) hour = '0' + hour;
+            if (minutes.length < 2) minutes = '0' + minutes;
+
+            report.timestamp = [month, day, year].join("-");
+            report.timestamp += " ";
+            report.timestamp += [hour, minutes].join(":");
             jsonResponse = {
                 statusCode: 200,
                 data: report
             };
         }
+
         res.send(jsonResponse);
     });
 };
@@ -247,8 +265,44 @@ exports.updateReportStatus = function (req, res) {
             });
         }
     });
-    // res.send({
-    //     statusCode: 200,
-    //     data: "Response"
-    // });
+};
+
+exports.filterReports = function (req, res) {
+    var queryEmail = req.body.query_email;
+    var jsonResponse = {};
+    console.log(req.body);
+    Report.find({"user_email": queryEmail}, function (err, userReport) {
+        if (err) {
+            console.log("Some Error Occured: " + err);
+            jsonResponse = {
+                statusCode: 500,
+                data: err
+            };
+        } else if (userReport.length < 1) {
+            console.log("No report found from user");
+            jsonResponse = {
+                statusCode: 400,
+                data: "No User found"
+            }
+        } else {
+            var filterReports = [];
+            if (req.body.hasOwnProperty('query_status')) {
+                var requestStatus = req.body.query_status;
+                var temp = requestStatus.split(",");
+                for (var i = 0; i < userReport.length; i++) {
+                    if (!temp.indexOf(userReport[i].status)) {
+                        console.log(userReport[i]);
+                        filterReports.push(userReport[i]);
+                    }
+                }
+            }else{
+                filterReports = userReport;
+            }
+            jsonResponse = {
+                statusCode: 200,
+                data: filterReports
+            };
+        }
+        res.send(jsonResponse);
+    });
 };

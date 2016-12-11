@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_list_reports"
+    android:id="@+id/content_list_reports_for_official"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="40dp"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.ireport.activities.ListReportsActivity"
-    tools:showIn="@layout/app_bar_list_reports">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.ireport.activities.ListReportsForOfficialActivity"
+    tools:showIn="@layout/activity_list_reports_for_official">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:text="@string/noReportMsg"
-        android:layout_width="325dp"
-        android:layout_height="273dp"
-        android:id="@+id/noReportsMsg"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:visibility="gone"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_button"
@@ -38,6 +28,15 @@
         android:src="@drawable/map_icon"
         android:layout_gravity="bottom|end"
         app:backgroundTint="@android:color/darker_gray" />
+
+    <TextView
+        android:text="@string/noReportMsgOfficial"
+        android:layout_width="325dp"
+        android:layout_height="273dp"
+        android:id="@+id/noReportsMsg"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:visibility="gone"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

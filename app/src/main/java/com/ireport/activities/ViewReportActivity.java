@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.location.Geocoder;
 
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -24,14 +22,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Text;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
 import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
 import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
 import com.ireport.model.ReportData;
 
 import java.util.ArrayList;

@@ -82,11 +82,6 @@ public class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
 
-        //test <code></code>
-        UpdateReportByIdHandler gid = new UpdateReportByIdHandler(this,
-                "reportId","5848a1e0c479e405d06496ca","still_there");
-        gid.updateReportForReportId(getApplicationContext());
-
         //Special Facebook Login Button
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("email"));
@@ -144,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userEmail = "somyaaggarwal@gmail.com";  // just for testing
+                userEmail = "aggarwal.somya@gmail.com";  // just for testing
                 handleUserSignIn(userEmail);
             }
         });

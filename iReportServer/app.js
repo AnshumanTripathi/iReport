@@ -8,7 +8,6 @@ var http = require("http");
 var mongoose = require("mongoose");
 var index = require('./routes/index');
 var user = require('./routes/user/user');
-var reportTest = require("./routes/report/reportTest");
 var report = require('./routes/report/reports');
 var host = require("./routes/SharedConst").host;
 var app = express();
@@ -46,6 +45,7 @@ app.post('/getReports',report.getReports);
 app.post('/getUserReportLocation',report.getUserReportLocation);
 app.post('/getReportById',report.getReportById);
 app.post('/updateReportStatus',report.updateReportStatus);
+app.post('/filterReports',report.filterReports);
 
 //TestAPIs
 app.post('/testPic',function (req,res) {
@@ -54,8 +54,6 @@ app.post('/testPic',function (req,res) {
     res.write(img);
     res.end();
 });
-app.get('/getFile',reportTest.getFile);
-app.post('/testGrid',reportTest.uploadFile);
 
 
 // catch 404 and forward to error handler
