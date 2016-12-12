@@ -60,9 +60,6 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
-        // test code:
-//        ctx.getCurrentLoggedInUser().setOfficial(true);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.viewReportToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.BLACK);
@@ -99,83 +96,6 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         mImageLayout = (LinearLayout)findViewById(R.id.image_layout);
 
         onCheckedChangeListener = this;
-/*                new RadioGroup.OnCheckedChangeListener()
-        {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                //Get current location
-                Location currLocation = new Location("");
-                Location reportLocation = new Location("");
-
-                Float distance = 0f;
-
-                if(ctx.getCurrentLocation() == null) {
-                    Toast.makeText(
-                            getBaseContext(),
-                            "Could not get the user's current location. Retrying....",
-                            Toast.LENGTH_SHORT
-                    ).show();
-
-                    CurrentLocationUtil.getCurrentLocation(ViewReportActivity.this,ctx);
-                    return;
-                } else if (reportLocation.equals(null)) {
-                    Toast.makeText(getBaseContext(),
-                            "Could not get report location",
-                            Toast.LENGTH_SHORT
-                    ).show();
-                    return;
-                } else {
-                    float[] dist = new float[1];
-
-                    currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
-                    currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
-
-                    reportLocation.setLatitude(reportData.getLocation().getLatitude());
-                    reportLocation.setLongitude(reportData.getLocation().getLongitude());
-
-                    distance = currLocation.distanceTo(reportLocation) * 0.328084f;
-                    Log.v(TAG,"Setting distance to " + distance);
-
-                }
-
-                // checkedId is the RadioButton selected
-                String oldLitterStatus = litterStatus;
-                String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.
-                        getCheckedRadioButtonId())).
-                        getText().
-                        toString();
-                Log.v(TAG,"Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
-
-                if(distance > 30f) {
-                    Log.v(TAG,"User not within range!!");
-                    Log.v(TAG,"Distance = " + distance);
-
-                    Toast.makeText(
-                            getBaseContext(),
-                            "User must be within 30ft of radius from the posted location!",
-                            Toast.LENGTH_SHORT
-                    ).show();
-
-                    radioGroupStatus.setOnCheckedChangeListener(null);
-
-                    if(oldLitterStatus.equals("still_there")) {
-                        Log.v(TAG,"still_there im here");
-                        radioGroupStatus.check(R.id.radio_present);
-                    } else if (oldLitterStatus.equals("removal_claimed")) {
-                        Log.v(TAG,"removal_claimed im here");
-                        radioGroupStatus.check(R.id.radio_claimed);
-                    } else if (oldLitterStatus.equals("removal_confirmed")) {
-                        Log.v(TAG,"removal_confirmed im here");
-                        radioGroupStatus.check(R.id.radio_confirmed);
-                    }
-                    radioGroupStatus.setOnCheckedChangeListener(this);
-                } else {
-                    litterStatus = newLitterStatus;
-                    reportData.setStatus(litterStatus);
-                    Log.v(TAG,"Updating status to " + litterStatus);
-                }
-            }
-        };
-        */
     }
 
     private float getReportDistance(ReportData data) {
@@ -209,21 +129,23 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
             return;
         }
 
-        if (ctx.getCurrentLoggedInUser().isOfficial()) {
+        // checkedId is the RadioButton selected
+        String oldLitterStatus = litterStatus;
+        String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.
+                getCheckedRadioButtonId())).
+                getText().
+                toString();
+        Log.v(TAG, "Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
 
+        if (ctx.getCurrentLoggedInUser().isOfficial()) {
+            litterStatus = newLitterStatus;
+            reportData.setStatus(litterStatus);
+            Log.v(TAG, "Updating status to " + litterStatus);
 
         } else {
             // user case
             float distance = this.getReportDistance(this.reportData);
             Log.v(TAG, "Setting distance to " + distance);
-
-            // checkedId is the RadioButton selected
-            String oldLitterStatus = litterStatus;
-            String newLitterStatus = ((RadioButton) findViewById(radioGroupStatus.
-                    getCheckedRadioButtonId())).
-                    getText().
-                    toString();
-            Log.v(TAG, "Old Status = " + oldLitterStatus + " New Status = " + newLitterStatus);
 
             if (distance > 30f) {
                 Log.v(TAG, "User not within range!!");
@@ -231,7 +153,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
 
                 Toast.makeText(
                         getBaseContext(),
-                        "User must be within 30ft of radius from the posted location!",
+                        "You must be within 30ft of the reported location to update the report",
                         Toast.LENGTH_SHORT
                 ).show();
 

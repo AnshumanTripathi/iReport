@@ -61,6 +61,13 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (userInfo.isOfficial()) {
+            Log.d(TAG, "Redirecting to official report list");
+            Intent intent = new Intent(ListReportsActivity.this, ListReportsForOfficialActivity.class);
+            startActivity(intent);
+            return;
+        }
+        Log.d(TAG, "In list reports for non-officals activity");
         setContentView(R.layout.activity_list_reports);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -112,13 +119,6 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
- /*       Toast toast = Toast.makeText(getApplicationContext(),
-                "Item " + (position) + ": " + rowItems.get(position),
-                Toast.LENGTH_SHORT);
-
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-        toast.show();
-*/
         Intent intent = new Intent(this,ViewReportActivity.class);
         intent.putExtra("report_id_in_mongo", rowItems.get(position).getId());
         Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
@@ -126,14 +126,14 @@ public class ListReportsActivity extends AppCompatActivity
 
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //do nothing when back is pressed from list reports.
+            //super.onBackPressed();
         }
     }
 

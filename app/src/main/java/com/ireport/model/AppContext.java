@@ -1,5 +1,7 @@
 package com.ireport.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Somya on 11/28/2016.
  */
@@ -10,6 +12,16 @@ public class AppContext {
     private static LocationDetails currentLocation;
     //private static ReportData currentR
     private static AppContext instance = null;
+
+    public ArrayList<ReportData> getCurrentUserReportsToShow() {
+        return currentUserReportsToShow;
+    }
+
+    public void setCurrentUserReportsToShow(ArrayList<ReportData> currentUserReportsToShow) {
+        this.currentUserReportsToShow = currentUserReportsToShow;
+    }
+
+    private static ArrayList<ReportData> currentUserReportsToShow;
 
     public static LocationDetails getCurrentLocation() {
         return currentLocation;
