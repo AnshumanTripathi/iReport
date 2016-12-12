@@ -34,8 +34,6 @@ exports.addReport = function (req, res) {
                 report.user_email = user.email;
             } else {
                 report.isAnonymous = true;
-                report.user_email = "null";
-                report.user_screen_name = "null";
             }
             report.save(function (err) {
                 console.log("Saving report");
