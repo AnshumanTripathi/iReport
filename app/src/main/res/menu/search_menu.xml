@@ -9,10 +9,8 @@
     com.brianco.andypedia:showAsAction="always|collapseActionView"
     com.brianco.andypedia:actionViewClass="android.support.v7.widget.SearchView" />
 <item android:id="@+id/search_by_status"
-    android:title="S"
-     com.brianco.andypedia:actionProviderClass="android.support.v7.widget.ShareActionProvider"
-     com.brianco.andypedia:showAsAction="always|collapseActionView"
-     com.brianco.andypedia:actionViewClass="android.support.v7.widget.SearchView">
+     android:title="S"
+     com.brianco.andypedia:showAsAction="always">
      <menu>
         <!-- Refresh -->
         <item
@@ -33,13 +31,12 @@
             android:id="@+id/action_check_updates"
             android:icon="@drawable/ic_email_black"
             android:showAsAction="never"
-            android:title="Check updates"/>
+            android:title="Check updates"
+            tools:ignore="AppCompatResource"/>
     </menu>
 </item>
-<item
-    android:id="@+id/action_signout"
+<item android:id="@+id/action_signout"
     android:orderInCategory="100"
     com.brianco.andypedia:showAsAction="never"
     android:title="Sign out"/>
-
 </menu>
