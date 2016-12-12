@@ -272,6 +272,7 @@ exports.filterReports = function (req, res) {
     var jsonResponse = {};
     if (!req.body.hasOwnProperty('query_email')) {
         var queryStatus = req.body.query_status.split(",");
+        console.log(queryStatus);
         Report.find({}).where("status").in(queryStatus).exec(function (err, reports) {
             if (err) {
                 console.log("Some Error Occured: " + err);
@@ -314,8 +315,9 @@ exports.filterReports = function (req, res) {
                 if (req.body.hasOwnProperty('query_status')) {
                     var requestStatus = req.body.query_status;
                     var temp = requestStatus.split(",");
+                    console.log(temp);
                     for (var i = 0; i < userReport.length; i++) {
-                        if (!temp.indexOf(userReport[i].status)) {
+                        if (temp.indexOf(userReport[i].status) != -1) {
                             console.log(userReport[i]);
                             filterReports.push(userReport[i]);
                         }
