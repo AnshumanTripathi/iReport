@@ -94,21 +94,7 @@ exports.getReports = function (req, res) {
         } else {
             console.log(report);
             for (var i = 0; i < report.length; i++) {
-                var d = new Date(report[i].timestamp),
-                    month = '' + (d.getMonth() + 1),
-                    day = '' + d.getDate(),
-                    year = d.getFullYear(),
-                    hour = '' + d.getHours(),
-                    minutes = '' + d.getMinutes();
-
-                if (month.length < 2) month = '0' + month;
-                if (day.length < 2) day = '0' + day;
-                if (hour.length < 2) hour = '0' + hour;
-                if (minutes.length < 2) minutes = '0' + minutes;
-
-                report[i].timestamp = [month, day, year].join("-");
-                report[i].timestamp += " ";
-                report[i].timestamp += [hour, minutes].join(":");
+                report[i].timestamp = parseTimestamp(report[i].timestamp);
             }
             jsonResponse = {
                 statusCode: 200,
@@ -171,21 +157,7 @@ exports.getReportById = function (req, res) {
         } else {
             console.log(report);
 
-            var d = new Date(report.timestamp),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear(),
-                hour = '' + d.getHours(),
-                minutes = '' + d.getMinutes();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-            if (hour.length < 2) hour = '0' + hour;
-            if (minutes.length < 2) minutes = '0' + minutes;
-
-            report.timestamp = [month, day, year].join("-");
-            report.timestamp += " ";
-            report.timestamp += [hour, minutes].join(":");
+            report.timestamp = parseTimestamp(report.timestamp);
             jsonResponse = {
                 statusCode: 200,
                 data: report
@@ -266,12 +238,12 @@ exports.updateReportStatus = function (req, res) {
 };
 
 exports.filterReports = function (req, res) {
-    var queryEmail = req.body.query_email;
     var jsonResponse = {};
     if (!req.body.hasOwnProperty('query_email')) {
         var queryStatus = req.body.query_status.split(",");
         console.log(queryStatus);
-        Report.find({}).where("status").in(queryStatus).exec(function (err, reports) {
+        Report.find({}).where("status").in(queryStatus)
+            .lean().exec(function (err, reports) {
             if (err) {
                 console.log("Some Error Occured: " + err);
                 jsonResponse = {
@@ -285,6 +257,13 @@ exports.filterReports = function (req, res) {
                     data: "No User found"
                 }
             } else {
+                for (var i = 0; i < reports.length; i++) {
+                    if (reports[i].isAnonymous) {
+                        reports[i].email = "anonymous";
+                        reports[i].screen_name = "anonymous";
+                        reports[i].timestamp = parseTimestamp(reports[i].timestamp);
+                    }
+                }
                 jsonResponse = {
                     statusCode: 200,
                     data: reports
@@ -293,9 +272,9 @@ exports.filterReports = function (req, res) {
             res.send(jsonResponse);
         });
 
-    } else {
+    } else if (req.body.hasOwnProperty('query_email')) {
         console.log(req.body);
-        Report.find({"user_email": queryEmail}, function (err, userReport) {
+        Report.find({"user_email": req.body.query_email}, function (err, userReport) {
             if (err) {
                 console.log("Some Error Occured: " + err);
                 jsonResponse = {
@@ -317,11 +296,18 @@ exports.filterReports = function (req, res) {
                     for (var i = 0; i < userReport.length; i++) {
                         if (temp.indexOf(userReport[i].status) != -1) {
                             console.log(userReport[i]);
-                            filterReports.push(userReport[i]);
+                            if (!userReport[i].isAnonymous)
+                                userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
+                                filterReports.push(userReport[i]);
                         }
                     }
                 } else {
-                    filterReports = userReport;
+                    for (var i = 0; i < userReport.length; i++) {
+                        if (!userReport[i].isAnonymous) {
+                            userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
+                            filterReports.push(userReport[i]);
+                        }
+                    }
                 }
                 jsonResponse = {
                     statusCode: 200,
@@ -330,5 +316,51 @@ exports.filterReports = function (req, res) {
             }
             res.send(jsonResponse);
         });
+    } else{
+        Report.find().lean().exec(function (err, report) {
+            if (err) {
+                console.log("Error occured in fetching reports: " + err);
+                jsonResponse = {
+                    statusCode: 500,
+                    data: err
+                };
+            } else if (report.length < 1) {
+                console.log("No reports found!");
+                jsonResponse = {
+                    statusCode: 400,
+                    data: "No reports in Database"
+                };
+            } else {
+                console.log(report);
+                for (var i = 0; i < report.length; i++) {
+                    report[i].timestamp = parseTimestamp(report[i].timestamp);
+                }
+                jsonResponse = {
+                    statusCode: 200,
+                    data: report
+                };
+            }
+
+            res.send(jsonResponse);
+        });
     }
 };
+
+function parseTimestamp(timestamp) {
+    var d = new Date(timestamp),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = '' + d.getHours(),
+        minutes = '' + d.getMinutes();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    if (hour.length < 2) hour = '0' + hour;
+    if (minutes.length < 2) minutes = '0' + minutes;
+
+    timestamp = [month, day, year].join("-");
+    timestamp += " ";
+    timestamp += [hour, minutes].join(":");
+    return timestamp;
+}

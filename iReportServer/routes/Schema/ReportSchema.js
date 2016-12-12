@@ -20,12 +20,13 @@ var report = new schema({
     collection: "report"
 });
 
-report.pre('save',function (next) {
+report.pre('save', function (next) {
     if(this.timestamp == null) {
-        this.timestamp = Date.now();
+        this.timestamp = new Date();
     }
     next();
 });
+
 var Report = mongoose.model('Report', report);
 
 module.exports = Report;
