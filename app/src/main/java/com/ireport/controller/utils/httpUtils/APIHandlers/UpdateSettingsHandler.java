@@ -61,7 +61,7 @@ public class UpdateSettingsHandler extends HttpBaseCommunicator {
         params.put("email",email);
         params.put("email_confirm",String.valueOf(settingsObj.isAllowEmailConfirmation()));
         params.put("email_notify",String.valueOf(settingsObj.isAllowEmailNotification()));
-        params.put("Anonymous",String.valueOf(settingsObj.isAnonymous()));
+        params.put("anonymous",String.valueOf(settingsObj.isAnonymous()));
         return params;
     }
 
