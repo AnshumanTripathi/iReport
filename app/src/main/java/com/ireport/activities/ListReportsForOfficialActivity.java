@@ -3,9 +3,8 @@ package com.ireport.activities;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.FilterReportsAPIHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForStatus;
 import com.ireport.model.AppContext;
 import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
@@ -15,11 +14,13 @@ import java.util.List;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -41,13 +42,15 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
     private static final String TAG = "ListReportOfficial";
     GetAllReportsHandler getAllReportsHandler = null;
-    GetReportForStatus getAllReportByStatusHandler = null;
-    GetReportForEmailId getAllReportByEmailIdHandler = null;
+    FilterReportsAPIHandler getReportByEmailAndStatus = null;
 
     List<ReportData> reportDataList;
     ListView listView;
     List<ListActivityRowClass> rowItems;
     private MenuItem searchMenuItem;
+    private String filter_email = "";
+    private ArrayList<String> filter_status_list = new ArrayList<String>();
+    private String filter_status = "";
 
     TextView noReportsMsg;
 
@@ -87,10 +90,28 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     }
 
     private void doMySearch(String emailId) {
+        setFilter_email(emailId);
         Log.d(TAG,"Email id to be searched for" + emailId);
-        getAllReportByEmailIdHandler = new GetReportForEmailId(this,"getAllReportsByEmail",emailId);
-        getAllReportByEmailIdHandler.getReportForEmailId(getApplicationContext());
+        getReportByEmailAndStatus = new FilterReportsAPIHandler(this,"get_reports_for_email_and_status",filter_email,filter_status_list);
+        getReportByEmailAndStatus.filterReports(getApplicationContext());
 
+    }
+    public void setFilter_email(String email) {
+        filter_email = email;
+    }
+
+    public void removeStatusFromList(String status) {
+        if(filter_status_list == null || filter_status_list.size() == 0)
+                return;
+        for(int i = 0;i<filter_status_list.size();i++) {
+            if(filter_status_list.get(i) == status) {
+                filter_status_list.remove(i);
+            }
+        }
+    }
+
+    public void addToStatusList(String status) {
+        filter_status_list.add(status);
     }
 
     @Override
@@ -111,6 +132,7 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                setFilter_email("");
                 Log.d("SEARCH", "in expand");
                 return true;
             }
@@ -122,6 +144,7 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Do something when collapsed
                 Log.d("STATUS", "in collapse");
+                populateListViewElements(AppContext.getInstance().getCurrentUserReportsToShow());
                 return true;  // Return true to collapse action view
             }
 
@@ -151,20 +174,60 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
                 searchView.setIconifiedByDefault(false);
                 handleIntent(getIntent());
-                return true;
+                break;
             case R.id.action_signout :
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
                 AppContext.getInstance().reset();
                 Intent intent = new Intent(ListReportsForOfficialActivity.this, MainActivity.class);
                 startActivity(intent);
+                break;
             case R.id.search_by_status :
                 Log.d(TAG,"trying to search by status");
-                return true;
+                break;
+            case R.id.action__still_there :
+                boolean still_there_checked = !item.isChecked();
+                item.setChecked(still_there_checked);
+                if (item.isChecked()) {
+                    addToStatusList((String) item.getTitle());
+                }else {
+                    removeStatusFromList((String) item.getTitle());
+                }
+                getReportByEmailAndStatus = new FilterReportsAPIHandler(this,"get_reports_for_email_and_status",filter_email,filter_status_list);
+                getReportByEmailAndStatus.filterReports(getApplicationContext());
+
+                Log.d(TAG,"still there is checked" + item.isChecked());
+                break;
+            case R.id.action_removal_claimed :
+                boolean removal_claimed_checked = !item.isChecked();
+                item.setChecked(removal_claimed_checked);
+                if (item.isChecked()) {
+                    addToStatusList((String) item.getTitle());
+                }else {
+                    removeStatusFromList((String) item.getTitle());
+                }
+                getReportByEmailAndStatus = new FilterReportsAPIHandler(this,"get_reports_for_email_and_status",filter_email,filter_status_list);
+                getReportByEmailAndStatus.filterReports(getApplicationContext());
+
+                Log.d(TAG,"still there is checked");
+                break;
+            case R.id.action_removal_confirmed :
+                boolean removal_confirmed_checked = !item.isChecked();
+                item.setChecked(removal_confirmed_checked);
+                if (item.isChecked()) {
+                    addToStatusList((String) item.getTitle());
+                }else {
+                    removeStatusFromList((String) item.getTitle());
+                }
+                getReportByEmailAndStatus = new FilterReportsAPIHandler(this,"get_reports_for_email_and_status",filter_email,filter_status_list);
+                getReportByEmailAndStatus.filterReports(getApplicationContext());
+                Log.d(TAG,"still there is checked");
+                break;
             default:
                 Log.d(TAG, "some crap");
-                return false;
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
@@ -184,6 +247,10 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
                 findViewById(R.id.fab_button).setVisibility(View.GONE);
             } else {
                 //Reports received from the server is more than 1
+                //Sandhya : Set the visibility to gone - doesn't work always
+                noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
+                noReportsMsg.setVisibility(View.GONE);
+
                 Log.d(TAG,"Multiple reports received for this user from the server");
                 Log.d(TAG, "Identifier: " + identifier);
                 if (identifier.equals("get_all_reports")) {
@@ -197,6 +264,16 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
 
     // this method will populate the reports data in the list view on the activity
     private void populateListViewElements(ArrayList<ReportData> reportList) {
+        /*Check if no reports text view is visible
+        Sandhya : This function will be called directly when user presses back button from action bar
+        from action bar while ending search. We are using the recetly populated reports from app context
+        to get populated again. Feel free to make any changes
+        */
+        noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
+        if(noReportsMsg.getVisibility() == View.VISIBLE) {
+            noReportsMsg.setVisibility(View.GONE);
+        }
+
         reportDataList = reportList;
         rowItems = new ArrayList<ListActivityRowClass>();
 
@@ -244,6 +321,26 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
         Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
         startActivity(intent);
         */
+
+    }
+    @Override
+    public void onBackPressed() {
+        //TO DO - Popup a dialog box asking if official wants to log out
+        new AlertDialog.Builder(ListReportsForOfficialActivity.this)
+                .setTitle("")
+                .setMessage("Do you want to exit?")
+                .setNegativeButton(android.R.string.cancel, null) // dismisses by default
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        AppContext.getInstance().reset();
+                        Intent intent = new Intent(ListReportsForOfficialActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .create()
+                .show();
 
     }
 
