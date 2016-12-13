@@ -1,5 +1,11 @@
 package com.ireport.activities;
 
+import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
+import com.ireport.model.AppContext;
+import com.ireport.model.Settings;
+import com.ireport.model.UserInfo;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,17 +13,56 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.SwitchPreference;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-
-import com.ireport.R;
-import com.ireport.controller.utils.Constants;
-import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateSettingsHandler;
-import com.ireport.model.AppContext;
-import com.ireport.model.Settings;
-import com.ireport.model.UserInfo;
 
 public class SettingsActivity extends PreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener, ICallbackActivity {
+    private AppCompatDelegate mDelegate;
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        getDelegate().onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        getDelegate().setContentView(layoutResID);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getDelegate().onPostResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getDelegate().onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getDelegate().onDestroy();
+    }
+
+    private void setSupportActionBar(@Nullable Toolbar toolbar) {
+        getDelegate().setSupportActionBar(toolbar);
+    }
+
+    private AppCompatDelegate getDelegate() {
+        if (mDelegate == null) {
+            mDelegate = AppCompatDelegate.create(this, null);
+        }
+        return mDelegate;
+    }
 
     public SwitchPreference emailPref, notificationsPref, anonPref;
     private static String TAG = "Settings";
@@ -29,8 +74,13 @@ public class SettingsActivity extends PreferenceActivity implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        getDelegate().installViewFactory();
+        getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
-        setupActionBar();
+        setContentView(R.layout.activity_settings_delegate);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_settings);
+        setSupportActionBar(toolbar);
+
         addPreferencesFromResource(R.xml.pref_notification);
 
         Intent i = getIntent();

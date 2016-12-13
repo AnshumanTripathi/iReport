@@ -38,7 +38,11 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"/>
+            android:label="@string/title_activity_settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ireport.activities.ListReportsActivity"/>
+        </activity>
         <activity
             android:name=".activities.CreateReportActivity"
             android:label="Create a New Report"
