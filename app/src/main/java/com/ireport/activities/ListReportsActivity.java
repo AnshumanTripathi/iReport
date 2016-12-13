@@ -1,10 +1,21 @@
 package com.ireport.activities;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.ireport.R;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
+import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
+import com.ireport.model.AppContext;
+import com.ireport.model.ReportData;
+import com.ireport.model.UserInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,23 +31,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.FirebaseAuth;
-import com.ireport.R;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportForEmailId;
-import com.ireport.model.AppContext;
-import com.ireport.model.ReportData;
-import com.ireport.model.UserInfo;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListReportsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity,
@@ -188,8 +182,6 @@ public class ListReportsActivity extends AppCompatActivity
             Intent intent = new Intent(this, CreateReportActivity.class);
             if ( null != userInfo)
             startActivity(intent);
-        } else if (id == R.id.nav_allreports) {
-
         } else if (id == R.id.mSignOut){
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();

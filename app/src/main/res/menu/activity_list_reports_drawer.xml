@@ -15,10 +15,6 @@
             android:icon="@drawable/ic_newreport"
             android:title="New Report"/>
         <item
-            android:id="@+id/nav_allreports"
-            android:icon="@drawable/ic_viewreports"
-            android:title="My Reports"/>
-        <item
             android:id="@+id/mSignOut"
             android:icon="@drawable/ic_signout"
             android:title="Sign Out"/>
