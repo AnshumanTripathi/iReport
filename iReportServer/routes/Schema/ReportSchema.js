@@ -4,6 +4,8 @@
 var mongoose = require("mongoose");
 var schema = mongoose.Schema;
 
+//Test commit
+
 var report = new schema({
     "pictures": {type: String, required: true},
     "location": {type: String},
