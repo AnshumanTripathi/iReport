@@ -22,13 +22,13 @@ var user = new schema({
 });
 
 
-var User = mongoose.model('User', user);
-
 user.pre('save', function (next) {
     if (this.screen_name == null) {
         this.screen_name = this.email;
     }
     next();
 });
+
+var User = mongoose.model('User', user);
 
 module.exports = User;
