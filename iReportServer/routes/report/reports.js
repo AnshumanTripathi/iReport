@@ -5,6 +5,8 @@ var Report = require('../schema/ReportSchema');
 var User = require('../schema/UserSchema');
 var email = require('../email_notify');
 
+//Test Comment
+
 exports.addReport = function (req, res) {
     var query = req.body;
     query['status'] = 'still_there';
