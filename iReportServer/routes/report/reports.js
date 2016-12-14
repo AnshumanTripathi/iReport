@@ -1,8 +1,8 @@
 /**
  * Created by AnshumanTripathi on 12/2/16.
  */
-var Report = require('../schema/ReportSchema');
-var User = require('../schema/UserSchema');
+var Report = require('../Rchema/ReportSchema');
+var User = require('../Schema/UserSchema');
 var email = require('../email_notify');
 
 exports.addReport = function (req, res) {

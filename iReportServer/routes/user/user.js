@@ -3,7 +3,7 @@
  */
 
 var mongoose = require('mongoose');
-var User = require("./../schema/UserSchema");
+var User = require("./../Schema/UserSchema");
 
 mongoose.connection.on('open', function (ref) {
     console.log("Connected to Mongo Server");
