@@ -16,8 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/common_google_signin_btn_text_dark_disabled">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -89,7 +88,9 @@
                 android:layout_below="@+id/litterSize"
                 android:id="@+id/radio_group_size"
                 android:orientation="horizontal"
-                 android:textColor="@color/colorPrimaryDark">
+                 android:textColor="@color/colorPrimaryDark"
+                 android:scaleX="0.90"
+                 android:scaleY="0.90">
                 <RadioButton android:id="@+id/radio_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -144,7 +145,9 @@
                 android:id="@+id/radio_group_severity"
                 android:layout_below="@+id/litterSeverity"
                 android:orientation="horizontal"
-                android:buttonTint="@android:color/white">
+                android:buttonTint="@android:color/white"
+                android:scaleX="0.90"
+                android:scaleY="0.90">
                 <RadioButton android:id="@+id/radio_severity_minor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
