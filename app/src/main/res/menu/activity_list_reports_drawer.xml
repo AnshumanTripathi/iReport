@@ -7,10 +7,6 @@
             android:icon="@drawable/ic_viewprofile"
             android:title="Profile"/>
         <item
-            android:id="@+id/nav_notifcations"
-            android:icon="@drawable/ic_notifications"
-            android:title="Notifications"/>
-        <item
             android:id="@+id/nav_newreport"
             android:icon="@drawable/ic_newreport"
             android:title="New Report"/>
