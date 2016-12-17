@@ -16,7 +16,6 @@
 .idea
 *.bin
 *.lock
-*.jpg
 writeto/
 /bin/
 Android-Take-Photo-From-Camera-and-Gallery-Code-Sample-master/gradlew

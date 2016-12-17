@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/common_google_signin_btn_text_dark_disabled">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="italic|bold"
                 android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
@@ -64,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="italic|bold"
                 android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
@@ -91,7 +90,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="italic|bold"
                 android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
@@ -118,7 +116,6 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_below="@+id/tvid3"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="italic|bold"
                 android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
@@ -144,7 +141,6 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_below="@+id/tvid2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="italic|bold"
                 android:textColor="@color/colorPrimary"/>
 
         </RelativeLayout>
@@ -173,7 +169,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="italic|bold"
             android:textColor="@color/colorPrimary" />
 
         </RelativeLayout>
@@ -249,7 +244,6 @@
                 android:layout_below="@+id/tvid1"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="italic|bold"
                 android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
