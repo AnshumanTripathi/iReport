@@ -1,14 +1,22 @@
 package com.ireport.activities;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Geocoder;
 
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -23,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ireport.R;
+import com.ireport.controller.utils.cameraUtils.CameraUtility;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
 import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
@@ -279,4 +288,86 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
 
         radioGroupStatus.setOnCheckedChangeListener(onCheckedChangeListener);
     }
+
+
+    // Make it modular
+    private static final int ACCESS_COARSE_LOCATION = 1;
+    /*
+       These functions will help in fetching the current location for the user.
+       This one checks for GPS Permission
+     */
+    public void checkGPSPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_COARSE_LOCATION
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults
+    ) {
+        LocationManager gpsStatus = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        switch (requestCode) {
+            case ACCESS_COARSE_LOCATION:
+                if (permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    if (!gpsStatus.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        android.app.AlertDialog.Builder builder = new
+                                android.app.AlertDialog.Builder(this);
+                        builder.setMessage("GPS is disabled. Enable for Location service? ")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(@SuppressWarnings("unused")
+                                                                DialogInterface dialog,
+                                                        @SuppressWarnings("unused") int which) {
+                                        startActivity(
+                                                new Intent(
+                                                        Settings.ACTION_LOCATION_SOURCE_SETTINGS
+                                                )
+                                        );
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        android.app.AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(),
+                            "App requries Location to perform all Features",
+                            Toast.LENGTH_SHORT).show();
+                    try {
+                        ctx.getCurrentLocation().setLatitude(gpsStatus.getLastKnownLocation(
+                                LocationManager.GPS_PROVIDER).
+                                getLatitude());
+                        ctx.getCurrentLocation().
+                                setLongitude(
+                                        gpsStatus.getLastKnownLocation
+                                                (
+                                                        LocationManager.GPS_PROVIDER).
+                                                getLongitude());
+                    } catch (SecurityException permissionException) {
+                        Toast.makeText(getBaseContext(),
+                                "Exception in Fetching last known location",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+        }
+    }
+
 }
