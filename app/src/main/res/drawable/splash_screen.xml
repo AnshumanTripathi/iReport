@@ -2,12 +2,15 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <item
-        android:drawable="@color/colorPrimaryDark"/>
     <item>
         <bitmap
-            android:gravity="fill"
-            android:height="400dp"
+            android:src="@drawable/splash_background"
+            android:gravity="fill"/>
+    </item>
+
+    <item>
+        <bitmap
+            android:gravity="center"
             android:src="@mipmap/littering_image"/>
     </item>
 </layer-list>
