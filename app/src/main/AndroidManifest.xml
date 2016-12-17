@@ -45,7 +45,7 @@
         </activity>
         <activity
             android:name=".activities.CreateReportActivity"
-            android:label="Create a New Report"
+            android:label="New Report"
             android:parentActivityName=".activities.ListReportsActivity"/>
 
         <activity
