@@ -30,12 +30,12 @@ exports.addReport = function (req, res) {
             console.log(user);
             if (!user.settings.anonymous) {
                 report.isAnonymous = false;
-                user.reports.push(report.id);
-                report.user_screen_name = user.screen_name;
-                report.user_email = user.email;
+                // report.user_screen_name = user.screen_name;
+                // report.user_email = user.email;
             } else {
                 report.isAnonymous = true;
             }
+            user.reports.push(report.id);
             report.save(function (err) {
                 console.log("Saving report");
                 console.log(report);
