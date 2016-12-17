@@ -488,7 +488,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
             if (requestCode == SELECT_FILE){
                 Log.d(TAG, "Select from gallery chosen");
                 //onCaptureImageResult(data);
-                numImagesTextView.setText(numImagesTextView.getText().toString() + "\n. Image Received from gallery.");
+                //numImagesTextView.setText(numImagesTextView.getText().toString() + "\n. Image Received from gallery.");
             } else if (requestCode == REQUEST_CAMERA) {
                 Log.d(TAG, "Took a pic.");
                 onCaptureImageResult(data);
@@ -498,9 +498,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
     private void onCaptureImageResult(Intent data) {
         numImages++;
-        numImagesTextView.setText(numImagesTextView.getText().toString() +
-                "\n" + Integer.toString(numImages) +
-                " images added to report.");
+        //numImagesTextView.setText(numImagesTextView.getText().toString() +
+        //        "\n" + Integer.toString(numImages) +
+        //        " images added to report.");
         if (data != null)
             imageStringArray.add(getStringImage((Bitmap) data.getExtras().get("data")));
 

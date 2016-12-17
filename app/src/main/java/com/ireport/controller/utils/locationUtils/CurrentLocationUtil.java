@@ -1,15 +1,20 @@
 package com.ireport.controller.utils.locationUtils;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.ireport.activities.CreateReportActivity;
+import com.ireport.activities.ViewReportActivity;
 import com.ireport.controller.utils.GenericToastManager;
 import com.ireport.model.AppContext;
 import com.ireport.model.LocationDetails;
@@ -21,6 +26,7 @@ import com.ireport.model.LocationDetails;
 public class CurrentLocationUtil {
 
     static Location userLastLocation;
+    private static final int ACCESS_COARSE_LOCATION = 1;
 
     public static void getCurrentLocation(
             AppCompatActivity appActivity,
@@ -104,7 +110,11 @@ public class CurrentLocationUtil {
                     appActivity.getBaseContext(),
                     "Location permission might be missing. Check GPS."
             );
-            ((CreateReportActivity)appActivity).checkGPSPermission();
+            if(appActivity instanceof CreateReportActivity) {
+                ((CreateReportActivity)appActivity).checkGPSPermission();
+            } else if(appActivity instanceof ViewReportActivity) {
+                ((ViewReportActivity)appActivity).checkGPSPermission();
+            }
         }
     }
 }
