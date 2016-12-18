@@ -5,7 +5,6 @@ var Report = require('../schema/ReportSchema');
 var User = require('../schema/UserSchema');
 var email = require('../email_notify');
 
-//Test Comment
 
 exports.addReport = function (req, res) {
     var query = req.body;
@@ -31,12 +30,12 @@ exports.addReport = function (req, res) {
             console.log(user);
             if (!user.settings.anonymous) {
                 report.isAnonymous = false;
-                user.reports.push(report.id);
-                report.user_screen_name = user.screen_name;
-                report.user_email = user.email;
+                // report.user_screen_name = user.screen_name;
+                // report.user_email = user.email;
             } else {
                 report.isAnonymous = true;
             }
+            user.reports.push(report.id);
             report.save(function (err) {
                 console.log("Saving report");
                 console.log(report);
@@ -241,7 +240,8 @@ exports.updateReportStatus = function (req, res) {
 
 exports.filterReports = function (req, res) {
     var jsonResponse = {};
-    if (!req.body.hasOwnProperty('query_email')) {
+    if (!req.body.hasOwnProperty('query_email') && req.body.hasOwnProperty('query_status')) {
+        console.log("Parsing by only status");
         var queryStatus = req.body.query_status.split(",");
         console.log(queryStatus);
         Report.find({}).where("status").in(queryStatus)
@@ -259,12 +259,14 @@ exports.filterReports = function (req, res) {
                     data: "No User found"
                 }
             } else {
+                console.log("Reports: ");
+                console.log(reports);
                 for (var i = 0; i < reports.length; i++) {
                     if (reports[i].isAnonymous) {
                         reports[i].email = "anonymous";
                         reports[i].screen_name = "anonymous";
-                        reports[i].timestamp = parseTimestamp(reports[i].timestamp);
                     }
+                    reports[i].timestamp = parseTimestamp(reports[i].timestamp);
                 }
                 jsonResponse = {
                     statusCode: 200,
@@ -275,8 +277,9 @@ exports.filterReports = function (req, res) {
         });
 
     } else if (req.body.hasOwnProperty('query_email')) {
+        console.log("Parsing by email");
         console.log(req.body);
-        Report.find({"user_email": req.body.query_email}, function (err, userReport) {
+        Report.find({"user_email": req.body.query_email}).lean().exec(function (err, userReport) {
             if (err) {
                 console.log("Some Error Occured: " + err);
                 jsonResponse = {
@@ -292,6 +295,7 @@ exports.filterReports = function (req, res) {
             } else {
                 var filterReports = [];
                 if (req.body.hasOwnProperty('query_status')) {
+                    console.log("Parsing by status");
                     var requestStatus = req.body.query_status;
                     var temp = requestStatus.split(",");
                     console.log(temp);
@@ -299,8 +303,8 @@ exports.filterReports = function (req, res) {
                         if (temp.indexOf(userReport[i].status) != -1) {
                             console.log(userReport[i]);
                             if (!userReport[i].isAnonymous)
-                                userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
-                                filterReports.push(userReport[i]);
+                            userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
+                            filterReports.push(userReport[i]);
                         }
                     }
                 } else {
@@ -318,8 +322,8 @@ exports.filterReports = function (req, res) {
             }
             res.send(jsonResponse);
         });
-    } else{
-        Report.find().lean().exec(function (err, report) {
+    } else {
+        Report.find({}).lean().exec(function (err, report) {
             if (err) {
                 console.log("Error occured in fetching reports: " + err);
                 jsonResponse = {

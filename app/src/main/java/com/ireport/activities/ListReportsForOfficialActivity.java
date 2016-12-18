@@ -1,6 +1,13 @@
 package com.ireport.activities;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallbacks;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.FilterReportsAPIHandler;
@@ -19,6 +26,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ListReportsForOfficialActivity extends AppCompatActivity
-        implements ICallbackActivity, AdapterView.OnItemClickListener {
+        implements ICallbackActivity, AdapterView.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
     private static final String TAG = "ListReportOfficial";
@@ -176,12 +185,47 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
                 handleIntent(getIntent());
                 break;
             case R.id.action_signout :
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                AppContext.getInstance().reset();
-                Intent intent = new Intent(ListReportsForOfficialActivity.this, MainActivity.class);
-                startActivity(intent);
-                break;
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+
+                //Google API client
+                final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                        .addApi(AppIndex.API).build();
+                mGoogleApiClient.connect();
+                mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        FirebaseAuth.getInstance().signOut();
+                        if (mGoogleApiClient.isConnected()) {
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient).
+                                    setResultCallback(new ResultCallbacks<Status>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Status status) {
+                                            Intent intent = new Intent(ListReportsForOfficialActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NonNull Status status) {
+                                            Toast.makeText(ListReportsForOfficialActivity.this, "Signout Failed! \nTry Again",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                        }
+                    }
+                    @Override
+                    public void onConnectionSuspended(int i) {
+
+                    }
+                });
+
+                    break;
             case R.id.search_by_status :
                 Log.d(TAG,"trying to search by status");
                 break;
@@ -354,5 +398,10 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     public void onPause() {
         super.onPause();
         Log.d(TAG, "In pause");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

@@ -1,6 +1,13 @@
 package com.ireport.activities;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallbacks;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetAllReportsHandler;
@@ -16,6 +23,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -34,8 +43,7 @@ import android.widget.Toast;
 
 public class ListReportsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ICallbackActivity,
-        AdapterView.OnItemClickListener
-{
+        AdapterView.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static String TAG = "ListReportsActivity";
     private UserInfo userInfo = AppContext.getInstance().getCurrentLoggedInUser();
@@ -45,7 +53,9 @@ public class ListReportsActivity extends AppCompatActivity
     GetReportForEmailId getCurrUserReports = null;
     GetAllReportsHandler getAllReportsHandler = null;
 
-    /*********************************List Report Activity Code: Somya*****************************/
+    /*********************************
+     * List Report Activity Code: Somya
+     *****************************/
     ListView listView;
     List<ListActivityRowClass> rowItems;
     /**********************************************************************************************/
@@ -79,7 +89,7 @@ public class ListReportsActivity extends AppCompatActivity
         // load profile details from the server
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
         String currUserEmail = currUser.getEmail();
-        Log.d(TAG,currUserEmail);
+        Log.d(TAG, currUserEmail);
         getCurrUserReports = new GetReportForEmailId(this,
                 "getAllReportsForUser",
                 currUserEmail
@@ -90,20 +100,20 @@ public class ListReportsActivity extends AppCompatActivity
         findViewById(R.id.fab_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ListReportsActivity.this,MapsActivity.class);
+                Intent intent = new Intent(ListReportsActivity.this, MapsActivity.class);
                 ArrayList<String> idList = new ArrayList<>();
                 ArrayList<String> latList = new ArrayList<>();
                 ArrayList<String> lngList = new ArrayList<>();
-                for(int i=0;i<reportDataList.size();i++){
-                    if(reportDataList.get(i).getLocation() != null && reportDataList.get(i).getLocation() != null) {
+                for (int i = 0; i < reportDataList.size(); i++) {
+                    if (reportDataList.get(i).getLocation() != null && reportDataList.get(i).getLocation() != null) {
                         idList.add(reportDataList.get(i).getReportId());
                         latList.add(String.valueOf(reportDataList.get(i).getLocation().getLatitude()));
                         lngList.add(String.valueOf(reportDataList.get(i).getLocation().getLongitude()));
                     }
                 }
-                intent.putStringArrayListExtra("idList",idList);
-                intent.putStringArrayListExtra("latList",latList);
-                intent.putStringArrayListExtra("lngList",lngList);
+                intent.putStringArrayListExtra("idList", idList);
+                intent.putStringArrayListExtra("latList", latList);
+                intent.putStringArrayListExtra("lngList", lngList);
                 startActivity(intent);
             }
         });
@@ -113,9 +123,9 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-        Intent intent = new Intent(this,ViewReportActivity.class);
+        Intent intent = new Intent(this, ViewReportActivity.class);
         intent.putExtra("report_id_in_mongo", rowItems.get(position).getId());
-        Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
+        Log.v(TAG, "Item on item click = " + rowItems.get(position).getId());
         startActivity(intent);
 
     }
@@ -147,8 +157,8 @@ public class ListReportsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,SettingsActivity.class);
-            if ( null != userInfo ) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            if (null != userInfo) {
                 startActivity(intent);
             } else {
                 Toast.makeText(getBaseContext(), "Could not load user settings!", Toast.LENGTH_SHORT).show();
@@ -168,18 +178,61 @@ public class ListReportsActivity extends AppCompatActivity
 
         if (id == R.id.nav_view_profile) {
             Intent intent = new Intent(this, ViewProfileActivity.class);
-            if (null != userInfo){
+            if (null != userInfo) {
                 startActivity(intent);
-            }else {
+            } else {
                 Toast.makeText(getBaseContext(), "Could not load user information!", Toast.LENGTH_SHORT).show();
             }
 
+        } else if (id == R.id.nav_notifcations) {
+            Intent intent = new Intent(this, ViewNotificationsActivity.class);
+            if (null != userInfo)
+                startActivity(intent);
         } else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
-            if ( null != userInfo)
-            startActivity(intent);
-        } else if (id == R.id.mSignOut){
-            FirebaseAuth.getInstance().signOut();
+            if (null != userInfo)
+                startActivity(intent);
+        } else if (id == R.id.mSignOut) {
+
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+
+            //Google API client
+            final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .addApi(AppIndex.API).build();
+            mGoogleApiClient.connect();
+            mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                @Override
+                public void onConnected(@Nullable Bundle bundle) {
+                    FirebaseAuth.getInstance().signOut();
+                    if (mGoogleApiClient.isConnected()) {
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).
+                                setResultCallback(new ResultCallbacks<Status>() {
+                                    @Override
+                                    public void onSuccess(@NonNull Status status) {
+                                        Intent intent = new Intent(ListReportsActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Status status) {
+                                        Toast.makeText(ListReportsActivity.this, "Signout Failed! \nTry Again",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                    }
+                }
+
+                @Override
+                public void onConnectionSuspended(int i) {
+
+                }
+            });
             LoginManager.getInstance().logOut();
             AppContext.getInstance().reset();
             Intent intent = new Intent(ListReportsActivity.this, MainActivity.class);
@@ -200,18 +253,18 @@ public class ListReportsActivity extends AppCompatActivity
             Log.d(TAG, userInfo.toString());
             Log.d(TAG, userInfo.getSettings().toString());
         } else if (responseObj instanceof List) {
-            if(((List) responseObj).size() == 0) {
+            if (((List) responseObj).size() == 0) {
                 System.out.println("No reports to show for the user.");
 
                 //Show him the msg
-                noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
+                noReportsMsg = (TextView) findViewById(R.id.noReportsMsg);
                 noReportsMsg.setVisibility(View.VISIBLE);
 
                 //Hide the fab button too
                 findViewById(R.id.fab_button).setVisibility(View.GONE);
             } else {
                 //Reports received from the server is more than 1
-                Log.d(TAG,"Multiple reports received for this user from the server");
+                Log.d(TAG, "Multiple reports received for this user from the server");
                 populateListViewElements((ArrayList<ReportData>) responseObj);
             }
         }
@@ -231,8 +284,8 @@ public class ListReportsActivity extends AppCompatActivity
                     reportList.get(i).getStatus(),
                     reportList.get(i).getReportId()
             );
-            Log.v(TAG,"Item description = " + item.getDescription());
-            Log.v(TAG,"Item id = " + item.getId());
+            Log.v(TAG, "Item description = " + item.getDescription());
+            Log.v(TAG, "Item id = " + item.getId());
             rowItems.add(item);
         }
 
@@ -251,5 +304,8 @@ public class ListReportsActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
 }

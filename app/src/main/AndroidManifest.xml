@@ -24,7 +24,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".activities.MainActivity"
+        <activity
+            android:name=".activities.MainActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,27 +36,26 @@
         <activity
             android:name=".activities.ListReportsActivity"
             android:label="@string/title_activity_list_reports"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ireport.activities.ListReportsActivity"/>
+                android:value="com.ireport.activities.ListReportsActivity" />
         </activity>
         <activity
             android:name=".activities.CreateReportActivity"
-            android:label="New Report"
-            android:parentActivityName=".activities.ListReportsActivity"/>
-
+            android:label="Create a New Report"
+            android:parentActivityName=".activities.ListReportsActivity" />
         <activity
             android:name=".activities.ViewNotificationsActivity"
             android:label="Your Notifications"
-            android:parentActivityName=".activities.ListReportsActivity"/>
+            android:parentActivityName=".activities.ListReportsActivity" />
         <activity
             android:name=".activities.ViewProfileActivity"
             android:label="Your Profile"
-            android:parentActivityName=".activities.ListReportsActivity"/>
+            android:parentActivityName=".activities.ListReportsActivity" />
         <activity
             android:name=".activities.UploadImagesActivity"
             android:label="Upload Images"
@@ -71,7 +71,7 @@
         <activity
             android:name=".activities.ViewReportActivity"
             android:parentActivityName=".activities.ListReportsActivity" />
-        <activity android:name=".activities.MapsActivity"/>
+        <activity android:name=".activities.MapsActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -79,22 +79,26 @@
 
         <activity
             android:name=".activities.ListReportsForOfficialActivity"
-            android:parentActivityName=".activities.ListReportsForOfficialActivity"
             android:label="@string/title_activity_list_reports_for_official"
             android:launchMode="singleTop"
+            android:parentActivityName=".activities.ListReportsForOfficialActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable">
-            </meta-data>
+                android:resource="@xml/searchable"></meta-data>
         </activity>
 
-        <meta-data android:name="android.app.default_searchable"
+        <meta-data
+            android:name="android.app.default_searchable"
             android:value=".activities.ListReportsForOfficialActivity" />
 
+        <activity
+            android:name=".HeatMapActivity"
+            android:label="@string/title_activity_heat_map"></activity>
     </application>
 
 </manifest>
