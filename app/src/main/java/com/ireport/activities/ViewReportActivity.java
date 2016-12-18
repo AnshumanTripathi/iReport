@@ -116,14 +116,21 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
 
         float[] dist = new float[1];
 
-        currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
-        currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
+        if(ctx.getCurrentLocation() != null) {
+            currLocation.setLatitude(ctx.getCurrentLocation().getLatitude());
+            currLocation.setLongitude(ctx.getCurrentLocation().getLongitude());
 
-        reportLocation.setLatitude(data.getLocation().getLatitude());
-        reportLocation.setLongitude(data.getLocation().getLongitude());
 
-        distance = currLocation.distanceTo(reportLocation) * 0.328084f;
-        return distance;
+            reportLocation.setLatitude(data.getLocation().getLatitude());
+            reportLocation.setLongitude(data.getLocation().getLongitude());
+
+            distance = currLocation.distanceTo(reportLocation) * 0.328084f;
+            return distance;
+
+        } else {
+            return -1;
+        }
+
     }
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -156,15 +163,20 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
             float distance = this.getReportDistance(this.reportData);
             Log.v(TAG, "Setting distance to " + distance);
 
-            if (distance > 30f) {
-                Log.v(TAG, "User not within range!!");
-                Log.v(TAG, "Distance = " + distance);
-
-                Toast.makeText(
-                        getBaseContext(),
-                        "You must be within 30ft of the reported location to update the report",
-                        Toast.LENGTH_SHORT
-                ).show();
+            if (distance > 30f || distance == -1) {
+                if(distance > 30f) {
+                    Toast.makeText(
+                            getBaseContext(),
+                            "You must be within 30ft of the reported location to update the report",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            getBaseContext(),
+                            "Unable to get Current Location",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
 
                 radioGroupStatus.setOnCheckedChangeListener(null);
 
