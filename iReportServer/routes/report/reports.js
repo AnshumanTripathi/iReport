@@ -303,10 +303,12 @@ exports.filterReports = function (req, res) {
                     console.log(temp);
                     for (var i = 0; i < userReport.length; i++) {
                         if (temp.indexOf(userReport[i].status) != -1) {
-                            console.log(userReport[i]);
-                            if (!userReport[i].isAnonymous)
-                            userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
-                            filterReports.push(userReport[i]);
+                            if (!userReport[i].isAnonymous) {
+                                console.log("Report: "+i);
+                                console.log(userReport[i]);
+                                userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
+                                filterReports.push(userReport[i]);
+                            }
                         }
                     }
                 } else {
