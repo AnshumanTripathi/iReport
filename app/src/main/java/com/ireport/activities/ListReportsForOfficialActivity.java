@@ -278,9 +278,14 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
 
         if (responseObj instanceof UserInfo) {
             userInfo = (UserInfo) responseObj;
-            Log.d(TAG, "got userinfo - for official: " + userInfo.toString());
         } else if (responseObj instanceof List) {
             if(((List) responseObj).size() == 0) {
+
+                if(identifier.equals("get_reports_for_email_and_status")){
+                    //clear any previous reports displayed too here
+                    populateListViewElements(new ArrayList<ReportData>());
+                }
+
                 System.out.println("No reports to show for the official.");
 
                 //Show him the msg
@@ -289,14 +294,15 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
 
                 //Hide the fab button too
                 findViewById(R.id.fab_button).setVisibility(View.GONE);
+
+
             } else {
                 //Reports received from the server is more than 1
-                //Sandhya : Set the visibility to gone - doesn't work always
                 noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
                 noReportsMsg.setVisibility(View.GONE);
 
-                Log.d(TAG,"Multiple reports received for this user from the server");
-                Log.d(TAG, "Identifier: " + identifier);
+                findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
+
                 if (identifier.equals("get_all_reports")) {
                     AppContext.getInstance().setCurrentUserReportsToShow((ArrayList<ReportData>) responseObj);
                 }
@@ -308,15 +314,16 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
 
     // this method will populate the reports data in the list view on the activity
     private void populateListViewElements(ArrayList<ReportData> reportList) {
+
         /*Check if no reports text view is visible
         Sandhya : This function will be called directly when user presses back button from action bar
         from action bar while ending search. We are using the recetly populated reports from app context
         to get populated again. Feel free to make any changes
-        */
+
         noReportsMsg = (TextView)findViewById(R.id.noReportsMsg);
         if(noReportsMsg.getVisibility() == View.VISIBLE) {
             noReportsMsg.setVisibility(View.GONE);
-        }
+           }*/
 
         reportDataList = reportList;
         rowItems = new ArrayList<ListActivityRowClass>();
@@ -330,11 +337,8 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
                     reportList.get(i).getStatus(),
                     reportList.get(i).getReportId()
             );
-            Log.v(TAG,"Item description = " + item.getDescription());
-            Log.v(TAG,"Item id = " + item.getId());
             rowItems.add(item);
         }
-        Log.d(TAG, "Size of the list " + Integer.toString(rowItems.size()));
 
         listView = (ListView) findViewById(R.id.list);
         CustomListViewAdapter adapter = new CustomListViewAdapter(this,

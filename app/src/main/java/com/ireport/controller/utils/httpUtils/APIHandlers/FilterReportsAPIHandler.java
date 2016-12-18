@@ -59,7 +59,7 @@ public class FilterReportsAPIHandler extends HttpBaseCommunicator {
     @Override
     protected Map<String, String> getPostParams() {
         HashMap<String,String> params = new HashMap<>();
-        if(emailId != null) {
+        if(emailId != null && emailId.length() > 0) {
             params.put("query_email", emailId);
         }
 
@@ -70,7 +70,7 @@ public class FilterReportsAPIHandler extends HttpBaseCommunicator {
             }
             params.put("query_status",statusStr);
         }
-        Log.d("PARAMS",params.toString());
+        Log.d("PARAMS filter reports:",params.toString());
         return params;
     }
 
