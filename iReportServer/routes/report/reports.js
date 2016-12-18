@@ -52,13 +52,14 @@ exports.addReport = function (req, res) {
                 data: "Report Added"
             };
 
-            if (!user.settings.anonymous && user.settings.email_notify) {
+            if (!user.settings.anonymous && user.settings.email_confirm) {
                 email.sendEmail({
                     to: user.email,
                     subject: "iReport New Report",
                     text: 'New Report is added',
                     html: '<h2>Hello from iReport!</h2><br><p>New report is added by '
-                    + user.email + '<br>Log into iReport app to see updates</p>'
+                    + user.email + '<br><p>Description:'+report.description+
+                    ' </p><br>Log into iReport app to see updates</p>'
                 });
             }
         }
@@ -219,12 +220,13 @@ exports.updateReportStatus = function (req, res) {
                 } else {
                     console.log(user);
                     console.log("Sending Email");
-                    if (!user.settings.anonymous && user.settings.email_confirm) {
+                    if (!user.settings.anonymous && user.settings.email_notify) {
                         email.sendEmail({
                             to: user.email,
                             subject: "iReport Updated!",
                             html: "<h2>Your iReport has been updated to " + updateStatus +
-                            "<br/>Log in iReport app to see updates</h2>"
+                            "<br/>Log in iReport app to see updates</h2><br/>" +
+                            "<p> Description: "+report.description+"</p>>"
                         });
                         jsonResponse = {
                             statusCode: 200,

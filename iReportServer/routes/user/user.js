@@ -112,9 +112,9 @@ exports.updateSettings = function (req, res) {
                         data: "Settings Updated"
                     };
                 }
+                res.send(jsonResponse);
             });
         }
-        res.send(jsonResponse);
     });
 };
 
