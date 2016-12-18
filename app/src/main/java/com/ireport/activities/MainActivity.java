@@ -1,5 +1,6 @@
 package com.ireport.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements
     AddUserHandler addUserHandler = null;
     GetUserForEmailID getUserInfo = null;
     AppContext ctx = AppContext.getInstance();
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +80,15 @@ public class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing you in");
         //Special Facebook Login Button
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("email"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                progressDialog.show();
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -143,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
+                progressDialog.show();
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             }
@@ -240,9 +246,11 @@ public class MainActivity extends AppCompatActivity implements
                         parameters.putString("fields", "id, name, email");
                         request.setParameters(parameters);
                         request.executeAsync();
+                        progressDialog.dismiss();
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
+                            progressDialog.dismiss();
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -285,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements
                                     MainActivity.this,
                                     ListReportsActivity.class
                             );
+                            progressDialog.dismiss();
                             startActivity(intent);
                         } else {
                             // get user settings now

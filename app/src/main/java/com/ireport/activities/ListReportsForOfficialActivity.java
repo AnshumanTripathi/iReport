@@ -1,6 +1,5 @@
 package com.ireport.activities;
 
-import com.facebook.login.LoginManager;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,23 +18,22 @@ import com.ireport.model.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,12 +59,16 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     private ArrayList<String> filter_status_list = new ArrayList<String>();
     private String filter_status = "";
 
+    private ProgressDialog progressDialog;
     TextView noReportsMsg;
+    Boolean doublePressToExit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "In list reports for offical activity");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching All reports from Server");
         setContentView(R.layout.activity_list_reports_for_official);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("List Reports: Official");
@@ -76,8 +78,10 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
         // load profile details from the server
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
         Log.d(TAG, "in official workflow");
+        progressDialog.show();
         getAllReportsHandler = new GetAllReportsHandler(this, "get_all_reports");
         getAllReportsHandler.getAllReportsData(getApplicationContext());
+        progressDialog.dismiss();
 
         // Get the intent, verify the action and get the query
         handleIntent(getIntent());
@@ -186,13 +190,6 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
             }
         });
 
-        /*
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_by_email).getActionView();
-        //SearchView signOut = (SearchView) menu.findItem(R.id.action_signout).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-        */
         return true;
     }
     @Override
@@ -386,22 +383,27 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     }
     @Override
     public void onBackPressed() {
-        //TO DO - Popup a dialog box asking if official wants to log out
-        new AlertDialog.Builder(ListReportsForOfficialActivity.this)
-                .setTitle("")
-                .setMessage("Do you want to exit?")
-                .setNegativeButton(android.R.string.cancel, null) // dismisses by default
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        FirebaseAuth.getInstance().signOut();
-                        LoginManager.getInstance().logOut();
-                        AppContext.getInstance().reset();
-                        Intent intent = new Intent(ListReportsForOfficialActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .create()
-                .show();
+        //Double Tap tp exit
+        if (doublePressToExit) {
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+        }
+
+        this.doublePressToExit = true;
+
+        final Toast toast = Toast.makeText(ListReportsForOfficialActivity.this,
+                "Press BACK again to exit", Toast.LENGTH_SHORT);
+        toast.show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doublePressToExit = false;
+                toast.cancel();
+            }
+        }, 2000);
 
     }
 

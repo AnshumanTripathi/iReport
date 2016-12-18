@@ -19,10 +19,12 @@ import com.ireport.model.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -62,6 +64,9 @@ public class ListReportsActivity extends AppCompatActivity
 
     TextView noReportsMsg;
 
+    Boolean doublePressToExit = false;
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +76,8 @@ public class ListReportsActivity extends AppCompatActivity
             startActivity(intent);
             return;
         }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching reports from Server.");
         Log.d(TAG, "In list reports for non-officals activity");
         setContentView(R.layout.activity_list_reports);
 
@@ -87,6 +94,7 @@ public class ListReportsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // load profile details from the server
+        progressDialog.show();
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
         String currUserEmail = currUser.getEmail();
         Log.d(TAG, currUserEmail);
@@ -136,8 +144,26 @@ public class ListReportsActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            //do nothing when back is pressed from list reports.
-            //super.onBackPressed();
+            if (doublePressToExit) {
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
+
+            this.doublePressToExit = true;
+
+            final Toast toast = Toast.makeText(ListReportsActivity.this, "Press BACK again to exit", Toast.LENGTH_SHORT);
+            toast.show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doublePressToExit = false;
+                    toast.cancel();
+                }
+            }, 2000);
+
         }
     }
 
@@ -290,6 +316,7 @@ public class ListReportsActivity extends AppCompatActivity
                 R.layout.list_item, rowItems);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+        progressDialog.dismiss();
     }
 
     private Bitmap getImage(String imageString) {

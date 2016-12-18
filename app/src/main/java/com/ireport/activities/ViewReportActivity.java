@@ -1,6 +1,7 @@
 package com.ireport.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,6 +62,8 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
     private UpdateReportByIdHandler updateReportByIdHandler;
     private GetReportByIdHandler getReportByIdHandler;
 
+    private ProgressDialog progressDialog;
+
     AppContext ctx = AppContext.getInstance();
 
     @Override
@@ -69,6 +72,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        progressDialog.setMessage("Fetching Report Details from Server");
         Toolbar toolbar = (Toolbar) findViewById(R.id.viewReportToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.BLACK);
@@ -89,7 +93,11 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
                 "view_report_activity",
                 itemIdiInMongo
         );
+
+
+        progressDialog.show();
         getReportByIdHandler.getReportForReportId(getApplicationContext());
+        progressDialog.dismiss();
 
         //Set all assets
         mDescriptionTextView = (TextView) findViewById(R.id.litterDescTV);
