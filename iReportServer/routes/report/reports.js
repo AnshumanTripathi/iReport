@@ -304,7 +304,6 @@ exports.filterReports = function (req, res) {
                     for (var i = 0; i < userReport.length; i++) {
                         if (temp.indexOf(userReport[i].status) != -1) {
                             if (!userReport[i].isAnonymous) {
-                                console.log("Report: "+i);
                                 console.log(userReport[i]);
                                 userReport[i].timestamp = parseTimestamp(userReport[i].timestamp);
                                 filterReports.push(userReport[i]);

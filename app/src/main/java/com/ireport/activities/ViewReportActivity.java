@@ -96,7 +96,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
 
         progressDialog.show();
         getReportByIdHandler.getReportForReportId(getApplicationContext());
-        progressDialog.dismiss();
+
 
         //Set all assets
         mDescriptionTextView = (TextView) findViewById(R.id.litterDescTV);
@@ -225,6 +225,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         if (responseObj instanceof ReportData) {
             Log.d("VIEWING", "We have a report!!!!");
             updatePageWithNewData((ReportData) responseObj);
+            progressDialog.dismiss();
         }
     }
 

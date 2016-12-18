@@ -575,5 +575,5 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     public void onBackPressed() {
         new DiscardChangesDialogFragment().show(getFragmentManager(),"DiscardDialog");
     }
-    
+
 }
