@@ -32,7 +32,7 @@
     <TextView
         android:text="@string/noReportMsgOfficial"
         android:layout_width="325dp"
-        android:layout_height="273dp"
+        android:layout_height="97dp"
         android:id="@+id/noReportsMsg"
         android:layout_gravity="center"
         android:textAlignment="center"
