@@ -264,21 +264,23 @@
 
         </RelativeLayout>
 
-        <ScrollView
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/scroll1"
-            android:padding="10dp">
+            android:layout_height="200dp"
+            android:id="@+id/scroll1"
+            android:padding="10dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
 
             <LinearLayout
                 android:id="@+id/image_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="10dp"
-                android:showDividers="middle">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
             </LinearLayout>
-        </ScrollView>
+        </HorizontalScrollView>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
