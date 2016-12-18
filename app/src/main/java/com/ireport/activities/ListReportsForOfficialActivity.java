@@ -81,7 +81,7 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
         progressDialog.show();
         getAllReportsHandler = new GetAllReportsHandler(this, "get_all_reports");
         getAllReportsHandler.getAllReportsData(getApplicationContext());
-        progressDialog.dismiss();
+
 
         // Get the intent, verify the action and get the query
         handleIntent(getIntent());
@@ -329,6 +329,7 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
             }
         }
         Log.d(TAG, "got some result back");
+        progressDialog.dismiss();
     }
 
     // this method will populate the reports data in the list view on the activity

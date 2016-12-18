@@ -95,6 +95,7 @@ public class ListReportsActivity extends AppCompatActivity
 
         // load profile details from the server
         progressDialog.show();
+
         UserInfo currUser = AppContext.getInstance().getCurrentLoggedInUser();
         String currUserEmail = currUser.getEmail();
         Log.d(TAG, currUserEmail);
@@ -290,6 +291,7 @@ public class ListReportsActivity extends AppCompatActivity
                 populateListViewElements((ArrayList<ReportData>) responseObj);
             }
         }
+        progressDialog.dismiss();
     }
 
     // this method will populate the reports data in the list view on the activity
@@ -316,7 +318,6 @@ public class ListReportsActivity extends AppCompatActivity
                 R.layout.list_item, rowItems);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-        progressDialog.dismiss();
     }
 
     private Bitmap getImage(String imageString) {

@@ -251,8 +251,7 @@ public class MainActivity extends AppCompatActivity implements
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });

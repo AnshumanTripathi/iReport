@@ -72,6 +72,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching Report Details from Server");
         Toolbar toolbar = (Toolbar) findViewById(R.id.viewReportToolbar);
         setSupportActionBar(toolbar);
@@ -97,7 +98,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
 
         progressDialog.show();
         getReportByIdHandler.getReportForReportId(getApplicationContext());
-        progressDialog.dismiss();
+
 
         //Set all assets
         mDescriptionTextView = (TextView) findViewById(R.id.litterDescTV);
@@ -226,6 +227,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         if (responseObj instanceof ReportData) {
             Log.d("VIEWING", "We have a report!!!!");
             updatePageWithNewData((ReportData) responseObj);
+            progressDialog.dismiss();
         }
     }
 
