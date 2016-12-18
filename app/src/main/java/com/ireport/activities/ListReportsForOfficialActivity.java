@@ -353,19 +353,10 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "Item " + (position) + ": " + rowItems.get(position),
-                Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-        toast.show();
-
-
         Intent intent = new Intent(this,ViewReportActivity.class);
         intent.putExtra("report_id_in_mongo", rowItems.get(position).getId());
         Log.v(TAG,"Item on item click = " + rowItems.get(position).getId());
         startActivity(intent);
-        
-
     }
     @Override
     public void onBackPressed() {
