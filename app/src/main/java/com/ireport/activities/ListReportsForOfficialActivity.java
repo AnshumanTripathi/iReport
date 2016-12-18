@@ -81,6 +81,28 @@ public class ListReportsForOfficialActivity extends AppCompatActivity
 
         // Get the intent, verify the action and get the query
         handleIntent(getIntent());
+
+        findViewById(R.id.fab_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ListReportsForOfficialActivity.this, MapsActivity.class);
+                ArrayList<String> idList = new ArrayList<>();
+                ArrayList<String> latList = new ArrayList<>();
+                ArrayList<String> lngList = new ArrayList<>();
+                for (int i = 0; i < reportDataList.size(); i++) {
+                    if (reportDataList.get(i).getLocation() != null && reportDataList.get(i).getLocation() != null) {
+                        idList.add(reportDataList.get(i).getReportId());
+                        latList.add(String.valueOf(reportDataList.get(i).getLocation().getLatitude()));
+                        lngList.add(String.valueOf(reportDataList.get(i).getLocation().getLongitude()));
+                    }
+                }
+                intent.putStringArrayListExtra("idList", idList);
+                intent.putStringArrayListExtra("latList", latList);
+                intent.putStringArrayListExtra("lngList", lngList);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
