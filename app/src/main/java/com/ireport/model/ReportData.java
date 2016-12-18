@@ -22,6 +22,7 @@ public class ReportData {
     private String streetAddress = "";
     private String reportId = "";
     private String timestamp = "";
+    private String screenName = "";
 
     public ReportData() {
 
@@ -127,6 +128,14 @@ public class ReportData {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
     }
 
     public String toString() {

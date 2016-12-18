@@ -1,23 +1,5 @@
 package com.ireport.activities;
 
-import com.ireport.R;
-import com.ireport.controller.utils.Constants;
-import com.ireport.controller.utils.cameraUtils.CameraUtility;
-import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
-import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
-import com.ireport.controller.utils.locationUtils.LocationUtils;
-import com.ireport.model.AppContext;
-import com.ireport.model.LocationDetails;
-import com.ireport.model.ReportData;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -52,6 +34,24 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ireport.R;
+import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.cameraUtils.CameraUtility;
+import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
+import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
+import com.ireport.controller.utils.locationUtils.LocationUtils;
+import com.ireport.model.AppContext;
+import com.ireport.model.LocationDetails;
+import com.ireport.model.ReportData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateReportActivity extends AppCompatActivity implements ICallbackActivity {
 
@@ -439,7 +439,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    // For camera
+//    // For camera
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -451,7 +451,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     // For camera
     private void selectImage() {
         Log.d(TAG, "in selectImage");
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
+        final CharSequence[] items = { "Take Photo",
                 "Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateReportActivity.this);
@@ -535,6 +535,8 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 yourbitmap = ShowImagesCaptured.get(i);
                 ImageView imageView = new ImageView(this);
                 imageView.setImageBitmap(yourbitmap);
+                //imageView.setMaxHeight(1200);
+                //imageView.setMaxWidth(1200);
                 imageView.setAdjustViewBounds(true);
                 ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(lnrImages.getLayoutParams());
                 params.setMargins(10, 10, 10, 10);
