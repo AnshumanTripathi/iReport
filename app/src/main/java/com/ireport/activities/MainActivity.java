@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -35,12 +36,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.ireport.R;
 import com.ireport.controller.utils.httpUtils.APIHandlers.AddUserHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetUserForEmailID;
-import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
-import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateUserInfoHandler;
 import com.ireport.model.AppContext;
-import com.ireport.model.ReportData;
 import com.ireport.model.UserInfo;
 
 import org.json.JSONException;
@@ -51,8 +48,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener,
-        ICallbackActivity
-{
+        ICallbackActivity {
     private static String TAG = "MAIN_ACTIVITY";
     private static final int RC_SIGN_IN = 9001;
 
@@ -119,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addApi(AppIndex.API).build();
 
+
         //Firebase auth Listener
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -136,14 +133,6 @@ public class MainActivity extends AppCompatActivity implements
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        findViewById(R.id.emailLogin).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userEmail = "aggarwal.somya@gmail.com";  // just for testing
-                handleUserSignIn(userEmail);
-            }
-        });
-
     }
 
     @Override
@@ -156,10 +145,6 @@ public class MainActivity extends AppCompatActivity implements
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-            } else {
-                Toast.makeText(MainActivity.this, "Sign in Failed", Toast.LENGTH_SHORT).show();
-                finish();
-                startActivity(getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         }
 
@@ -204,11 +189,11 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         String user_email = user.getEmail();
-                        handleUserSignIn(user_email);
 
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                        Log.d(TAG,"Email for Google sign in:" + user_email);
+                        Log.d(TAG, "Email for Google sign in:" + user_email);
 
+                        handleUserSignIn(user_email);
                         if (!task.isSuccessful()) {
                             //Signin Failed
                             Log.w(TAG, "signInWithCredential", task.getException());
@@ -220,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private boolean checkIfOfficial(String user_email) {
-        if(user_email.endsWith("gmail.com")) {
+        if (user_email.endsWith("gmail.com")) {
             return true;
         } else
             return false;
@@ -244,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements
                                             GraphResponse response) {
                                         try {
                                             userEmail = object.getString("email");
-                                            System.out.println("User email: "+userEmail);
+                                            System.out.println("User email: " + userEmail);
                                             handleUserSignIn(userEmail);
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -291,9 +276,9 @@ public class MainActivity extends AppCompatActivity implements
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         switch (identifier) {
             case "add_new_user": {
-                if(responseObj instanceof String) {
-                    Log.d("ADD_USER_STATUS_CODE",responseObj.toString());
-                    if(responseObj.toString().equals("200") || responseObj.toString().equals("501")) {
+                if (responseObj instanceof String) {
+                    Log.d("ADD_USER_STATUS_CODE", responseObj.toString());
+                    if (responseObj.toString().equals("200") || responseObj.toString().equals("501")) {
                         if (this.ctx.getCurrentLoggedInUser().isOfficial()) {
                             //direct the user to list reports activity
                             Intent intent = new Intent(
@@ -301,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements
                                     ListReportsActivity.class
                             );
                             startActivity(intent);
-                        } else{
+                        } else {
                             // get user settings now
                             getUserInfo = new GetUserForEmailID(
                                     this,
@@ -313,14 +298,14 @@ public class MainActivity extends AppCompatActivity implements
                         }
                         Log.d("ADD_USER_SUCCESS", "New User has been added successfully");
                     } else {
-                        Log.d("ADD_USER_FAILURE","Unable to add the deatils of the new user on server");
+                        Log.d("ADD_USER_FAILURE", "Unable to add the deatils of the new user on server");
                     }
                 }
                 break;
             }
             case "get_user_details": {
                 if (responseObj != null && responseObj instanceof UserInfo) {
-                    this.ctx.setUserInfo((UserInfo)responseObj);
+                    this.ctx.setUserInfo((UserInfo) responseObj);
                 }
                 //direct the user to list reports activity
                 Intent intent = new Intent(

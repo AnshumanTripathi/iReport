@@ -184,11 +184,7 @@ public class ListReportsActivity extends AppCompatActivity
                 Toast.makeText(getBaseContext(), "Could not load user information!", Toast.LENGTH_SHORT).show();
             }
 
-        } else if (id == R.id.nav_notifcations) {
-            Intent intent = new Intent(this, ViewNotificationsActivity.class);
-            if (null != userInfo)
-                startActivity(intent);
-        } else if (id == R.id.nav_newreport) {
+        }  else if (id == R.id.nav_newreport) {
             Intent intent = new Intent(this, CreateReportActivity.class);
             if (null != userInfo)
                 startActivity(intent);

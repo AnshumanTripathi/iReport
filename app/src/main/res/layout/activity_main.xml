@@ -19,11 +19,11 @@
         android:textColor="@color/colorPrimary" />
 
     <LinearLayout
-        android:layout_width="276dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom|center_vertical"
+        android:gravity="center|bottom"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:layout_marginTop="250dp"
         android:weightSum="1">
 
         <com.google.android.gms.common.SignInButton
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="80dp"/>
+            android:layout_marginTop="80dp" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
@@ -41,20 +41,6 @@
             android:layout_marginBottom="30dp"
             android:layout_marginTop="30dp" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:id="@+id/emailLogin"
-            android:text="@string/emailSignIn"
-            android:layout_gravity="center_horizontal"
-            tools:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:background="@color/colorAccent" />
-    </LinearLayout>
 
-    <Button
-        android:text="HeatMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2" />
+    </LinearLayout>
 </LinearLayout>

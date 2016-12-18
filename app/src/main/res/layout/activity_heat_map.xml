@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/activity_main"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@drawable/bg2"
-android:orientation="vertical"
-tools:context="com.ireport.activities.MainActivity">
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg2"
+    android:orientation="vertical"
+    tools:context="com.ireport.activities.MainActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -19,20 +19,21 @@ tools:context="com.ireport.activities.MainActivity">
         tools:context="com.ireport.activities.MapsActivity" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/goToHeatMap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:clickable="true"
-        android:rotation="0"
-        android:src="@drawable/heat_map"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
-        app:backgroundTint="?attr/colorPrimary" />
+    android:id="@+id/goToHeatMapMap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:rotation="0"
+    android:src="@drawable/heat_map"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="30dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginEnd="30dp"
+    app:backgroundTint="?attr/colorPrimary" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/goToMap"
         android:layout_width="wrap_content"

@@ -97,7 +97,7 @@
             android:value=".activities.ListReportsForOfficialActivity" />
 
         <activity
-            android:name=".HeatMapActivity"
+            android:name=".activities.HeatMapActivity"
             android:label="@string/title_activity_heat_map"></activity>
     </application>
 
