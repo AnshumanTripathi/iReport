@@ -41,7 +41,8 @@
                 android:hint=""
                 android:background="@drawable/rounded_edittext"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"/>
 
         </RelativeLayout>
 
@@ -71,7 +72,8 @@
                 android:hint="First Name"
                 android:background="@drawable/rounded_edittext"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"/>
 
         </RelativeLayout>
 
@@ -101,7 +103,8 @@
                 android:hint="Last Name"
                 android:background="@drawable/rounded_edittext"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"/>
 
         </RelativeLayout>
 
@@ -129,7 +132,8 @@
                 android:hint="Address"
                 android:background="@drawable/rounded_edittext"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="15dp"/>
 
         </RelativeLayout>
 
