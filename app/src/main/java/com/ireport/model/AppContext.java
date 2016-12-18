@@ -12,7 +12,6 @@ public class AppContext {
     private static LocationDetails currentLocation;
     //private static ReportData currentR
     private static AppContext instance = null;
-
     public ArrayList<ReportData> getCurrentUserReportsToShow() {
         return currentUserReportsToShow;
     }
