@@ -70,6 +70,14 @@ public class ListReportsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Adding a check so that if last logout was not successful, app should not crash
+        if(userInfo == null) {
+            Intent intent = new Intent(ListReportsActivity.this, MainActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         if (userInfo.isOfficial()) {
             Log.d(TAG, "Redirecting to official report list");
             Intent intent = new Intent(ListReportsActivity.this, ListReportsForOfficialActivity.class);
