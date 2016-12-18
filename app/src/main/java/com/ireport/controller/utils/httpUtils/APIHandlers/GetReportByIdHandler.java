@@ -98,6 +98,15 @@ public class GetReportByIdHandler extends HttpBaseCommunicator {
                 String timeStamp = tempJson.getString("timestamp");
                 rd.setTimestamp(timeStamp);
 
+                String screenName = tempJson.getString("user_screen_name");
+                rd.setScreenName(screenName);
+
+                String isAnonymous = tempJson.getString("isAnonymous");
+                if(Boolean.valueOf(isAnonymous)) {
+                    rd.setScreenName("Anonymous");
+                    rd.setReporteeID("Anonymous");
+                }
+
                 if (tempJson.has("location")) {
                     String location = tempJson.getString("location");
                     JSONObject locJson = new JSONObject(location);
