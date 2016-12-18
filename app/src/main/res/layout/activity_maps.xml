@@ -18,36 +18,39 @@ tools:context="com.ireport.activities.MainActivity">
         android:layout_height="match_parent"
         tools:context="com.ireport.activities.MapsActivity" />
 
-    <android.support.design.widget.FloatingActionButton
+    <Button
         android:id="@+id/goToHeatMap"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:clickable="true"
         android:rotation="0"
-        android:src="@drawable/heat_map"
+        android:text="@string/goToHeatMap"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="30dp"
-        app:backgroundTint="?attr/colorPrimary" />
-    <android.support.design.widget.FloatingActionButton
+        app:backgroundTint="?attr/colorPrimary"
+        android:textColor="@android:color/white" />
+
+    <Button
         android:id="@+id/goToMap"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:clickable="true"
         android:rotation="0"
-        android:src="@drawable/map"
+        android:text="@string/goToMap"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
+        app:backgroundTint="?attr/colorPrimary"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="30dp"
-        app:backgroundTint="?attr/colorPrimary" />
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
 

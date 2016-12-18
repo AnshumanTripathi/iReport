@@ -3,6 +3,7 @@ package com.ireport.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -37,6 +39,7 @@ import android.widget.Toast;
 
 import com.ireport.R;
 import com.ireport.controller.utils.Constants;
+import com.ireport.controller.utils.DiscardChangesDialogFragment;
 import com.ireport.controller.utils.cameraUtils.CameraUtility;
 import com.ireport.controller.utils.httpUtils.APIHandlers.AddReportHandler;
 import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
@@ -61,6 +64,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     private TextView ErrorMessage;
     private Button mUploadImagesButton, saveButton, locationButton;
     private RadioGroup radioGroupSize, radioGroupSeverity;
+    Boolean doublePressToExit = false;
 
     // For camera
     private String userChoosenTask;
@@ -86,10 +90,14 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     //handlers
     AddReportHandler uih = null;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Saving Report");
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         imageStringArray = new ArrayList<String>();
 
@@ -221,6 +229,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 // create a new report object and send to the server
 
                 //first clear the Error text
+                progressDialog.show();
                 ErrorMessage.setText("");
                 Allerrors.delete(0,Allerrors.toString().length());
 
@@ -248,6 +257,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
                 }
                 else
                 {
+                    progressDialog.dismiss();
                     Toast.makeText(
                             getBaseContext(),
                             "Report Can not be created\n"+ Allerrors.toString(),
@@ -332,6 +342,7 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
     public void onPostProcessCompletion(Object responseObj, String identifier, boolean isSuccess) {
         //Go back to parent activity
         Intent upIntent = NavUtils.getParentActivityIntent(CreateReportActivity.this);
+        progressDialog.dismiss();
         startActivity(upIntent);
     }
 
@@ -560,5 +571,9 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        new DiscardChangesDialogFragment().show(getFragmentManager(),"DiscardDialog");
+    }
+    
 }

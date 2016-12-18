@@ -119,7 +119,7 @@
     <!-- ***********************Defined By Anshuman********************* -->
 
     <string name="title_activity_maps">Map</string>
-    <string name="facebook_app_id">*fb app id*</string>
+    <string name="facebook_app_id">395019697311167</string>
     <string name="homeText">Login Here</string>
     <string name="title_activity_google_sign_in_activty">GoogleSignInActivty</string>
     <string name="signIn">Sign In</string>
@@ -133,6 +133,11 @@
     <string name="resetPassword">Reset Password</string>
     <string name="resetPasswordConfirm">Reset Password Email Sent!</string>
     <string name= "goToHeatMap">View Heat Map</string>
+    <string name="goToMap">View Map</string>
+    <string name="exitApp">Exit iReport App?</string>
+    <string name="quitCreateReport">Discard Changes?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!--  *******************************************************   -->
 
