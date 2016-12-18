@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Geocoder;
-
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ireport.R;
-import com.ireport.controller.utils.cameraUtils.CameraUtility;
 import com.ireport.controller.utils.httpUtils.APIHandlers.GetReportByIdHandler;
 import com.ireport.controller.utils.httpUtils.APIHandlers.UpdateReportByIdHandler;
 import com.ireport.controller.utils.locationUtils.CurrentLocationUtil;
@@ -72,6 +70,7 @@ public class ViewReportActivity extends AppCompatActivity implements ICallbackAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching Report Details from Server");
         Toolbar toolbar = (Toolbar) findViewById(R.id.viewReportToolbar);
         setSupportActionBar(toolbar);
