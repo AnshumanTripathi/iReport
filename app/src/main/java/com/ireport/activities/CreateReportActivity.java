@@ -104,6 +104,13 @@ public class CreateReportActivity extends AppCompatActivity implements ICallback
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DiscardChangesDialogFragment().show(getFragmentManager(),"DiscardDialog");
+            }
+        });
         descriptionText = (EditText) findViewById(R.id.user_litter_desc);
         radioGroupSize = (RadioGroup) findViewById(R.id.radio_group_size);
         radioGroupSeverity = (RadioGroup) findViewById(R.id.radio_group_severity);
