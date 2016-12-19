@@ -5,7 +5,7 @@
     <item android:id="@+id/search_by_email"
           android:icon="@mipmap/ic_search"
         com.brianco.andypedia:actionProviderClass="android.support.v7.widget.ShareActionProvider"
-        com.brianco.andypedia:showAsAction="always"
+        com.brianco.andypedia:showAsAction="always|collapseActionView"
         com.brianco.andypedia:actionViewClass="android.support.v7.widget.SearchView" />
     <item android:id="@+id/search_by_status"
      android:icon="@drawable/ic_action_dropdown"
