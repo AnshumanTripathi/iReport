@@ -82,7 +82,7 @@ public class HeatMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(Constants.DEF_LAT,Constants.DEF_LNG),9));
+                new LatLng(Constants.DEF_LAT,Constants.DEF_LNG),10));
 
     }
 
