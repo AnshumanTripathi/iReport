@@ -1,0 +1,2 @@
+# iReport
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7ce8d43d2b0140999f7c6fbeb1c4889a)](https://www.codacy.com/app/AnshumanTripathi/iReport?utm_source=github.com&utm_medium=referral&utm_content=AnshumanTripathi/iReport&utm_campaign=badger)
